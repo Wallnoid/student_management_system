@@ -17,7 +17,27 @@ const config: Config = {
       },
     },
   },
-  darkMode: "class",
-  plugins: [nextui()],
+
+  plugins: [nextui(
+    {
+      themes: {
+        light:{
+          colors:{
+            primary:{
+              foreground: "#FFFFFF",
+              DEFAULT: "#2d6073",
+            }
+,
+            secondary:{
+              foreground: "#FFFFFF",
+              DEFAULT: "#65b8a6",
+            },
+
+            
+          }
+        }
+      }
+    }
+  ),require('tailwindcss-animated')],
 };
 export default config;
