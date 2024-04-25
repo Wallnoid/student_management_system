@@ -41,17 +41,17 @@ export default function SiteNavBar() {
       </NavbarBrand>
       <NavbarContent className="hidden md:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color={isActiveLink('/miembros') ? 'primary' : 'foreground'} className="font-semibold" href="/clients">
+          <Link color={isActiveLink('/miembros') ? 'primary' : 'foreground'} className="font-semibold" href="/miembros">
             Gestion de Miembros
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={isActiveLink('/trainers')}>
-          <Link color={isActiveLink('/eventos') ? 'primary' : 'foreground'} className="font-semibold" href="/trainers">
+        <NavbarItem isActive={isActiveLink('/eventos')}>
+          <Link color={isActiveLink('/eventos') ? 'primary' : 'foreground'} className="font-semibold" href="/eventos">
             Gestion de Eventos
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color={isActiveLink('/proyectos') ? 'secondary' : 'foreground'} className="font-semibold" href="/memberships">
+          <Link color={isActiveLink('/proyectos') ? 'secondary' : 'foreground'} className="font-semibold" href="/proyectos">
             Gestion de Proyectos
           </Link>
         </NavbarItem>
