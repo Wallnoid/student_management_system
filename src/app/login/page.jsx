@@ -5,21 +5,12 @@ import { Button, Card, CardBody, Input, Image } from "@nextui-org/react";
 import LoginInput from "./components/login_input";
 import LoginSubmit from "./components/login_submit";
 import Alert from "../components/alert";
+import { login } from "./actions";
 
 export default function LoginPage() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-
   const [error, setError] = React.useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted");
-
-    setError(true);
-    console.log(username);
-    console.log(password);
-  };
 
   return (
     <div className=" flex justify-center items-center h-screen">
@@ -55,15 +46,14 @@ export default function LoginPage() {
                 <span className="border-b w-1/5 lg:w-1/4"></span>
               </div>
 
-              <form onSubmit={handleSubmit} className="mt-10">
-                
-
+              <form className="mt-10">
                 <LoginInput
                   type="text"
                   label="Username"
                   className="my-6"
                   isInvalid={error}
                   onChange={setUsername}
+                  id={"email"}
                 />
 
                 <LoginInput
@@ -72,6 +62,7 @@ export default function LoginPage() {
                   className="my-6"
                   isInvalid={error}
                   onChange={setPassword}
+                  id={"password"}
                 />
 
 

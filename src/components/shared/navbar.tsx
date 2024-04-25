@@ -2,6 +2,7 @@
 import React from "react";
 import { Navbar, NavbarBrand, Image, NavbarContent, NavbarItem, Link, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Button, NavbarMenu, NavbarMenuItem, NavbarMenuToggle, DropdownSection } from "@nextui-org/react";
 import { usePathname } from 'next/navigation';
+import { logout } from "@/app/login/actions";
 
 export default function SiteNavBar() {
   //Implentear luego estados globales con Zustand
@@ -56,7 +57,7 @@ export default function SiteNavBar() {
         </NavbarItem>
       </NavbarContent>
       <NavbarContent as="div" justify="end">
-        <Dropdown placement="bottom-end" className="light light:bg-gray-100 light:text-black bg-black text-white">
+      <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Button isIconOnly className="p-2" color="default" aria-label="user-settings">
               <p className="font-semibold">SV</p>
@@ -66,7 +67,6 @@ export default function SiteNavBar() {
             <DropdownSection title="Usuario" showDivider>
               <DropdownItem key="profile">
                 cambiardespues@mail.com
-                <p className="text-xs">Rol: Miembro</p>
               </DropdownItem>
             </DropdownSection>
             <DropdownSection title="Accciones" showDivider>
@@ -74,10 +74,14 @@ export default function SiteNavBar() {
               <DropdownItem key="configurations">Configuraciones</DropdownItem>
             </DropdownSection>
             <DropdownSection title="Sesion">
-            <DropdownItem key="logout" color="danger">
-                Cerrar Sesión
+              <DropdownItem key="logout" color="danger">
+                <form>
+                  <button formAction={logout}>
+                    Cerrar Sesión
+                  </button>
+                </form>
               </DropdownItem>
-          </DropdownSection>
+            </DropdownSection>
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
