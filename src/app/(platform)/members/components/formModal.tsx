@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -14,44 +14,52 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  DatePicker,
 } from "@nextui-org/react";
 import { ChevronDownIcon, PlusIcon } from "./icons";
 import { capitalize } from "../utils/utils";
-import DefaultDropdown from "./dropdown";
+import DefaultDropdown from "./select";
+import DefaultSelect from "./select";
+import SelectIcon from "./selectIcon";
 
 export default function FormModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Carreras"]));
-
-  const selectedValue = React.useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys]
-  );
+  const [cedula, setCedula] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [carrera, setCarrera] = useState("");
+  const [semestre, setSemestre] = useState("");
 
   const carreras = [
-    { name: "Software", key: "software" },
-    { name: "Industrial", key: "industrial" },
-    { name: "Telecomunicaciones", key: "telecomunicaciones" },
-    { name: "no_se_mas", key: "no_se_mas" },
+    { label: "Software", key: "software", value: "software" },
+    { label: "Industrial", key: "industrial", value: "industrial" },
+    {
+      label: "Telecomunicaciones",
+      key: "telecomunicaciones",
+      value: "telecomunicaciones",
+    },
+    { label: "no_se_mas", key: "no_se_mas", value: "no_se_mas" },
   ];
 
-  const semestre = [
-    { name: "primero", value: 1 },
-    { name: "segundo", value: 2 },
-    { name: "tercero", value: 3 },
-    { name: "cuarto", value: 4 },
-    { name: "quinto", value: 5 },
-    { name: "sexto", value: 6 },
-    { name: "septimo", value: 7 },
-    { name: "octavo", value: 8 },
-    { name: "noveno", value: 9 },
-    { name: "decimo", value: 10 },
+  const semestres = [
+    { label: "primero", key: "primero", value: "primero" },
+    { label: "segundo", key: "segundo", value: "segundo" },
+    { label: "tercero", key: "tercero", value: "tercero" },
+    { label: "cuarto", key: "cuarto", value: "cuarto" },
+    { label: "quinto", key: "quinto", value: "quinto" },
+    { label: "sexto", key: "sexto", value: "sexto" },
+    { label: "septimo", key: "septimo", value: "septimo" },
+    { label: "octavo", key: "octavo", value: "octavo" },
+    { label: "noveno", key: "noveno", value: "noveno" },
+    { label: "decimo", key: "decimo", value: "decimo" },
   ];
 
-  const handleDropdownSelectionChange = (keys: Set<string>) => {
-    setSelectedKeys(keys);
-  };
+  const roles = [
+    { label: "Admin", key: "admin", value: "admin" },
+    { label: "User", key: "user", value: "user" },
+  ];
 
   return (
     <>
@@ -62,19 +70,20 @@ export default function FormModal() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Agregar miembro
+              </ModalHeader>
               <ModalBody>
                 <Input
                   autoFocus
                   label="Cedula"
-                  placeholder="Ingrea tu cedula"
+                  placeholder="Ingresa tu cedula"
                   variant="bordered"
                   type="text"
                 />
 
                 <div className="flex py-2  justify-between">
                   <Input
-                    autoFocus
                     label="Nombre"
                     placeholder="Ingresa tu nombre"
                     variant="bordered"
@@ -82,7 +91,6 @@ export default function FormModal() {
                     type="text"
                   />
                   <Input
-                    autoFocus
                     label="Apellido"
                     placeholder="Ingresa tu apellido"
                     variant="bordered"
@@ -92,14 +100,12 @@ export default function FormModal() {
                 </div>
 
                 <Input
-                  autoFocus
                   label="Telefono"
                   placeholder="Ingresa tu telefono"
                   variant="bordered"
                   type="text"
                 />
                 <Input
-                  autoFocus
                   label="Correo"
                   placeholder="Ingresa tu correo"
                   variant="bordered"
@@ -107,22 +113,21 @@ export default function FormModal() {
                 />
 
                 <div className="flex py-2 justify-between">
-                  <DefaultDropdown
-                    selectedValue={selectedValue}
-                    selectedKeys={selectedKeys}
-                    handleDropdownSelectionChange={
-                      handleDropdownSelectionChange
-                    }
-                    opciones={carreras}
-                  ></DefaultDropdown>
-                  <DefaultDropdown
-                    selectedValue={selectedValue}
-                    selectedKeys={selectedKeys}
-                    handleDropdownSelectionChange={
-                      handleDropdownSelectionChange
-                    }
-                    opciones={semestre}
-                  ></DefaultDropdown>
+                  <DefaultSelect
+                    datas={carreras}
+                    label="Carrera"
+                  ></DefaultSelect>
+                  <div className=" w-2"></div>
+                  <DefaultSelect
+                    datas={semestres}
+                    label="Semestre"
+                  ></DefaultSelect>
+                </div>
+
+                <div className="flex py-2 justify-between">
+                  <DatePicker label="Fecha Regitro" className="max-w-[284px]" />
+                  <div className=" w-2"></div>
+                  <SelectIcon label="Rol" datas={roles}></SelectIcon>
                 </div>
               </ModalBody>
               <ModalFooter>

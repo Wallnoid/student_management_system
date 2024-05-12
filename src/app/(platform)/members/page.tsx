@@ -22,18 +22,9 @@ import {
   SortDescriptor,
   Tooltip,
 } from "@nextui-org/react";
-import {
-  PlusIcon,
-  VerticalDotsIcon,
-  ChevronDownIcon,
-  SearchIcon,
-  DeleteIcon,
-  EyeIcon,
-  EditIcon,
-} from "./components/icons";
+import { DeleteIcon, EyeIcon, EditIcon } from "./components/icons";
 
 import { columns, users, statusOptions } from "./data/data";
-import { capitalize } from "./utils/utils";
 import BottomContent from "./components/bottomContent";
 import TopContent from "./components/topContent";
 

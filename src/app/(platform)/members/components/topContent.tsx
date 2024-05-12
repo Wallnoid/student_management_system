@@ -79,7 +79,7 @@ export default function topContent({
                 endContent={<ChevronDownIcon className="text-small" />}
                 variant="flat"
               >
-                Columns
+                Columnas
               </Button>
             </DropdownTrigger>
             <DropdownMenu
@@ -102,7 +102,7 @@ export default function topContent({
       </div>
       <div className="flex justify-between items-center">
         <span className="text-default-400 text-small">
-          Total {users.length} usuarios
+          Total {users.length} miembros
         </span>
         <label className="flex items-center text-default-400 text-small">
           Filas por paginas:
