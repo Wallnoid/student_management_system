@@ -1,5 +1,6 @@
 import {createClient as supabase} from "@/supabase/client";
 import {UserRegister} from "@/interfaces/UserLogin";
+import { Member } from "@/interfaces/Member";
 //user logged in
 let currentUser = null;
 
