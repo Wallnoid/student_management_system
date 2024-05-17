@@ -1,0 +1,13 @@
+export interface Member {
+    id: string;
+    nombre: string;
+    apellido: string;
+    fecha_nacimiento: string;
+    nro_identificacion: string;
+    correo: string;
+    carrera: string;
+    estado: string;
+    telefono: string;
+    usuario: string;
+    ultima_conexion: string;
+}
