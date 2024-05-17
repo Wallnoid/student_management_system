@@ -22,6 +22,9 @@ import {
   SortDescriptor,
   Tooltip,
 } from "@nextui-org/react";
+
+import {getMemberById, getMemberStatus} from "@/services/members.service";
+
 import { DeleteIcon, EyeIcon, EditIcon } from "./components/icons";
 
 import { columns, users, statusOptions } from "./data/data";
@@ -37,6 +40,9 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 
 type User = (typeof users)[0];
+console.log(getMemberById('a18c0a8f-d587-492e-80a9-4e255c4610e2').then((data) => console.log(data)));
+
+console.log(getMemberStatus('a18c0a8f-d587-492e-80a9-4e255c4610e2').then((data) => console.log(data)));
 
 export default function MembersPage() {
   const [filterValue, setFilterValue] = React.useState("");
