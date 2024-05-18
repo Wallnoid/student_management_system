@@ -7,18 +7,14 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Checkbox,
   Input,
-  Link,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   DatePicker,
 } from "@nextui-org/react";
 import { PlusIcon } from "./icons";
 import DefaultSelect from "./select";
 import SelectIcon from "./selectIcon";
+import { Member } from "@/interfaces/Member";
+import { insert } from "../data/data";
 
 export default function FormModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -59,9 +55,11 @@ export default function FormModal() {
     { label: "User", key: "user", value: "user" },
   ];
 
+  const onClick = () => {};
+
   return (
     <>
-      <Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
+      <Button color="primary" endContent={<PlusIcon />} onPress={onClick}>
         Agregar miembro
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">

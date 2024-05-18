@@ -11,84 +11,47 @@ supabase().auth.onAuthStateChange((event, session) => {
 });
 
 export async function registerUser(member: Member) {
-    //const {email, password, role, identification, lastName, firstName} = user;
-    const {
-        nombre, 
-        apellido, 
-        fecha_nacimiento, 
-        nro_identificacion, 
-        correo, 
-        carrera, 
-        semestre,
-        estado,
-        telefono,
-        usuario,
-        categoria,
-        creado_por,
-        fecha_hora_creacion,
-    } = member
-    const userauth = await supabase().auth.signUp({
-        email: correo,
-        password: nro_identificacion,
+    const userauth: any = await supabase().auth.signUp({
+        email: member.correo,
+        password: member.nro_identificacion,
         options: {
             data: {
-                role: categoria
+                role: member.categoria
             }
         }
     });
+    console.log(userauth);
+    console.log(userauth.error);
     //Reemplazar por un procedure para mejorar el retorno de error y campos especiales
-    const userTable = await supabase().from('miembros').update({
-        nombre: nombre,
-        apellido: apellido,
-        fecha_nacimiento: fecha_nacimiento,
-        nro_identificacion: nro_identificacion,
-        correo: correo,
-        carrera: carrera,
-        semestre: semestre,
-        estado: estado,
-        telefono: telefono,
-        usuario: usuario,
-        categoria: categoria,
-        creado_por: creado_por,
-        fecha_hora_creacion: fecha_hora_creacion
-        }).eq('id', userauth.data.user?.id);
+    const userTable = await supabase().from('miembros').update(member).eq('id', userauth.data.user.id);
     if (userTable.error) {
         console.log("Error al insertar miembro.")
+        console.log(userTable.error);
         return false;
     }
     return true;
 }
 
 export async function updateUser(member: Member) {
-    const {
-        nombre, 
-        apellido, 
-        correo, 
-        carrera, 
-        semestre,
-        estado,
-        telefono,
-        usuario,
-        categoria
-    } = member
+
     const userauth = await supabase().auth.updateUser({
-        email: correo,
+        email: member.correo,
         data: {
-            role: categoria
+            role: member.categoria
         }
     });
-    //Reemplazar por un procedure para mejorar el retorno de error y campos especiales
+
     const userTable = await supabase().from('miembros').update({
-        nombre: nombre,
-        apellido: apellido,
-        correo: correo,
-        carrera: carrera,
-        semestre: semestre,
-        estado: estado,
-        telefono: telefono,
-        usuario: usuario,
-        categoria: categoria
+        nombre: member.nombre,
+        apellido: member.apellido,
+        correo: member.correo,
+        carrera: member.carrera,
+        semestre: member.semestre,
+        estado: member.estado,
+        telefono: member.telefono,
+        categoria: member.categoria
         }).eq('id', userauth.data.user?.id);
+
     if (userTable.error) {
         console.log("Error al actualizar miembro.")
         return false;
@@ -96,14 +59,30 @@ export async function updateUser(member: Member) {
     return true;
 }
 
-export async function updateRole(id: string, role: string) {
+export async function updateRole(member: Member, id: string) {
     const {data: user, error} = await supabase().auth.admin.updateUserById(
         id,
-        {user_metadata: {role: role}}
+        {
+            user_metadata: {role: member.categoria},
+            email: member.correo
+        }
     )
-    if (error) {
-        console.log("Error al actualizar el rol.")
+    const userTable = await supabase().from('miembros').update({
+        nombre: member.nombre,
+        apellido: member.apellido,
+        correo: member.correo,
+        carrera: member.carrera,
+        semestre: member.semestre,
+        estado: member.estado,
+        telefono: member.telefono,
+        categoria: member.categoria
+        }).eq('id', id);
+        
+    if (userTable.error) {
+        console.log("Error al actualizar miembro.")
         return false;
     }
     return true;
-} 
+}
+
+export { currentUser }

@@ -1,5 +1,5 @@
 export interface Member {
-    id: string;
+    id?: string;
     nombre: string;
     apellido: string;
     fecha_nacimiento: string;
@@ -9,7 +9,6 @@ export interface Member {
     semestre: string;
     estado: string;
     telefono: string;
-    usuario: string;
     ultima_conexion: string;
     categoria: string;
     creado_por: string,

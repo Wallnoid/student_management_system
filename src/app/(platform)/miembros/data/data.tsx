@@ -1,3 +1,7 @@
+import { Member } from "@/interfaces/Member";
+import { registerUser } from '@/services/users.service';
+
+
 const columns = [
   { name: "ID", uid: "nro_identificacion", sortable: true },
 
@@ -14,5 +18,13 @@ const statusOptions = [
   { name: "Inactivo", uid: "inactivo" },
   { name: "Suspendido", uid: "suspendido" },
 ];
+
+export async function insert(member: Member){
+  registerUser(member).then( res => {
+    console.log(res);
+  }).catch(err => {
+    console.log(err.message);
+  });
+}
 
 export { columns, statusOptions };
