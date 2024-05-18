@@ -10,6 +10,7 @@ export interface Member {
     estado: string;
     telefono: string;
     usuario: string;
+    ultima_conexion: string;
     categoria: string;
     creado_por: string,
     fecha_hora_creacion: string,

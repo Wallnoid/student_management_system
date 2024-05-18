@@ -27,7 +27,6 @@ export async function login(username: string, password: string) {
 }
 
 export async function redirectIfAuth(link : string){
-
   revalidatePath('/', 'layout')
   redirect(link);
 }

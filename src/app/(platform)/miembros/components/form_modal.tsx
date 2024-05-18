@@ -16,9 +16,7 @@ import {
   DropdownItem,
   DatePicker,
 } from "@nextui-org/react";
-import { ChevronDownIcon, PlusIcon } from "./icons";
-import { capitalize } from "../utils/utils";
-import DefaultDropdown from "./select";
+import { PlusIcon } from "./icons";
 import DefaultSelect from "./select";
 import SelectIcon from "./selectIcon";
 
