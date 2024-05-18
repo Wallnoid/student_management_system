@@ -6,8 +6,10 @@ export interface Member {
     nro_identificacion: string;
     correo: string;
     carrera: string;
+    categoria: string;  
     estado: string;
     telefono: string;
     usuario: string;
     ultima_conexion: string;
+
 }

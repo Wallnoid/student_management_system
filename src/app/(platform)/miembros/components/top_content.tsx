@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { ChevronDownIcon, PlusIcon, SearchIcon } from "./icons";
 import { capitalize } from "../utils/utils";
-import FormModal from "./formModal";
+import FormModal from "./form_modal";
 
 export default function topContent({
   filterValue,
