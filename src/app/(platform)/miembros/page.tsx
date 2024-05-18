@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -8,44 +8,48 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Input,
-  Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
   User,
-  Pagination,
   Selection,
   ChipProps,
   SortDescriptor,
   Tooltip,
 } from "@nextui-org/react";
 
-import {getMemberById, getMemberStatus} from "@/services/members.service";
+import { getMembers } from "@/services/members.service";
 
 import { DeleteIcon, EyeIcon, EditIcon } from "./components/icons";
 
-import { columns, users, statusOptions } from "./data/data";
-import BottomContent from "./components/bottomContent";
-import TopContent from "./components/topContent";
+import { columns, statusOptions } from "./data/data";
+import BottomContent from "./components/bottom_content";
+import TopContent from "./components/top_content";
+import { Member } from "@/interfaces/Member";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
+  activo: "success",
+  inactivo: "danger",
+  suspendido: "warning",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["nombre", "categoria", "estado", "actions"];
 
-type User = (typeof users)[0];
-console.log(getMemberById('a18c0a8f-d587-492e-80a9-4e255c4610e2').then((data) => console.log(data)));
-
-console.log(getMemberStatus('a18c0a8f-d587-492e-80a9-4e255c4610e2').then((data) => console.log(data)));
+type User = Member;
 
 export default function MembersPage() {
-  const [filterValue, setFilterValue] = React.useState("");
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    getMembers()
+      .then((data) => {
+        setUsers(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
   );
@@ -76,7 +80,7 @@ export default function MembersPage() {
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+        user.nombre.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
@@ -84,7 +88,7 @@ export default function MembersPage() {
       Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+        Array.from(statusFilter).includes(user.estado)
       );
     }
 
@@ -102,8 +106,8 @@ export default function MembersPage() {
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+      const first = a[sortDescriptor.column as keyof User] as string;
+      const second = b[sortDescriptor.column as keyof User] as string;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -114,30 +118,30 @@ export default function MembersPage() {
     const cellValue = user[columnKey as keyof User];
 
     switch (columnKey) {
-      case "name":
+      case "nombre":
         return (
           <User
             avatarProps={{ radius: "lg" }}
-            description={user.email}
-            name={cellValue}
+            description={user.correo}
+            name={cellValue + " " + user.apellido}
           >
-            {user.email}
+            {user.correo}
           </User>
         );
-      case "role":
+      case "categoria":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
+              {user.categoria}
             </p>
           </div>
         );
-      case "status":
+      case "estado":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.estado]}
             size="sm"
             variant="flat"
           >
