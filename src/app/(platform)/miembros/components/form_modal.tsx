@@ -9,13 +9,15 @@ import {
   useDisclosure,
   Input,
   DatePicker,
+} from "@nextui-org/react";
 
 import { PlusIcon } from "../../../../components/shared/icons";
 import DefaultSelect from "../../../../components/shared/select";
 import SelectIcon from "../../../../components/shared/selectIcon";
 
 
-import { memberSchema, mappeoCarreras, mappeoSemestres, mappeoRoles, actualDate, Carreras, Semestres, Roles, } from "../../../../utils/member_schema";
+import { memberSchema, mappeoCarreras, mappeoSemestres, mappeoRoles, actualDate, Carreras, Semestres, Roles, }
+  from "../../../../utils/member_schema";
 import { DateValue, parseDate, getLocalTimeZone } from "@internationalized/date";
 
 
@@ -40,7 +42,7 @@ export default function FormModal() {
     //setValue("fechaNacimiento", fechaAsDate);
   };
 
-  const onClick = () => {};
+  const onClick = () => { };
 
   return (
     <>
