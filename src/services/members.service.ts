@@ -43,7 +43,7 @@ export async function updateMemberStatus(id: string, estado: string) {
     let {error} = await supabase()
         .from('miembros')
         .update({estado: estado})
-        .eq('id',id)
+        .eq('id',id);
     if (error) {
         console.log("Error al actualizar estado.")
         return false;

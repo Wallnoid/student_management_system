@@ -20,7 +20,7 @@ import { getMembers } from "@/services/members.service";
 
 import { DeleteIcon, EyeIcon, EditIcon } from "./components/icons";
 
-import { columns, insert, statusOptions } from "./data/data";
+import { columns, statusOptions } from "./data/data";
 import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
 import { Member } from "@/interfaces/Member";

@@ -1,4 +1,6 @@
 import { Member } from "@/interfaces/Member";
+import { Proyecto } from "@/interfaces/Proyecto";
+import { ingresarProyecto } from "@/services/proyectos.service";
 import { registerUser } from '@/services/users.service';
 
 
@@ -19,12 +21,20 @@ const statusOptions = [
   { name: "Suspendido", uid: "suspendido" },
 ];
 
-export async function insert(member: Member){
+export function insert(member: Member){
   registerUser(member).then( res => {
     console.log(res);
   }).catch(err => {
     console.log(err.message);
   });
+}
+
+export function insertProject(proyecto: Proyecto){
+  ingresarProyecto(proyecto).then( res => {
+    console.log(res);
+  }).catch(err => {
+    console.log(err);
+  })
 }
 
 export { columns, statusOptions };
