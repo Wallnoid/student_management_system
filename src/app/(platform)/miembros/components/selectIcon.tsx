@@ -5,22 +5,36 @@ import { UsersICon, EyeIcon } from "./icons";
 export default function SelectIcon({
   label,
   datas,
+  isInvalid,
+  errorMessage,
+  validate,
 }: {
   label: string;
-  datas: { label: string; value: string; key: string }[];
+  datas: object[];
+  errorMessage: any;
+  isInvalid: boolean;
+  validate: any;
 }) {
+
+  const options = Object.entries(datas).map(([key, value]) => (
+    <SelectItem key={key} value={key}>
+      {value}
+    </SelectItem>
+  ));
+
   return (
+
+
     <Select
       className="max-w-xs"
-      startContent={<UsersICon />}
+      startContent={< UsersICon />}
       color="primary"
       label={label}
+      isInvalid={isInvalid}
+      errorMessage={errorMessage}
+      {...validate}
     >
-      {datas.map((data) => (
-        <SelectItem key={data.key} value={data.value}>
-          {data.label}
-        </SelectItem>
-      ))}
-    </Select>
+      {options}
+    </Select >
   );
 }
