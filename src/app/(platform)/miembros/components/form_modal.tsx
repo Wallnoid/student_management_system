@@ -76,7 +76,7 @@ export default function FormModal() {
 
   return (
     <>
-      <Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
+      <Button color="primary" endContent={<PlusIcon />} onPress={onOpen} id="AddMemberButton">
         Agregar miembro
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
