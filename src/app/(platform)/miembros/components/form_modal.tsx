@@ -19,6 +19,7 @@ import { memberSchema } from "../utils/member_schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 
+
 type Inputs = typeof Input;
 
 export default function FormModal() {
@@ -70,6 +71,8 @@ export default function FormModal() {
     { label: "noveno", key: "noveno", value: "noveno" },
     { label: "decimo", key: "decimo", value: "decimo" },
   ];
+
+
 
 
 

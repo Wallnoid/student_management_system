@@ -8,15 +8,13 @@ export default function DefaultSelect({
   errorMessage,
   validate,
 }: {
-  datas: {
-    label: string;
-    value: string;
-  }[];
+  datas: object[];
   label: string;
   errorMessage: any;
   isInvalid: boolean;
   validate: any;
 }) {
+
   return (
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
