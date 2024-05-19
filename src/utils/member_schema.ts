@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const carreras = ["software", "telecomunicaciones", "ti", "ingenieriaIndustrial", "automatizacionYRobotica"] as const
 
-const semestres = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+const semestres = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] as const
 
 const roles = ["lider", "colider", "secretario", "tesorero", "vocal", "normal"] as const
 
@@ -15,6 +15,12 @@ export type Carreras = (typeof carreras)[number]
 export type Semestres = (typeof semestres)[number]
 
 export type Roles = (typeof roles)[number]
+
+
+// ESTE ES EL TIPO QUE ENVIAMOS A LOS SELECT PARA QUE ACEPTEN LOS DATOS 
+export type Data = { [key in Carreras | Semestres | Roles]: string };
+
+
 
 export const mappeoCarreras: { [key in Carreras]: string } = {
     software: "Software",

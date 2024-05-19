@@ -1,5 +1,5 @@
 import React from "react";
-import { IconSvgProps } from "../types/types";
+import { IconSvgProps } from "../../types/types";
 
 export const VerticalDotsIcon = ({
   size = 24,
@@ -227,6 +227,7 @@ export const UsersICon = ({ props }: { props?: object }) => (
     strokeWidth={1.5}
     stroke="currentColor"
     className="w-5 h-5"
+    {...props}
   >
     <path
       strokeLinecap="round"
@@ -234,4 +235,26 @@ export const UsersICon = ({ props }: { props?: object }) => (
       d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
     />
   </svg>
+);
+
+export const MemberIcon = ({ props }: { props?: object }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-primary"
+    {...props}
+  >
+    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
+  </svg>
+
+
+);
+
+
+export const ProjectIcon = ({ props }: { props?: object }) => (
+  <svg
+
+    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-primary"
+    {...props}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+  </svg>
+
 );

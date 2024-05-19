@@ -9,16 +9,13 @@ import {
   useDisclosure,
   Input,
   DatePicker,
-} from "@nextui-org/react";
-import { PlusIcon } from "./icons";
-import DefaultSelect from "./select";
-import SelectIcon from "./selectIcon";
-import { Member } from "@/interfaces/Member";
-import { insert } from "../data/data";
-import { useForm, SubmitHandler } from "react-hook-form";
 
-import { memberSchema, mappeoCarreras, mappeoSemestres, mappeoRoles, actualDate } from "../utils/member_schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "../../../../components/shared/icons";
+import DefaultSelect from "../../../../components/shared/select";
+import SelectIcon from "../../../../components/shared/selectIcon";
+
+
+import { memberSchema, mappeoCarreras, mappeoSemestres, mappeoRoles, actualDate, Carreras, Semestres, Roles, } from "../../../../utils/member_schema";
 import { DateValue, parseDate, getLocalTimeZone } from "@internationalized/date";
 
 
@@ -31,49 +28,16 @@ export default function FormModal() {
     `${actualDate.getFullYear()}-${(actualDate.getMonth() + 1).toString().padStart(2, '0')}-${actualDate.getDate().toString().padStart(2, '0')}`
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [errors, setErrors] = useState({});
   const [fecha, setFecha] = React.useState<DateValue>(parseDate(currentDate));
 
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(memberSchema),
-    defaultValues: {
-      cedula: "asa",
-      nombre: "",
-      apellido: "",
-      telefono: "",
-      correo: "",
-      carrera: "",
-      semestre: "",
-      fechaNacimiento: parseDate("2024-04-04"),
-      rol: "",
-    },
-  });
-
-  const onSubmit: SubmitHandler<{
-    cedula: string;
-    nombre: string;
-    apellido: string;
-    telefono: number;
-    correo: string;
-    carrera: string;
-    semestre: string;
-    fechaNacimiento: Date;
-    rol: string;
-  }> = (data) => {
-    console.log(data);
-  };
 
   const asignFechaNacimiento = () => {
 
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
 
-    setValue("fechaNacimiento", fechaAsDate);
+    //setValue("fechaNacimiento", fechaAsDate);
   };
 
   const onClick = () => {};
@@ -90,7 +54,7 @@ export default function FormModal() {
               <ModalHeader className="flex flex-col gap-1">
                 Agregar miembro
               </ModalHeader>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form >
                 <ModalBody>
                   <Input
 
@@ -99,21 +63,21 @@ export default function FormModal() {
                     placeholder="Ingresa tu cedula"
                     variant="bordered"
                     type="text"
-                    isInvalid={errors.cedula?.type !== undefined}
-                    errorMessage={errors.cedula?.message}
-                    {...register("cedula",)}
+                  // isInvalid={errors.cedula?.type !== undefined}
+                  // errorMessage={errors.cedula?.message}
+                  // {...register("cedula",)}
                   />
 
-                  <div className={`flex ${errors.cedula?.type !== undefined ? 'py-0' : 'py-3'}  justify-between`}>
+                  <div className={`flex ${errors !== undefined ? 'py-0' : 'py-3'}  justify-between`}>
                     <Input
                       label="Nombre"
                       placeholder="Ingresa tu nombre"
                       variant="bordered"
                       className="w-full sm:w-1/2 mx-1"
                       type="text"
-                      isInvalid={errors.nombre?.type !== undefined}
-                      errorMessage={errors.nombre?.message}
-                      {...register("nombre")}
+                    // isInvalid={errors !== undefined}
+                    // errorMessage={errors}
+                    // {...register("nombre")}
                     />
                     <Input
                       label="Apellido"
@@ -121,54 +85,60 @@ export default function FormModal() {
                       variant="bordered"
                       className="w-full sm:w-1/2"
                       type="text"
-                      isInvalid={errors.apellido?.type !== undefined}
-                      errorMessage={errors.apellido?.message}
-                      {...register("apellido")}
+                    // isInvalid={errors.apellido?.type !== undefined}
+                    // errorMessage={errors.apellido?.message}
+                    // {...register("apellido")}
                     />
                   </div>
 
                   <Input
                     label="Telefono"
                     placeholder="Ingresa tu telefono"
-                    className={errors.nombre?.type !== undefined || errors.apellido?.type !== undefined ? 'py-0' : 'py-3'}
+                    className={errors !== undefined || errors !== undefined ? 'py-0' : 'py-3'}
                     variant="bordered"
                     type="text"
-                    isInvalid={errors.telefono?.type !== undefined}
-                    errorMessage={errors.telefono?.message}
-                    {...register("telefono")}
+                  // isInvalid={errors.telefono?.type !== undefined}
+                  // errorMessage={errors.telefono?.message}
+                  // {...register("telefono")}
                   />
                   <Input
                     label="Correo"
                     placeholder="Ingresa tu correo"
-                    className={errors.telefono?.type !== undefined ? 'py-0' : 'py-3'}
+                    className={errors !== undefined ? 'py-0' : 'py-3'}
                     variant="bordered"
                     type="email"
-                    isInvalid={errors.correo?.type !== undefined}
-                    errorMessage={errors.correo?.message}
-                    {...register("correo")}
+                  // isInvalid={errors.correo?.type !== undefined}
+                  // errorMessage={errors.correo?.message}
+                  // {...register("correo")}
                   />
 
                   <div className={`flex 
-                  ${errors.nombre?.type !== undefined || errors.apellido?.type !== undefined ? 'py-0' : 'py-3'} justify-between`}>
-                    <DefaultSelect
+                  ${errors !== undefined || errors !== undefined ? 'py-0' : 'py-3'} justify-between`}>
+                    <DefaultSelect<{ [key in Carreras]: string }>
                       datas={mappeoCarreras}
                       label="Carrera"
-                      isInvalid={errors.carrera?.type !== undefined}
-                      errorMessage={errors.carrera?.message}
-                      validate={register("carrera")}
+                      isInvalid={false}
+                      errorMessage={""}
+                      validate={{}}
+                    // isInvalid={errors.carrera?.type !== undefined}
+                    // errorMessage={errors.carrera?.message}
+                    // validate={register("carrera")}
                     ></DefaultSelect>
                     <div className=" w-2"></div>
-                    <DefaultSelect
+                    <DefaultSelect<{ [key in Semestres]: string }>
                       datas={mappeoSemestres}
                       label="Semestre"
-                      isInvalid={errors.semestre?.type !== undefined}
-                      errorMessage={errors.semestre?.message}
-                      validate={register("semestre")}
+                      isInvalid={false}
+                      errorMessage={""}
+                      validate={{}}
+                    // isInvalid={errors.semestre?.type !== undefined}
+                    // errorMessage={errors.semestre?.message}
+                    // validate={register("semestre")}
                     ></DefaultSelect>
                   </div>
 
                   <div className={`flex 
-                  ${errors.carrera?.type !== undefined || errors.semestre?.type !== undefined ? 'py-0' : 'py-3'} justify-between`}>
+                  ${errors !== undefined || errors !== undefined ? 'py-0' : 'py-3'} justify-between`}>
 
                     <DatePicker
                       value={fecha}
@@ -179,19 +149,23 @@ export default function FormModal() {
                       label="Fecha Nacimiento"
                       showMonthAndYearPickers
                       className="max-w-[284px]"
-                      isInvalid={errors.fechaNacimiento?.type !== undefined}
-                      errorMessage={errors.fechaNacimiento?.message}
+                    // isInvalid={errors.fechaNacimiento?.type !== undefined}
+                    // errorMessage={errors.fechaNacimiento?.message}
 
 
                     />
 
                     <div className=" w-2"></div>
-                    <SelectIcon
+                    <SelectIcon <{ [key in Roles]: string }>
                       label="Rol"
                       datas={mappeoRoles}
-                      isInvalid={errors.rol?.type !== undefined}
-                      errorMessage={errors.rol?.message}
-                      validate={register("rol")}
+                      isInvalid={false}
+                      errorMessage={""}
+                      validate={{}}
+
+                    // isInvalid={errors.rol?.type !== undefined}
+                    // errorMessage={errors.rol?.message}
+                    // validate={register("rol")}
                     ></SelectIcon>
                   </div>
                 </ModalBody>

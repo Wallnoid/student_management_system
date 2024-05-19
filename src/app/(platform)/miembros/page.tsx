@@ -18,7 +18,7 @@ import {
 
 import { getMembers } from "@/services/members.service";
 
-import { DeleteIcon, EyeIcon, EditIcon } from "./components/icons";
+import { DeleteIcon, EyeIcon, EditIcon, MemberIcon } from "../../../components/shared/icons";
 
 import { columns, statusOptions } from "./data/data";
 import BottomContent from "./components/bottom_content";
@@ -143,7 +143,14 @@ export default function MembersPage() {
       case "nombre":
         return (
           <User
-            avatarProps={{ radius: "lg" }}
+            avatarProps={{
+              radius: "xl",
+              showFallback: true,
+              src: 'https://images.unsplash.com/broken',
+              fallback: (
+                <MemberIcon className="text-primary" size="large" color="primary" />
+              ),
+            }}
             description={user.correo}
             name={cellValue + " " + user.apellido}
           >

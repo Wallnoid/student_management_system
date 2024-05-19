@@ -1,30 +1,30 @@
-import React, { ReactNode } from "react";
-import { Select, SelectItem, Avatar } from "@nextui-org/react";
-import { UsersICon, EyeIcon } from "./icons";
+import React from "react";
+import { Select, SelectItem } from "@nextui-org/react";
+import { UsersICon } from "./icons";
 
-export default function SelectIcon({
+interface SelectIconProps<T> {
+  label: string;
+  datas: T;
+  errorMessage: any;
+  isInvalid: boolean;
+  validate: any;
+}
+
+export default function SelectIcon<T extends Record<string, unknown>>({
   label,
   datas,
   isInvalid,
   errorMessage,
   validate,
-}: {
-  label: string;
-  datas: object[];
-  errorMessage: any;
-  isInvalid: boolean;
-  validate: any;
-}) {
+}: SelectIconProps<T>) {
 
   const options = Object.entries(datas).map(([key, value]) => (
     <SelectItem key={key} value={key}>
-      {value}
+      {String(value)}
     </SelectItem>
   ));
 
   return (
-
-
     <Select
       className="max-w-xs"
       startContent={< UsersICon />}
