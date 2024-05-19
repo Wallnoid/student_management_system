@@ -6,7 +6,9 @@ interface DefaultSelectProps<T> {
   label: string;
   errorMessage: any;
   isInvalid: boolean;
-  validate: any;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export default function DefaultSelect<T extends Record<string, unknown>>({
@@ -14,7 +16,9 @@ export default function DefaultSelect<T extends Record<string, unknown>>({
   label,
   isInvalid,
   errorMessage,
-  validate,
+  name,
+  value,
+  onChange,
 }: DefaultSelectProps<T>) {
 
   const options = Object.entries(datas).map(([key, value]) => (
@@ -30,7 +34,10 @@ export default function DefaultSelect<T extends Record<string, unknown>>({
         className="max-w-xs"
         isInvalid={isInvalid}
         errorMessage={errorMessage}
-        {...validate}
+        name={name}
+        value={value}
+        onChange={onChange}
+
       >
         {options}
       </Select>
