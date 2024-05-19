@@ -15,25 +15,42 @@ import DefaultSelect from "./select";
 import SelectIcon from "./selectIcon";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import { memberSchema } from "../utils/member_schema";
+import { memberSchema, mappeoCarreras, mappeoSemestres, mappeoRoles, actualDate } from "../utils/member_schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { DateValue, parseDate, getLocalTimeZone } from "@internationalized/date";
 
 
 
 type Inputs = typeof Input;
 
 export default function FormModal() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const currentDate: string =
+    `${actualDate.getFullYear()}-${(actualDate.getMonth() + 1).toString().padStart(2, '0')}-${actualDate.getDate().toString().padStart(2, '0')}`
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [fecha, setFecha] = React.useState<DateValue>(parseDate(currentDate));
 
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(memberSchema),
+    defaultValues: {
+      cedula: "asa",
+      nombre: "",
+      apellido: "",
+      telefono: "",
+      correo: "",
+      carrera: "",
+      semestre: "",
+      fechaNacimiento: parseDate("2024-04-04"),
+      rol: "",
+    },
   });
 
   const onSubmit: SubmitHandler<{
@@ -49,37 +66,13 @@ export default function FormModal() {
   }> = (data) => {
     console.log(data);
   };
-  const carreras = [
-    { label: "Software", key: "software", value: "software" },
-    { label: "Industrial", key: "industrial", value: "industrial" },
-    {
-      label: "Telecomunicaciones",
-      key: "telecomunicaciones",
-      value: "telecomunicaciones"
-    },
-    { label: "no_se_mas", key: "no_se_mas", value: "no_se_mas" },
-  ];
-  const semestres = [
-    { label: "primero", key: "primero", value: "primero" },
-    { label: "segundo", key: "segundo", value: "segundo" },
-    { label: "tercero", key: "tercero", value: "tercero" },
-    { label: "cuarto", key: "cuarto", value: "cuarto" },
-    { label: "quinto", key: "quinto", value: "quinto" },
-    { label: "sexto", key: "sexto", value: "sexto" },
-    { label: "septimo", key: "septimo", value: "septimo" },
-    { label: "octavo", key: "octavo", value: "octavo" },
-    { label: "noveno", key: "noveno", value: "noveno" },
-    { label: "decimo", key: "decimo", value: "decimo" },
-  ];
 
+  const asignFechaNacimiento = () => {
 
+    const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
 
-
-
-  const roles = [
-    { label: "Admin", key: "admin", value: "admin" },
-    { label: "User", key: "user", value: "user" },
-  ];
+    setValue("fechaNacimiento", fechaAsDate);
+  };
 
   return (
     <>
@@ -154,7 +147,7 @@ export default function FormModal() {
                   <div className={`flex 
                   ${errors.nombre?.type !== undefined || errors.apellido?.type !== undefined ? 'py-0' : 'py-3'} justify-between`}>
                     <DefaultSelect
-                      datas={carreras}
+                      datas={mappeoCarreras}
                       label="Carrera"
                       isInvalid={errors.carrera?.type !== undefined}
                       errorMessage={errors.carrera?.message}
@@ -162,7 +155,7 @@ export default function FormModal() {
                     ></DefaultSelect>
                     <div className=" w-2"></div>
                     <DefaultSelect
-                      datas={semestres}
+                      datas={mappeoSemestres}
                       label="Semestre"
                       isInvalid={errors.semestre?.type !== undefined}
                       errorMessage={errors.semestre?.message}
@@ -172,18 +165,26 @@ export default function FormModal() {
 
                   <div className={`flex 
                   ${errors.carrera?.type !== undefined || errors.semestre?.type !== undefined ? 'py-0' : 'py-3'} justify-between`}>
+
                     <DatePicker
+                      value={fecha}
+                      onChange={(date) => {
+                        setFecha(date);
+
+                      }}
                       label="Fecha Nacimiento"
                       showMonthAndYearPickers
                       className="max-w-[284px]"
                       isInvalid={errors.fechaNacimiento?.type !== undefined}
                       errorMessage={errors.fechaNacimiento?.message}
-                      {...register("fechaNacimiento")}
+
+
                     />
+
                     <div className=" w-2"></div>
                     <SelectIcon
                       label="Rol"
-                      datas={roles}
+                      datas={mappeoRoles}
                       isInvalid={errors.rol?.type !== undefined}
                       errorMessage={errors.rol?.message}
                       validate={register("rol")}
@@ -194,7 +195,7 @@ export default function FormModal() {
                   <Button color="danger" variant="flat" onPress={onClose}>
                     Close
                   </Button>
-                  <Button color="primary" type="submit">
+                  <Button color="primary" type="submit" onPress={asignFechaNacimiento}>
                     Registrar
                   </Button>
                 </ModalFooter>

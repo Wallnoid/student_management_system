@@ -15,6 +15,12 @@ export default function DefaultSelect({
   validate: any;
 }) {
 
+  const options = Object.entries(datas).map(([key, value]) => (
+    <SelectItem key={key} value={key}>
+      {value}
+    </SelectItem>
+  ));
+
   return (
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
@@ -24,11 +30,7 @@ export default function DefaultSelect({
         errorMessage={errorMessage}
         {...validate}
       >
-        {datas.map((data) => (
-          <SelectItem key={data.value} value={data.value}>
-            {data.label}
-          </SelectItem>
-        ))}
+        {options}
       </Select>
     </div>
   );

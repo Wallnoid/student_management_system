@@ -7,6 +7,8 @@ const semestres = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 const roles = ["lider", "colider", "secretario", "tesorero", "vocal", "normal"] as const
 
+export const actualDate = new Date();
+
 
 export type Carreras = (typeof carreras)[number]
 
@@ -76,9 +78,12 @@ export const memberSchema = z.object({
 
     correo: z.string().email({ message: "debe ser un correo válido" }),
     carrera: z.enum(carreras, { message: "debe ser una carrera válida" }),
-    semestre: z.string(),
-    fecha_nacimiento: z.string(),
-    rol: z.string(),
+    semestre: z.enum(semestres, { message: "debe ser un semestre válido" }),
+    //fechaNacimiento: z.date({ message: "debe ser una fecha válida" }),
+    fechaNacimiento: z.date()
+        .min(new Date("1950-01-01"), { message: "Muy Marlon" })
+        .max(new Date(`${(actualDate.getFullYear()) - 10}-01-01`), { message: "Muy joven" }),
+    rol: z.enum(roles, { message: "debe ser un rol válido" })
 });
 
 
