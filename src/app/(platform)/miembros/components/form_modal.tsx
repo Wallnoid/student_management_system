@@ -14,35 +14,42 @@ import {
 import { PlusIcon } from "../../../../components/shared/icons";
 import DefaultSelect from "../../../../components/shared/select";
 import SelectIcon from "../../../../components/shared/selectIcon";
-import { Formik, Form, Field, useFormik } from 'formik';
+import { useFormik } from "formik";
 
-
-import { memberSchema, mappeoCarreras, mappeoSemestres, mappeoRoles, actualDate, Carreras, Semestres, Roles, }
-  from "../../../../utils/member_schema";
-import { DateValue, parseDate, getLocalTimeZone } from "@internationalized/date";
-
+import {
+  memberSchema,
+  mappeoCarreras,
+  mappeoSemestres,
+  mappeoRoles,
+  actualDate,
+  Carreras,
+  Semestres,
+  Roles,
+} from "../../../../utils/member_schema";
+import { DateValue, parseDate } from "@internationalized/date";
 
 export default function FormModal() {
-
-  const currentDate: string =
-    `${actualDate.getFullYear()}-${(actualDate.getMonth() + 1).toString().padStart(2, '0')}-${actualDate.getDate().toString().padStart(2, '0')}`
+  const currentDate: string = `${actualDate.getFullYear()}-${(
+    actualDate.getMonth() + 1
+  )
+    .toString()
+    .padStart(2, "0")}-${actualDate.getDate().toString().padStart(2, "0")}`;
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [errors, setErrors] = useState({});
+
   const [fecha, setFecha] = React.useState<DateValue>(parseDate(currentDate));
 
   const formik = useFormik({
     initialValues: {
-      cedula: '',
-      nombre: '',
-      apellido: '',
-      telefono: '',
-      correo: '',
-      carrera: '',
-      semestre: '',
-      fechaNacimiento: '',
-      rol: '',
-
+      cedula: "",
+      nombre: "",
+      apellido: "",
+      telefono: "",
+      correo: "",
+      carrera: "",
+      semestre: "",
+      fechaNacimiento: "",
+      rol: "",
     },
     validationSchema: memberSchema,
     onSubmit: (values) => {
@@ -50,12 +57,7 @@ export default function FormModal() {
     },
   });
 
-
-
-
-
   const asignFechaNacimiento = () => {
-
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
 
     formik.setFieldValue("fechaNacimiento", fechaAsDate);
@@ -63,10 +65,14 @@ export default function FormModal() {
     //setValue("fechaNacimiento", fechaAsDate);
   };
 
-
   return (
     <>
-      <Button color="primary" endContent={<PlusIcon />} onPress={onOpen} id="AddMemberButton">
+      <Button
+        color="primary"
+        endContent={<PlusIcon />}
+        onPress={onOpen}
+        id="AddMemberButton"
+      >
         Agregar miembro
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
@@ -77,10 +83,9 @@ export default function FormModal() {
                 Agregar miembro
               </ModalHeader>
 
-              <form onSubmit={formik.handleSubmit} >
+              <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
                   <Input
-
                     autoFocus
                     label="Cedula"
                     name="cedula"
@@ -91,10 +96,13 @@ export default function FormModal() {
                     placeholder="Ingresa tu cedula"
                     variant="bordered"
                     type="text"
-
                   />
 
-                  <div className={`flex ${formik.errors.cedula !== undefined ? 'py-0' : 'py-3'}  justify-between`}>
+                  <div
+                    className={`flex ${
+                      formik.errors.cedula !== undefined ? "py-0" : "py-3"
+                    }  justify-between`}
+                  >
                     <Input
                       label="Nombre"
                       name="nombre"
@@ -106,8 +114,6 @@ export default function FormModal() {
                       variant="bordered"
                       className="w-full sm:w-1/2 mx-1"
                       type="text"
-
-
                     />
                     <Input
                       label="Apellido"
@@ -120,7 +126,6 @@ export default function FormModal() {
                       variant="bordered"
                       className="w-full sm:w-1/2"
                       type="text"
-
                     />
                   </div>
 
@@ -132,10 +137,14 @@ export default function FormModal() {
                     isInvalid={formik.errors.telefono !== undefined}
                     errorMessage={formik.errors.telefono}
                     placeholder="Ingresa tu telefono"
-                    className={formik.errors.nombre !== undefined || formik.errors.apellido !== undefined ? 'py-0' : 'py-3'}
+                    className={
+                      formik.errors.nombre !== undefined ||
+                      formik.errors.apellido !== undefined
+                        ? "py-0"
+                        : "py-3"
+                    }
                     variant="bordered"
                     type="text"
-
                   />
 
                   <Input
@@ -146,14 +155,19 @@ export default function FormModal() {
                     isInvalid={formik.errors.correo !== undefined}
                     errorMessage={formik.errors.correo}
                     placeholder="Ingresa tu correo"
-                    className={formik.errors.telefono !== undefined ? 'py-0' : 'py-3'}
+                    className={
+                      formik.errors.telefono !== undefined ? "py-0" : "py-3"
+                    }
                     variant="bordered"
                     type="email"
-
                   />
 
-                  <div className={`flex 
-                  ${formik.errors.correo !== undefined ? 'py-0' : 'py-3'} justify-between`}>
+                  <div
+                    className={`flex 
+                  ${
+                    formik.errors.correo !== undefined ? "py-0" : "py-3"
+                  } justify-between`}
+                  >
                     <DefaultSelect<{ [key in Carreras]: string }>
                       datas={mappeoCarreras}
                       name="carrera"
@@ -162,7 +176,6 @@ export default function FormModal() {
                       errorMessage={formik.errors.carrera}
                       isInvalid={formik.errors.carrera !== undefined}
                       label="Carrera"
-
                     ></DefaultSelect>
                     <div className=" w-2"></div>
                     <DefaultSelect<{ [key in Semestres]: string }>
@@ -176,11 +189,16 @@ export default function FormModal() {
                     ></DefaultSelect>
                   </div>
 
-                  <div className={`flex 
-                  ${errors !== undefined || errors !== undefined ? 'py-0' : 'py-3'} justify-between`}>
-
+                  <div
+                    className={`flex 
+                  ${
+                    formik.errors.carrera !== undefined ||
+                    formik.errors.semestre !== undefined
+                      ? "py-0"
+                      : "py-3"
+                  } justify-between`}
+                  >
                     <DatePicker
-
                       value={fecha}
                       onChange={setFecha}
                       isInvalid={formik.errors.fechaNacimiento !== undefined}
@@ -188,11 +206,10 @@ export default function FormModal() {
                       label="Fecha Nacimiento"
                       showMonthAndYearPickers
                       className="max-w-[284px]"
-
                     />
 
                     <div className=" w-2"></div>
-                    <SelectIcon <{ [key in Roles]: string }>
+                    <SelectIcon<{ [key in Roles]: string }>
                       label="Rol"
                       datas={mappeoRoles}
                       name="rol"
@@ -200,8 +217,6 @@ export default function FormModal() {
                       onChange={formik.handleChange}
                       errorMessage={formik.errors.rol}
                       isInvalid={formik.errors.rol !== undefined}
-
-
                     ></SelectIcon>
                   </div>
                 </ModalBody>
@@ -209,7 +224,11 @@ export default function FormModal() {
                   <Button color="danger" variant="flat" onPress={onClose}>
                     Close
                   </Button>
-                  <Button color="primary" type="submit" onPress={asignFechaNacimiento}>
+                  <Button
+                    color="primary"
+                    type="submit"
+                    onPress={asignFechaNacimiento}
+                  >
                     Registrar
                   </Button>
                 </ModalFooter>

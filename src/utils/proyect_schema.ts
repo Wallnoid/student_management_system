@@ -6,9 +6,11 @@ console.log(actualDate);
 
 export const proyectSchema = yup.object().shape({
     nombre: yup.string()
+        .required("El nombre es requerido")
         .min(3, "debe contener al menos 3 caracteres")
         .max(30, "debe contener menos de 30 caracteres"),
     descripcion: yup.string()
+        .required("La descripción es requerida")
         .min(3, "debe contener al menos 3 caracteres")
         .max(100, "debe contener menos de 100 caracteres"),
     fechaInicio: yup.date()
