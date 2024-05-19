@@ -1,5 +1,5 @@
 import {createClient as supabase} from "@/supabase/client";
-import {UserRegister} from "@/interfaces/UserLogin";
+
 import { Member } from "@/interfaces/Member";
 //user logged in
 let currentUser = null;
@@ -7,6 +7,8 @@ let currentUser = null;
 supabase().auth.onAuthStateChange((event, session) => {
     if (session) {
         currentUser = session;
+    } else {
+        currentUser = null;
     }
 });
 
