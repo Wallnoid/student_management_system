@@ -1,23 +1,29 @@
 import React from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 
-export default function DefaultSelect({
+interface DefaultSelectProps<T> {
+  datas: T;
+  label: string;
+  errorMessage: any;
+  isInvalid: boolean;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+export default function DefaultSelect<T extends Record<string, unknown>>({
   datas,
   label,
   isInvalid,
   errorMessage,
-  validate,
-}: {
-  datas: object[];
-  label: string;
-  errorMessage: any;
-  isInvalid: boolean;
-  validate: any;
-}) {
+  name,
+  value,
+  onChange,
+}: DefaultSelectProps<T>) {
 
   const options = Object.entries(datas).map(([key, value]) => (
     <SelectItem key={key} value={key}>
-      {value}
+      {String(value)}
     </SelectItem>
   ));
 
@@ -28,7 +34,10 @@ export default function DefaultSelect({
         className="max-w-xs"
         isInvalid={isInvalid}
         errorMessage={errorMessage}
-        {...validate}
+        name={name}
+        value={value}
+        onChange={onChange}
+
       >
         {options}
       </Select>
