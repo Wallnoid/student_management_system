@@ -7,7 +7,9 @@ interface SelectIconProps<T> {
   datas: T;
   errorMessage: any;
   isInvalid: boolean;
-  validate: any;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export default function SelectIcon<T extends Record<string, unknown>>({
@@ -15,7 +17,10 @@ export default function SelectIcon<T extends Record<string, unknown>>({
   datas,
   isInvalid,
   errorMessage,
-  validate,
+  name,
+  value,
+  onChange,
+
 }: SelectIconProps<T>) {
 
   const options = Object.entries(datas).map(([key, value]) => (
@@ -32,7 +37,10 @@ export default function SelectIcon<T extends Record<string, unknown>>({
       label={label}
       isInvalid={isInvalid}
       errorMessage={errorMessage}
-      {...validate}
+      name={name}
+      value={value}
+      onChange={onChange}
+
     >
       {options}
     </Select >

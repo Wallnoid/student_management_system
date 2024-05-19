@@ -1,4 +1,5 @@
-import { z } from "zod";
+
+import * as yup from "yup";
 
 
 const carreras = ["software", "telecomunicaciones", "ti", "ingenieriaIndustrial", "automatizacionYRobotica"] as const
@@ -53,44 +54,40 @@ export const mappeoRoles: { [key in Roles]: string } = {
 }
 
 
-export const memberSchema = z.object({
-    cedula: z.string()
-        .min(10, { message: "debe contener 10 caracteres" })
-        .max(10, { message: "debe contener 10 caracteres" })
-        .refine((cedula: string) => !isNaN(parseInt(cedula)), {
-            message: "Solo puede contener números"
-        })
+export const memberSchema = yup.object().shape({
+    cedula: yup.string()
+        .required("La cedula es requerida")
+        .test('is-number', 'Solo puede contener números', value => !isNaN(parseInt(value!)))
+        .min(10, "debe contener 10 caracteres")
+        .max(10, "debe contener 10 caracteres"),
+    nombre: yup.string()
+        .required("El nombre es requerido")
+        .matches(/^[a-zA-Z\s]*$/, "Solo puede contener letras")
+        .min(3, "debe contener al menos 3 caracteres")
+        .max(30, "debe contener menos de 30 caracteres")
     ,
-    nombre: z.string()
-        .min(3, { message: "debe contener al menos 3 caracteres" })
-        .max(30, { message: "debe contener menos de 30 caracteres" })
-        .refine((nombre) => nombre.match(/^[a-zA-Z\s]*$/), {
-            message: "Solo puede contener letras"
-        })
-
+    apellido: yup.string()
+        .required("El apellido es requerido")
+        .matches(/^[a-zA-Z\s]*$/, "Solo puede contener letras")
+        .min(3, "debe contener al menos 3 caracteres")
+        .max(30, "debe contener menos de 30 caracteres")
     ,
-    apellido: z.string()
-        .min(3, { message: "debe contener al menos 3 caracteres" })
-        .max(30, { message: "debe contener menos de 30 caracteres" })
-        .refine((nombre) => nombre.match(/^[a-zA-Z\s]*$/), {
-            message: "Solo puede contener letras"
-        }),
-    telefono: z.string()
-        .min(10, { message: "debe contener 10 caracteres" })
-        .max(10, { message: "debe contener 10 caracteres" })
-        .refine((cedula) => !isNaN(parseInt(cedula)), {
-            message: "Solo puede contener números"
-        }),
-
-    correo: z.string().email({ message: "debe ser un correo válido" }),
-    carrera: z.enum(carreras, { message: "debe ser una carrera válida" }),
-    semestre: z.enum(semestres, { message: "debe ser un semestre válido" }),
-    //fechaNacimiento: z.date({ message: "debe ser una fecha válida" }),
-    fechaNacimiento: z.date()
-        .min(new Date("1950-01-01"), { message: "Muy Marlon" })
-        .max(new Date(`${(actualDate.getFullYear()) - 10}-01-01`), { message: "Muy joven" }),
-    rol: z.enum(roles, { message: "debe ser un rol válido" })
+    telefono: yup.string()
+        .required("El telefono es requerido")
+        .test('is-number', 'Solo puede contener números', value => !isNaN(parseInt(value!)))
+        .min(10, "debe contener 10 caracteres")
+        .max(10, "debe contener 10 caracteres")
+    ,
+    correo: yup.string().email("debe ser un correo válido").required("El correo es requerido"),
+    carrera: yup.string().required("Carrera requerida").oneOf(carreras, "debe ser una carrera válida"),
+    semestre: yup.string().required("Semestre requerido").oneOf(semestres, "debe ser un semestre válido"),
+    fechaNacimiento: yup.date()
+        .min(new Date("1950-01-01"), "Muy Marlon")
+        .max(new Date(`${(actualDate.getFullYear()) - 10}-01-01`), "Muy joven"),
+    rol: yup.string().required("Rol requerido").oneOf(roles, "debe ser un rol válido")
 });
+
+
 
 
 
