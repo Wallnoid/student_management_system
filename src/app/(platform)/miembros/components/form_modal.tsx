@@ -13,10 +13,8 @@ import {
 import { PlusIcon } from "./icons";
 import DefaultSelect from "./select";
 import SelectIcon from "./selectIcon";
-db_methods
 import { Member } from "@/interfaces/Member";
 import { insert } from "../data/data";
-=======
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { memberSchema, mappeoCarreras, mappeoSemestres, mappeoRoles, actualDate } from "../utils/member_schema";
@@ -26,7 +24,6 @@ import { DateValue, parseDate, getLocalTimeZone } from "@internationalized/date"
 
 
 type Inputs = typeof Input;
-develop
 
 export default function FormModal() {
 
