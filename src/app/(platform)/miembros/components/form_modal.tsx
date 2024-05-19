@@ -13,6 +13,10 @@ import {
 import { PlusIcon } from "./icons";
 import DefaultSelect from "./select";
 import SelectIcon from "./selectIcon";
+db_methods
+import { Member } from "@/interfaces/Member";
+import { insert } from "../data/data";
+=======
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { memberSchema, mappeoCarreras, mappeoSemestres, mappeoRoles, actualDate } from "../utils/member_schema";
@@ -22,6 +26,7 @@ import { DateValue, parseDate, getLocalTimeZone } from "@internationalized/date"
 
 
 type Inputs = typeof Input;
+develop
 
 export default function FormModal() {
 
@@ -74,9 +79,11 @@ export default function FormModal() {
     setValue("fechaNacimiento", fechaAsDate);
   };
 
+  const onClick = () => {};
+
   return (
     <>
-      <Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
+      <Button color="primary" endContent={<PlusIcon />} onPress={onClick}>
         Agregar miembro
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
