@@ -25,11 +25,13 @@ import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
 import { Member } from "@/interfaces/Member";
 
+
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "success",
   inactivo: "danger",
   suspendido: "warning",
 };
+
 
 const INITIAL_VISIBLE_COLUMNS = ["nombre", "categoria", "estado", "actions"];
 
@@ -76,42 +78,62 @@ export default function MembersPage() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    try {
+      let filteredUsers = [...users];
 
-    if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.nombre.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.estado)
-      );
-    }
+      if (hasSearchFilter) {
+        filteredUsers = filteredUsers.filter((user) =>
+          user.nombre.toLowerCase().includes(filterValue.toLowerCase())
+        );
+      }
+      if (
+        statusFilter !== "all" &&
+        Array.from(statusFilter).length !== statusOptions.length
+      ) {
+        filteredUsers = filteredUsers.filter((user) =>
+          Array.from(statusFilter).includes(user.estado)
+        );
+      }
 
-    return filteredUsers;
+      return filteredUsers;
+    } catch (e) {
+      console.log(e);
+    }
   }, [users, filterValue, statusFilter]);
 
-  const pages = Math.ceil(filteredItems.length / rowsPerPage);
+  const filteredItemsLength = function () {
+    try {
+      return filteredItems!.length;
+    } catch (e) {
+      return 0;
+    }
+  };
+
+  const pages = Math.ceil(filteredItemsLength() / rowsPerPage);
 
   const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
+    try {
+      const start = (page - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
 
-    return filteredItems.slice(start, end);
+      return filteredItems!.slice(start, end);
+    } catch (e) {
+      console.log(e);
+    }
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as string;
-      const second = b[sortDescriptor.column as keyof User] as string;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
+    try {
+      return [...items!].sort((a: User, b: User) => {
+        const first = a[sortDescriptor.column as keyof User] as string;
+        const second = b[sortDescriptor.column as keyof User] as string;
+        const cmp = first < second ? -1 : first > second ? 1 : 0;
 
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
+        return sortDescriptor.direction === "descending" ? -cmp : cmp;
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
