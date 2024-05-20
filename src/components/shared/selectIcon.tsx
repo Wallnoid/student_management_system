@@ -20,9 +20,7 @@ export default function SelectIcon<T extends Record<string, unknown>>({
   name,
   value,
   onChange,
-
 }: SelectIconProps<T>) {
-
   const options = Object.entries(datas).map(([key, value]) => (
     <SelectItem key={key} value={key}>
       {String(value)}
@@ -32,17 +30,17 @@ export default function SelectIcon<T extends Record<string, unknown>>({
   return (
     <Select
       className="max-w-xs"
-      startContent={< UsersICon />}
+      startContent={<UsersICon />}
       color="primary"
       label={label}
       isInvalid={isInvalid}
       errorMessage={errorMessage}
       name={name}
       value={value}
+      defaultSelectedKeys={[value]}
       onChange={onChange}
-
     >
       {options}
-    </Select >
+    </Select>
   );
 }

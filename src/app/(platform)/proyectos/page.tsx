@@ -296,7 +296,7 @@ export default function ProyectsPage() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"Algo salio mal..."} items={sortedItems}>
+      <TableBody emptyContent={"Cargando..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

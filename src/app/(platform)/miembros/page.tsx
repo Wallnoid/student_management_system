@@ -30,6 +30,9 @@ import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
 import { Member } from "@/interfaces/Member";
 import { currentUser } from "@/services/users.service";
+import { useRouter } from "next/router";
+import FormModal from "./components/form_modal";
+import InfoMembers from "./components/info_member";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "success",
@@ -43,6 +46,8 @@ type User = Member;
 
 export default function MembersPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [currentUser, setCurrentUser] = useState<Member>();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     getMembers()
       .then((data) => {
@@ -52,7 +57,7 @@ export default function MembersPage() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [loading]);
 
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -181,16 +186,10 @@ export default function MembersPage() {
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EyeIcon />
-              </span>
-            </Tooltip>
-            <Tooltip content="Edit user">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-            </Tooltip>
+            <InfoMembers member={user}></InfoMembers>
+
+            <FormModal icon={<EditIcon />} member={user as Member}></FormModal>
+
             <Tooltip color="danger" content="Delete user">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
                 <DeleteIcon />
@@ -273,6 +272,7 @@ export default function MembersPage() {
           statusOptions={statusOptions}
           users={users}
           onRowsPerPageChange={onRowsPerPageChange}
+          onReload={setLoading}
         ></TopContent>
       }
       topContentPlacement="outside"
@@ -290,7 +290,7 @@ export default function MembersPage() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"Algo salio mal..."} items={sortedItems}>
+      <TableBody emptyContent={"Cargando..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
