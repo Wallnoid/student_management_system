@@ -121,8 +121,13 @@ export default function MembersPage() {
       let filteredUsers = [...users];
 
       if (hasSearchFilter) {
-        filteredUsers = filteredUsers.filter((user) =>
-          user.nombre.toLowerCase().includes(filterValue.toLowerCase())
+        filteredUsers = filteredUsers.filter(
+          (user) =>
+            user.nombre.toLowerCase().includes(filterValue.toLowerCase()) ||
+            user.nro_identificacion
+              .toLowerCase()
+              .includes(filterValue.toLowerCase()) ||
+            user.apellido.toLowerCase().includes(filterValue.toLowerCase())
         );
       }
       if (
