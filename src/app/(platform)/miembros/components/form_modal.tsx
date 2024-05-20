@@ -32,6 +32,7 @@ import { DateValue, parseDate } from "@internationalized/date";
 import {
   currentUser,
   registerUser,
+  updateRole,
   updateUser,
 } from "@/services/users.service";
 import { Member } from "@/interfaces/Member";
@@ -92,7 +93,7 @@ export default function FormModal({
         console.log("Actualizando miembro");
         memberLocal.id = member.id;
 
-        toast.promise(updateUser(memberLocal), {
+        toast.promise(updateRole(memberLocal, memberLocal!.id || ""), {
           loading: "Saving...",
           success: () => {
             console.log("Miembro actualizado!");
