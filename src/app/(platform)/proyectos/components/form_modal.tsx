@@ -20,6 +20,7 @@ import {
   getLocalTimeZone,
 } from "@internationalized/date";
 import { useFormik } from "formik";
+import InputSearch from "@/components/shared/input_search";
 
 export default function FormModal() {
   const currentDate: string = `${actualDate.getFullYear()}-${(
@@ -104,21 +105,17 @@ export default function FormModal() {
                     errorMessage={formik.errors.descripcion}
                     placeholder="Escribe una descripcion"
                     className={`flex 
-                    ${errors !== undefined ? "py-0" : "py-3"} 
+                    ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
                     justify-between`}
                     variant="bordered"
                     maxRows={3}
-                    // isInvalid={errors.descripcion?.type !== undefined}
-                    // errorMessage={errors.descripcion?.message}
-                    // {...register("descripcion")}
                   />
+                  <InputSearch></InputSearch>
 
                   <div
                     className={`flex 
                   ${
-                    errors !== undefined || errors !== undefined
-                      ? "py-0"
-                      : "py-3"
+                    formik.errors.descripcion !== undefined ? "py-0" : "py-3"
                   } justify-between`}
                   >
                     <DatePicker

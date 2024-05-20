@@ -20,7 +20,6 @@ export default function DefaultSelect<T extends Record<string, unknown>>({
   value,
   onChange,
 }: DefaultSelectProps<T>) {
-
   const options = Object.entries(datas).map(([key, value]) => (
     <SelectItem key={key} value={key}>
       {String(value)}
@@ -37,7 +36,7 @@ export default function DefaultSelect<T extends Record<string, unknown>>({
         name={name}
         value={value}
         onChange={onChange}
-
+        defaultSelectedKeys={[value]}
       >
         {options}
       </Select>

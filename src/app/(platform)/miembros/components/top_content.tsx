@@ -7,7 +7,11 @@ import {
   Input,
 } from "@nextui-org/react";
 import React from "react";
-import { ChevronDownIcon, PlusIcon, SearchIcon } from "../../../../components/shared/icons";
+import {
+  ChevronDownIcon,
+  PlusIcon,
+  SearchIcon,
+} from "../../../../components/shared/icons";
 import { capitalize } from "../../../../utils/utils";
 import FormModal from "./form_modal";
 
@@ -23,6 +27,7 @@ export default function topContent({
   statusOptions,
   users,
   onRowsPerPageChange,
+  onReload,
 }: {
   filterValue: any;
   onClear: any;
@@ -35,6 +40,7 @@ export default function topContent({
   statusOptions: { name: string; uid: string }[];
   users: any;
   onRowsPerPageChange: any;
+  onReload: Function;
 }) {
   return (
     <div className="flex flex-col gap-4 ">
@@ -97,7 +103,7 @@ export default function topContent({
               ))}
             </DropdownMenu>
           </Dropdown>
-          <FormModal />
+          <FormModal onReload={onReload} />
         </div>
       </div>
       <div className="flex justify-between items-center">

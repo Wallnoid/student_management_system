@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Modal,
   ModalContent,
@@ -9,12 +9,14 @@ import {
   useDisclosure,
   Input,
   DatePicker,
+  Tooltip,
 } from "@nextui-org/react";
 
 import { PlusIcon } from "../../../../components/shared/icons";
 import DefaultSelect from "../../../../components/shared/select";
 import SelectIcon from "../../../../components/shared/selectIcon";
 import { useFormik } from "formik";
+import toast, { Toaster } from "react-hot-toast";
 
 import {
   memberSchema,
@@ -27,33 +29,107 @@ import {
   Roles,
 } from "../../../../schemas/member_schema";
 import { DateValue, parseDate } from "@internationalized/date";
+import {
+  currentUser,
+  registerUser,
+  updateUser,
+} from "@/services/users.service";
+import { Member } from "@/interfaces/Member";
+import InfoMembers from "./info_member";
 
-export default function FormModal() {
+export default function FormModal({
+  member,
+  onReload,
+  icon: button,
+}: {
+  member?: Member;
+  onReload?: Function;
+  icon?: JSX.Element;
+}) {
   const currentDate: string = `${actualDate.getFullYear()}-${(
     actualDate.getMonth() + 1
   )
     .toString()
     .padStart(2, "0")}-${actualDate.getDate().toString().padStart(2, "0")}`;
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
-  const [fecha, setFecha] = React.useState<DateValue>(parseDate(currentDate));
+  const [fecha, setFecha] = React.useState<DateValue>(
+    parseDate(member?.fecha_nacimiento || currentDate)
+  );
 
   const formik = useFormik({
     initialValues: {
-      cedula: "",
-      nombre: "",
-      apellido: "",
-      telefono: "",
-      correo: "",
-      carrera: "",
-      semestre: "",
-      fechaNacimiento: "",
-      rol: "",
+      cedula: member?.nro_identificacion || "",
+      nombre: member?.nombre || "",
+      apellido: member?.apellido || "",
+      telefono: member?.telefono || "",
+      correo: member?.correo || "",
+      carrera: member?.carrera || "",
+      semestre: member?.semestre || "",
+      fechaNacimiento: member?.fecha_nacimiento || "",
+      rol: member?.categoria || "",
     },
     validationSchema: memberSchema,
     onSubmit: (values) => {
       console.log(values);
+
+      const memberLocal: Member = {
+        nombre: values.nombre,
+        apellido: values.apellido,
+        fecha_nacimiento: values.fechaNacimiento,
+        nro_identificacion: values.cedula,
+        correo: values.correo,
+        carrera: values.carrera,
+        semestre: values.semestre,
+        estado: "activo",
+        telefono: values.telefono,
+        categoria: values.rol,
+        creado_por: currentUser!.user.id,
+      };
+
+      if (member) {
+        console.log("Actualizando miembro");
+        memberLocal.id = member.id;
+
+        toast.promise(updateUser(memberLocal), {
+          loading: "Saving...",
+          success: () => {
+            console.log("Miembro actualizado!");
+            formik.resetForm();
+            //onClose();
+            //onReload!(true);
+            window.location.reload();
+
+            return <b>Miembro actualizado!</b>;
+          },
+          error: (err) => {
+            formik.setSubmitting(false);
+            return `${err.message.toString()}`;
+          },
+        });
+
+        return;
+      } else {
+        console.log("Registrando miembro");
+        toast.promise(registerUser(memberLocal), {
+          loading: "Saving...",
+          success: () => {
+            console.log("Miembro guardado!");
+            formik.resetForm();
+            //onClose();
+            //onReload!(true);
+            window.location.reload();
+
+            return <b>Miembro guardado!</b>;
+          },
+          error: (err) => {
+            formik.setSubmitting(false);
+            console.log(err);
+            return `${err.message.toString()}`;
+          },
+        });
+      }
     },
   });
 
@@ -61,20 +137,31 @@ export default function FormModal() {
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
 
     formik.setFieldValue("fechaNacimiento", fechaAsDate);
-
-    //setValue("fechaNacimiento", fechaAsDate);
   };
 
   return (
     <>
-      <Button
-        color="primary"
-        endContent={<PlusIcon />}
-        onPress={onOpen}
-        id="AddMemberButton"
-      >
-        Agregar miembro
-      </Button>
+      <Toaster />
+      {!member ? (
+        <Button
+          color="primary"
+          endContent={<PlusIcon />}
+          onPress={onOpen}
+          id="AddMemberButton"
+        >
+          Agregar miembro
+        </Button>
+      ) : (
+        <Tooltip content="Edit user">
+          <span
+            className="text-lg text-default-400 cursor-pointer active:opacity-50"
+            onClick={onOpen}
+          >
+            {button}
+          </span>
+        </Tooltip>
+      )}
+
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
           {(onClose) => (
@@ -228,6 +315,7 @@ export default function FormModal() {
                     color="primary"
                     type="submit"
                     onPress={asignFechaNacimiento}
+                    isLoading={formik.isSubmitting}
                   >
                     Registrar
                   </Button>
