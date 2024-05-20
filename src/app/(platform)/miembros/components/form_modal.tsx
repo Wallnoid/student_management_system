@@ -93,7 +93,7 @@ export default function FormModal({
         console.log("Actualizando miembro");
         memberLocal.id = member.id;
 
-        toast.promise(updateRole(memberLocal, memberLocal!.id || ""), {
+        toast.promise(updateRole(memberLocal, memberLocal!.id || ''), {
           loading: "Saving...",
           success: () => {
             console.log("Miembro actualizado!");

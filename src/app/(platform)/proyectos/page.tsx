@@ -30,6 +30,7 @@ import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
 import { Proyecto } from "@/interfaces/Proyecto";
 import { ClubInternos } from "@/interfaces/ClubInternos";
+import FormModal from "./components/form_modal";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
@@ -165,9 +166,9 @@ export default function ProyectsPage() {
                 {(cellValue as ClubInternos).nombre as string}
               </p>
               <p className="text-bold text-tiny capitalize text-default-400">
-                {proyect.responsable.presidente.nombre +
+                {(proyect.responsable as ClubInternos).presidente.nombre  +
                   " " +
-                  proyect.responsable.presidente.apellido}
+                  (proyect.responsable as ClubInternos).presidente.apellido}
               </p>
             </div>
           );
@@ -190,11 +191,12 @@ export default function ProyectsPage() {
                   <EyeIcon />
                 </span>
               </Tooltip>
-              <Tooltip content="Edit user">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                  <EditIcon />
-                </span>
-              </Tooltip>
+
+              <FormModal
+                proyect={proyect as Proyect}
+                icon={<EditIcon />}
+              ></FormModal>
+
               <Tooltip color="danger" content="Delete user">
                 <span className="text-lg text-danger cursor-pointer active:opacity-50">
                   <DeleteIcon />
