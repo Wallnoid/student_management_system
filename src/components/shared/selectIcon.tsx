@@ -29,6 +29,7 @@ export default function SelectIcon<T extends Record<string, unknown>>({
 
   return (
     <Select
+      id={name}
       className="max-w-xs"
       startContent={<UsersICon />}
       color="primary"

@@ -36,7 +36,6 @@ import {
   updateUser,
 } from "@/services/users.service";
 import { Member } from "@/interfaces/Member";
-import InfoMembers from "./info_member";
 
 export default function FormModal({
   member,
@@ -93,7 +92,7 @@ export default function FormModal({
         console.log("Actualizando miembro");
         memberLocal.id = member.id;
 
-        toast.promise(updateRole(memberLocal, memberLocal!.id || ''), {
+        toast.promise(updateRole(memberLocal, memberLocal!.id || ""), {
           loading: "Saving...",
           success: () => {
             console.log("Miembro actualizado!");
@@ -175,6 +174,7 @@ export default function FormModal({
                 <ModalBody>
                   <Input
                     autoFocus
+                    id="cedula"
                     label="Cedula"
                     name="cedula"
                     value={formik.values.cedula}
@@ -192,6 +192,7 @@ export default function FormModal({
                     }  justify-between`}
                   >
                     <Input
+                      id="nombre"
                       label="Nombre"
                       name="nombre"
                       value={formik.values.nombre}
@@ -204,6 +205,7 @@ export default function FormModal({
                       type="text"
                     />
                     <Input
+                      id="apellido"
                       label="Apellido"
                       name="apellido"
                       value={formik.values.apellido}
@@ -218,6 +220,7 @@ export default function FormModal({
                   </div>
 
                   <Input
+                    id="telefono"
                     label="Telefono"
                     name="telefono"
                     value={formik.values.telefono}
@@ -236,6 +239,7 @@ export default function FormModal({
                   />
 
                   <Input
+                    id="correo"
                     label="Correo"
                     name="correo"
                     value={formik.values.correo}
@@ -287,6 +291,7 @@ export default function FormModal({
                   } justify-between`}
                   >
                     <DatePicker
+                      id="fechaNacimiento"
                       value={fecha}
                       onChange={setFecha}
                       isInvalid={formik.errors.fechaNacimiento !== undefined}
@@ -309,10 +314,16 @@ export default function FormModal({
                   </div>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="flat" onPress={onClose}>
+                  <Button
+                    id="CloseButton"
+                    color="danger"
+                    variant="flat"
+                    onPress={onClose}
+                  >
                     Close
                   </Button>
                   <Button
+                    id="SubmitButton"
                     color="primary"
                     type="submit"
                     onPress={asignFechaNacimiento}
