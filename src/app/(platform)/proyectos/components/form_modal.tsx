@@ -94,7 +94,7 @@ export default function FormModal({
               //onReload!(true);
               window.location.reload();
 
-              return <b>Miembro actualizado!</b>;
+              return <b>Proyecto Actualizado!</b>;
             },
             error: (err) => {
               formik.setSubmitting(false);
@@ -115,7 +115,7 @@ export default function FormModal({
             //onReload!(true);
             window.location.reload();
 
-            return <b>Miembro guardado!</b>;
+            return <b>Proyecto Guardado!</b>;
           },
           error: (err) => {
             formik.setSubmitting(false);
