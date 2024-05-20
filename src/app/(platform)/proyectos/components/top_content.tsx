@@ -7,7 +7,11 @@ import {
   Input,
 } from "@nextui-org/react";
 import React from "react";
-import { ChevronDownIcon, PlusIcon, SearchIcon } from "../../../../components/shared/icons";
+import {
+  ChevronDownIcon,
+  PlusIcon,
+  SearchIcon,
+} from "../../../../components/shared/icons";
 import { capitalize } from "../../../../utils/utils";
 import FormModal from "./form_modal";
 
@@ -49,7 +53,6 @@ export default function topContent({
           onValueChange={onSearchChange}
         />
         <div className="flex gap-3">
-
           <Dropdown>
             <DropdownTrigger className="hidden sm:flex">
               <Button
@@ -79,7 +82,7 @@ export default function topContent({
       </div>
       <div className="flex justify-between items-center">
         <span className="text-default-400 text-small">
-          Total {users.length} miembros
+          Total {users.length} proyectos
         </span>
         <label className="flex items-center text-default-400 text-small">
           Filas por paginas:

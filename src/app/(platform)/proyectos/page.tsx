@@ -31,6 +31,7 @@ import TopContent from "./components/top_content";
 import { Proyecto } from "@/interfaces/Proyecto";
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import FormModal from "./components/form_modal";
+import InfoProyect from "./components/info_proyect";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
@@ -166,7 +167,7 @@ export default function ProyectsPage() {
                 {(cellValue as ClubInternos).nombre as string}
               </p>
               <p className="text-bold text-tiny capitalize text-default-400">
-                {(proyect.responsable as ClubInternos).presidente.nombre  +
+                {(proyect.responsable as ClubInternos).presidente.nombre +
                   " " +
                   (proyect.responsable as ClubInternos).presidente.apellido}
               </p>
@@ -186,11 +187,7 @@ export default function ProyectsPage() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <Tooltip content="Details">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                  <EyeIcon />
-                </span>
-              </Tooltip>
+              <InfoProyect proyect={proyect}></InfoProyect>
 
               <FormModal
                 proyect={proyect as Proyect}
