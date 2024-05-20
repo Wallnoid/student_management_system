@@ -10,6 +10,7 @@ import {
   Input,
   DatePicker,
   Textarea,
+  Tooltip,
 } from "@nextui-org/react";
 import { PlusIcon } from "../../../../components/shared/icons";
 
@@ -21,8 +22,21 @@ import {
 } from "@internationalized/date";
 import { useFormik } from "formik";
 import InputSearch from "@/components/shared/input_search";
+import { Proyecto } from "@/interfaces/Proyecto";
+import toast, { Toaster } from "react-hot-toast";
+import { currentUser } from "@/services/users.service";
+import {
+  actualizarProyecto,
+  ingresarProyecto,
+} from "@/services/proyectos.service";
 
-export default function FormModal() {
+export default function FormModal({
+  proyect,
+  icon,
+}: {
+  proyect?: Proyecto;
+  icon?: JSX.Element;
+}) {
   const currentDate: string = `${actualDate.getFullYear()}-${(
     actualDate.getMonth() + 1
   )
@@ -36,21 +50,80 @@ export default function FormModal() {
     .padStart(2, "0")}-${actualDate.getDate().toString().padStart(2, "0")}`;
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [fecha, setFecha] = useState<DateValue>(parseDate(currentDate));
-  const [fechaFinal, setFechaFinal] = useState<DateValue>(parseDate(finalDate));
-
-  const [errors, setErrors] = useState({});
+  const [fecha, setFecha] = useState<DateValue>(
+    parseDate(proyect?.fecha_inicio || currentDate)
+  );
+  const [fechaFinal, setFechaFinal] = useState<DateValue>(
+    parseDate(proyect?.fecha_fin || finalDate)
+  );
 
   const formik = useFormik({
     initialValues: {
-      nombre: "",
-      descripcion: "",
-      fechaInicio: "",
-      fechaFinal: "",
+      nombre: proyect?.nombre || "",
+      descripcion: proyect?.descripcion || "",
+      fechaInicio: proyect?.fecha_inicio || "",
+      fechaFinal: proyect?.fecha_fin || "",
     },
     validationSchema: proyectSchema,
     onSubmit: (values) => {
       console.log(values);
+      //AQUI HAY UN ERROR
+      const proyectLocal: Proyecto = {
+        nombre: values.nombre,
+        descripcion: values.descripcion,
+        fecha_inicio: values.fechaInicio,
+        fecha_fin: values.fechaFinal,
+        estado: "activo",
+        creado_por: currentUser!.user.id,
+        actualizado_por: currentUser!.user.id,
+        responsable: "6839840e-5a65-4349-aaa8-8bd0c128d757",
+      };
+
+      if (proyect) {
+        console.log("Actualizando miembro");
+        proyectLocal.id = proyect.id;
+
+        toast.promise(
+          actualizarProyecto(proyectLocal?.id || "", proyectLocal),
+          {
+            loading: "Saving...",
+            success: () => {
+              console.log("Proyect actualizado!");
+              formik.resetForm();
+              //onClose();
+              //onReload!(true);
+              window.location.reload();
+
+              return <b>Miembro actualizado!</b>;
+            },
+            error: (err) => {
+              formik.setSubmitting(false);
+              return `${err.message.toString()}`;
+            },
+          }
+        );
+
+        return;
+      } else {
+        console.log("Registrando miembro");
+        toast.promise(ingresarProyecto(proyectLocal), {
+          loading: "Saving...",
+          success: () => {
+            console.log("Miembro guardado!");
+            formik.resetForm();
+            //onClose();
+            //onReload!(true);
+            window.location.reload();
+
+            return <b>Miembro guardado!</b>;
+          },
+          error: (err) => {
+            formik.setSubmitting(false);
+            console.log(err);
+            return `${err.message.toString()}`;
+          },
+        });
+      }
     },
   });
 
@@ -71,9 +144,26 @@ export default function FormModal() {
 
   return (
     <>
-      <Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
-        Agregar proyecto
-      </Button>
+      <Toaster />
+      {!proyect ? (
+        <Button
+          color="primary"
+          endContent={<PlusIcon />}
+          onPress={onOpen}
+          id="AddMemberButton"
+        >
+          Agregar proyecto
+        </Button>
+      ) : (
+        <Tooltip content="Edit user">
+          <span
+            className="text-lg text-default-400 cursor-pointer active:opacity-50"
+            onClick={onOpen}
+          >
+            {icon}
+          </span>
+        </Tooltip>
+      )}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
           {(onClose) => (
@@ -81,7 +171,7 @@ export default function FormModal() {
               <ModalHeader className="flex flex-col gap-1">
                 Agregar proyecto
               </ModalHeader>
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
                   <Input
                     autoFocus
@@ -110,7 +200,7 @@ export default function FormModal() {
                     variant="bordered"
                     maxRows={3}
                   />
-                  <InputSearch></InputSearch>
+                  {/*<InputSearch></InputSearch>*/}
 
                   <div
                     className={`flex 
