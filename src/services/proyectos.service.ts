@@ -63,7 +63,7 @@ export async function actualizarEstadoProyecto(id: string, estado: string) {
 }
 
 export async function getClubesAsignacionProyectos() {
-  let { data, error } = await supabase().rpc("getclubesasignacion");
+  let { data, error } = await supabase().rpc("get_clubes_asignacion");
   if (error) throw new Error(error.message);
   else console.log(data);
   return data;

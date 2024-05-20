@@ -1,23 +1,27 @@
 import React from "react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Clubes } from "@/app/(platform)/proyectos/components/form_modal";
 
-type Data = {
-  name: string;
-  email: string;
-  avatar: string;
-};
+type Data = Clubes;
 
 export default function InputSearch({ datas }: { datas: Data[] }) {
   return (
     <Autocomplete
       defaultItems={datas}
-      label="Favorite Animal"
-      placeholder="Search an animal"
+      label="Club asignado"
+      placeholder="Buscar Club"
       className="flex"
       variant="bordered"
     >
       {(data) => (
-        <AutocompleteItem key={data.name}>{data.name}</AutocompleteItem>
+        <AutocompleteItem key={data.id} textValue={data.nombre}>
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{data.nombre}</p>
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {data.presidente.nombre + " " + data.presidente.apellido}
+            </p>
+          </div>
+        </AutocompleteItem>
       )}
     </Autocomplete>
   );

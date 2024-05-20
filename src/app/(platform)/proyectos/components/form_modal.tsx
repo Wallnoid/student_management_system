@@ -31,6 +31,17 @@ import {
   ingresarProyecto,
 } from "@/services/proyectos.service";
 
+export type Presidente = {
+  nombre: string;
+  apellido: string;
+};
+
+export type Clubes = {
+  id: string;
+  nombre: string;
+  presidente: Presidente;
+};
+
 export default function FormModal({
   proyect,
   icon,
@@ -58,7 +69,7 @@ export default function FormModal({
     parseDate(proyect?.fecha_fin || finalDate)
   );
 
-  const [clubes, setClubes] = useState([]);
+  const [clubes, setClubes] = useState<Clubes[]>([]);
 
   const formik = useFormik({
     initialValues: {
@@ -142,7 +153,9 @@ export default function FormModal({
   useEffect(() => {
     getClubesAsignacionProyectos()
       .then((data) => {
-        console.log(data);
+        setClubes(data);
+
+        console.log(clubes);
       })
       .catch((error) => {
         console.log(error);
@@ -222,7 +235,7 @@ export default function FormModal({
                     variant="bordered"
                     maxRows={3}
                   />
-                  {/*<InputSearch></InputSearch>*/}
+                  {<InputSearch datas={clubes}></InputSearch>}
 
                   <div
                     className={`flex 
