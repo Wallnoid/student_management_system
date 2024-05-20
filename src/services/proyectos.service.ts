@@ -48,7 +48,7 @@ export async function actualizarProyecto(id:string, proyecto:Proyecto){
 
 export async function actualizarEstadoProyecto(id: string, estado: string){
     let {error} = await supabase()
-    .from('miembros')
+    .from('proyectos')
     .update({estado: estado})
     .eq('id',id);
 
@@ -57,4 +57,12 @@ export async function actualizarEstadoProyecto(id: string, estado: string){
         return false;
     }
     return true;
+}
+
+export async function getClubesAsignacionProyectos(){
+    let { data, error } = await supabase()
+    .rpc('getclubesasignacion')
+    if (error) console.error(error)
+    else console.log(data)
+    return data;
 }
