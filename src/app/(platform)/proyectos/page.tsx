@@ -23,6 +23,7 @@ import {
   EyeIcon,
   EditIcon,
   ProjectIcon,
+  PlusIcon,
 } from "../../../components/shared/icons";
 
 import { columns, statusOptions, INITIAL_VISIBLE_COLUMNS } from "./data/data";
@@ -31,6 +32,7 @@ import TopContent from "./components/top_content";
 import { Proyecto } from "@/interfaces/Proyecto";
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import FormModal from "./components/form_modal";
+import AddTaskModal from "./components/add_tasks_modal";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
@@ -196,12 +198,14 @@ export default function ProyectsPage() {
                 proyect={proyect as Proyect}
                 icon={<EditIcon />}
               ></FormModal>
+              
 
               <Tooltip color="danger" content="Delete user">
                 <span className="text-lg text-danger cursor-pointer active:opacity-50">
                   <DeleteIcon />
                 </span>
               </Tooltip>
+              <AddTaskModal proyect={proyect as Proyect} icon={<PlusIcon />} />
             </div>
           );
         default:
