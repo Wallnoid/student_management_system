@@ -27,6 +27,7 @@ export async function ingresarProyecto(proyecto: Proyecto) {
 }
 
 export async function actualizarProyecto(id: string, proyecto: Proyecto) {
+  console.log(currentUser!.user);
   const userTable = await supabase()
     .from("proyectos")
     .update({
@@ -37,7 +38,7 @@ export async function actualizarProyecto(id: string, proyecto: Proyecto) {
       estado: proyecto.estado,
       responsable: proyecto.responsable,
       actualizado_por: currentUser!.user.id,
-      fecha_hora_actualizacion: Date.now(),
+      fecha_hora_actualizacion: `${new Date().toISOString()}`,
     })
     .eq("id", id);
 
