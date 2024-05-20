@@ -2,6 +2,7 @@ import React from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 
 interface DefaultSelectProps<T> {
+  id: string;
   datas: T;
   label: string;
   errorMessage: any;
@@ -12,6 +13,7 @@ interface DefaultSelectProps<T> {
 }
 
 export default function DefaultSelect<T extends Record<string, unknown>>({
+  id,
   datas,
   label,
   isInvalid,
@@ -29,7 +31,7 @@ export default function DefaultSelect<T extends Record<string, unknown>>({
   return (
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
-        id={name}
+        id={id}
         label={label}
         className="max-w-xs"
         isInvalid={isInvalid}

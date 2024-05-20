@@ -174,7 +174,7 @@ export default function FormModal({
                 <ModalBody>
                   <Input
                     autoFocus
-                    id="cedula"
+                    id={`cedula_${member?.id || ""}`}
                     label="Cedula"
                     name="cedula"
                     value={formik.values.cedula}
@@ -192,7 +192,7 @@ export default function FormModal({
                     }  justify-between`}
                   >
                     <Input
-                      id="nombre"
+                      id={`nombre_${member?.id || ""}`}
                       label="Nombre"
                       name="nombre"
                       value={formik.values.nombre}
@@ -205,7 +205,7 @@ export default function FormModal({
                       type="text"
                     />
                     <Input
-                      id="apellido"
+                      id={`apellido_${member?.id || ""}`}
                       label="Apellido"
                       name="apellido"
                       value={formik.values.apellido}
@@ -220,7 +220,7 @@ export default function FormModal({
                   </div>
 
                   <Input
-                    id="telefono"
+                    id={`telefono_${member?.id || ""}`}
                     label="Telefono"
                     name="telefono"
                     value={formik.values.telefono}
@@ -239,7 +239,7 @@ export default function FormModal({
                   />
 
                   <Input
-                    id="correo"
+                    id={`correo_${member?.id || ""}`}
                     label="Correo"
                     name="correo"
                     value={formik.values.correo}
@@ -261,6 +261,7 @@ export default function FormModal({
                   } justify-between`}
                   >
                     <DefaultSelect<{ [key in Carreras]: string }>
+                      id={`carrera_${member?.id || ""}`}
                       datas={mappeoCarreras}
                       name="carrera"
                       value={formik.values.carrera}
@@ -271,6 +272,7 @@ export default function FormModal({
                     ></DefaultSelect>
                     <div className=" w-2"></div>
                     <DefaultSelect<{ [key in Semestres]: string }>
+                      id={`semestre_${member?.id || ""}`}
                       datas={mappeoSemestres}
                       name="semestre"
                       value={formik.values.semestre}
@@ -303,6 +305,7 @@ export default function FormModal({
 
                     <div className=" w-2"></div>
                     <SelectIcon<{ [key in Roles]: string }>
+                      id={`rol_${member?.id || ""}`}
                       label="Rol"
                       datas={mappeoRoles}
                       name="rol"

@@ -9,10 +9,12 @@ interface SelectIconProps<T> {
   isInvalid: boolean;
   name: string;
   value: string;
+  id: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export default function SelectIcon<T extends Record<string, unknown>>({
+  id,
   label,
   datas,
   isInvalid,
@@ -29,7 +31,7 @@ export default function SelectIcon<T extends Record<string, unknown>>({
 
   return (
     <Select
-      id={name}
+      id={id}
       className="max-w-xs"
       startContent={<UsersICon />}
       color="primary"
