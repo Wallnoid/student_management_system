@@ -152,7 +152,7 @@ export default function FormModal({
           Agregar miembro
         </Button>
       ) : (
-        <Tooltip content="Edit user">
+        <Tooltip content="Editar Miembro">
           <span
             className="text-lg text-default-400 cursor-pointer active:opacity-50"
             onClick={onOpen}

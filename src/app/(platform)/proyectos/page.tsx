@@ -230,9 +230,8 @@ export default function ProyectsPage() {
                 proyect={proyect as Proyect}
                 icon={<EditIcon />}
               ></FormModal>
-              
 
-              <Tooltip color="danger" content="Delete user">
+              <Tooltip color="danger" content="Eliminar Proyecto">
                 <span
                   className="text-lg text-danger cursor-pointer active:opacity-50"
                   onClick={() => deleteUser(proyect!.id ?? "")}

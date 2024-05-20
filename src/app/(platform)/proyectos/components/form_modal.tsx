@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalContent,
@@ -27,6 +27,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { currentUser } from "@/services/users.service";
 import {
   actualizarProyecto,
+  getClubesAsignacionProyectos,
   ingresarProyecto,
 } from "@/services/proyectos.service";
 
@@ -56,6 +57,8 @@ export default function FormModal({
   const [fechaFinal, setFechaFinal] = useState<DateValue>(
     parseDate(proyect?.fecha_fin || finalDate)
   );
+
+  const [clubes, setClubes] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -136,6 +139,16 @@ export default function FormModal({
     },
   });
 
+  useEffect(() => {
+    getClubesAsignacionProyectos()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const asignFechas = () => {
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
     const fechaFinalAsDate = new Date(
@@ -164,7 +177,7 @@ export default function FormModal({
           Agregar proyecto
         </Button>
       ) : (
-        <Tooltip content="Edit user">
+        <Tooltip content="Editar Proyecto">
           <span
             className="text-lg text-default-400 cursor-pointer active:opacity-50"
             onClick={onOpen}

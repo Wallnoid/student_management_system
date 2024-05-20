@@ -1,17 +1,23 @@
 import React from "react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 
-export default function InputSearch() {
+type Data = {
+  name: string;
+  email: string;
+  avatar: string;
+};
+
+export default function InputSearch({ datas }: { datas: Data[] }) {
   return (
     <Autocomplete
-      defaultItems={animals}
+      defaultItems={datas}
       label="Favorite Animal"
       placeholder="Search an animal"
       className="flex"
       variant="bordered"
     >
-      {(animal) => (
-        <AutocompleteItem key={animal.value}>{animal.label}</AutocompleteItem>
+      {(data) => (
+        <AutocompleteItem key={data.name}>{data.name}</AutocompleteItem>
       )}
     </Autocomplete>
   );
