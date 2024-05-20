@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React from "react";
 import {
   Modal,
   ModalContent,
@@ -153,16 +153,14 @@ export default function FormModal({
         </Button>
       ) : (
         <Tooltip content="Edit user">
-        <span
-          className="text-lg text-default-400 cursor-pointer active:opacity-50"
-          onClick={onOpen}
-        >
-          {button}
-        </span>
+          <span
+            className="text-lg text-default-400 cursor-pointer active:opacity-50"
+            onClick={onOpen}
+          >
+            {button}
+          </span>
         </Tooltip>
       )}
-
-      
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
