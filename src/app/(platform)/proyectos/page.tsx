@@ -16,7 +16,10 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 
-import { getProyectos } from "@/services/proyectos.service";
+import {
+  actualizarEstadoProyecto,
+  getProyectos,
+} from "@/services/proyectos.service";
 
 import {
   DeleteIcon,
@@ -35,6 +38,8 @@ import FormModal from "./components/form_modal";
 
 import AddTaskModal from "./components/add_tasks_modal";
 import InfoProyect from "./components/info_proyect";
+import toast from "react-hot-toast";
+import AlertDelete from "@/components/shared/alert_delete";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
@@ -57,6 +62,35 @@ export default function ProyectsPage() {
         console.log(error);
       });
   }, []);
+
+  const deleteUser = async (id: string) => {
+    toast.custom(
+      (t) => (
+        <AlertDelete
+          onCancel={() => {
+            toast.dismiss(t.id);
+          }}
+          onSubmit={() => {
+            toast.promise(actualizarEstadoProyecto(id, "eliminado"), {
+              loading: "Saving...",
+              success: () => {
+                window.location.reload();
+
+                return <b>Proyecto Eliminado!</b>;
+              },
+              error: (err) => {
+                return `${err.message.toString()}`;
+              },
+            });
+
+            toast.dismiss(t.id);
+          }}
+          visible={t.visible}
+        ></AlertDelete>
+      ),
+      { duration: Infinity }
+    );
+  };
 
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -199,7 +233,10 @@ export default function ProyectsPage() {
               
 
               <Tooltip color="danger" content="Delete user">
-                <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                <span
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
+                  onClick={() => deleteUser(proyect!.id ?? "")}
+                >
                   <DeleteIcon />
                 </span>
               </Tooltip>
