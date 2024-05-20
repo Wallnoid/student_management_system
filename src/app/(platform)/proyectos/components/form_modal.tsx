@@ -90,6 +90,8 @@ export default function FormModal({
         console.log("Actualizando miembro");
         proyectLocal.id = proyect.id;
 
+        console.log(proyectLocal);
+
         toast.promise(
           actualizarProyecto(proyectLocal?.id || "", proyectLocal),
           {
