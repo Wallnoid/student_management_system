@@ -15,7 +15,7 @@ export async function getProyectos(){
     if (error) console.error(error)
     else console.log(data)
 
-    return data as Proyecto;
+    return data as Proyecto[];
 }
 
 export async function ingresarProyecto(proyecto: Proyecto){
