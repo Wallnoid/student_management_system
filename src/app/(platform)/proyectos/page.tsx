@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -9,41 +9,43 @@ import {
   TableRow,
   TableCell,
   Chip,
-  User,
+  User as Proyect,
   Selection,
   ChipProps,
   SortDescriptor,
   Tooltip,
 } from "@nextui-org/react";
 
-import { getMembers } from "@/services/members.service";
+import { getProyectos } from "@/services/proyectos.service";
 
-import { DeleteIcon, EyeIcon, EditIcon, ProjectIcon } from "../../../components/shared/icons";
+import {
+  DeleteIcon,
+  EyeIcon,
+  EditIcon,
+  ProjectIcon,
+} from "../../../components/shared/icons";
 
 import { columns, statusOptions, INITIAL_VISIBLE_COLUMNS } from "./data/data";
 import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
-import { Member } from "@/interfaces/Member";
-
+import { Proyecto } from "@/interfaces/Proyecto";
+import { ClubInternos } from "@/interfaces/ClubInternos";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  activo: "success",
-  inactivo: "danger",
-  suspendido: "warning",
+  activo: "primary",
+  completado: "success",
+  suspendido: "danger",
 };
 
-
-
-
-type User = Member;
+type Proyect = Proyecto;
 
 export default function ProyectsPage() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [proyects, setProyects] = useState<Proyect[]>([]);
 
   useEffect(() => {
-    getMembers()
+    getProyectos()
       .then((data) => {
-        setUsers(data);
+        setProyects(data);
         console.log(data);
       })
       .catch((error) => {
@@ -79,7 +81,7 @@ export default function ProyectsPage() {
 
   const filteredItems = React.useMemo(() => {
     try {
-      let filteredUsers = [...users];
+      let filteredUsers = [...proyects];
 
       if (hasSearchFilter) {
         filteredUsers = filteredUsers.filter((user) =>
@@ -99,7 +101,7 @@ export default function ProyectsPage() {
     } catch (e) {
       console.log(e);
     }
-  }, [users, filterValue, statusFilter]);
+  }, [proyects, filterValue, statusFilter]);
 
   const filteredItemsLength = function () {
     try {
@@ -124,9 +126,9 @@ export default function ProyectsPage() {
 
   const sortedItems = React.useMemo(() => {
     try {
-      return [...items!].sort((a: User, b: User) => {
-        const first = a[sortDescriptor.column as keyof User] as string;
-        const second = b[sortDescriptor.column as keyof User] as string;
+      return [...items!].sort((a: Proyect, b: Proyect) => {
+        const first = a[sortDescriptor.column as keyof Proyect] as string;
+        const second = b[sortDescriptor.column as keyof Proyect] as string;
         const cmp = first < second ? -1 : first > second ? 1 : 0;
 
         return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -136,71 +138,76 @@ export default function ProyectsPage() {
     }
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const renderCell = React.useCallback(
+    (proyect: Proyect, columnKey: React.Key) => {
+      const cellValue = proyect[columnKey as keyof Proyect];
 
-    switch (columnKey) {
-      case "nombre":
-        return (
-          <User
-            avatarProps={{
-              radius: "lg",
-              showFallback: true,
-              src: 'https://images.unsplash.com/broken',
-              fallback: (
-                <ProjectIcon />
-              ),
-            }}
-            name={cellValue + " " + user.apellido
-            }
-          >
-            {user.correo}
-          </User >
-        );
-      case "categoria":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {user.categoria}
-            </p>
-          </div>
-        );
-      case "estado":
-        return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[user.estado]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex items-center gap-2">
-            <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EyeIcon />
-              </span>
-            </Tooltip>
-            <Tooltip content="Edit user">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete user">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </span>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+      switch (columnKey) {
+        case "nombre":
+          return (
+            <Proyect
+              avatarProps={{
+                radius: "lg",
+                showFallback: true,
+                src: "https://images.unsplash.com/broken",
+                fallback: <ProjectIcon />,
+              }}
+              //description={proyect.responsable.nombre}
+              name={cellValue as string}
+            >
+              {/*{proyect.responsable.nombre}*/}
+            </Proyect>
+          );
+        case "responsable":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">
+                {(cellValue as ClubInternos).nombre as string}
+              </p>
+              <p className="text-bold text-tiny capitalize text-default-400">
+                {proyect.responsable.presidente.nombre +
+                  " " +
+                  proyect.responsable.presidente.apellido}
+              </p>
+            </div>
+          );
+        case "estado":
+          return (
+            <Chip
+              className="capitalize"
+              color={statusColorMap[proyect.estado]}
+              size="sm"
+              variant="flat"
+            >
+              {cellValue as string}
+            </Chip>
+          );
+        case "actions":
+          return (
+            <div className="relative flex items-center gap-2">
+              <Tooltip content="Details">
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                  <EyeIcon />
+                </span>
+              </Tooltip>
+              <Tooltip content="Edit user">
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                  <EditIcon />
+                </span>
+              </Tooltip>
+              <Tooltip color="danger" content="Delete user">
+                <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                  <DeleteIcon />
+                </span>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    []
+  );
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -270,7 +277,7 @@ export default function ProyectsPage() {
           setVisibleColumns={setVisibleColumns}
           columns={columns}
           statusOptions={statusOptions}
-          users={users}
+          users={proyects}
           onRowsPerPageChange={onRowsPerPageChange}
         ></TopContent>
       }
@@ -289,11 +296,11 @@ export default function ProyectsPage() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No users found"} items={sortedItems}>
+      <TableBody emptyContent={"Algo salio mal..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
+              <TableCell>{renderCell(item, columnKey) as ReactNode}</TableCell>
             )}
           </TableRow>
         )}

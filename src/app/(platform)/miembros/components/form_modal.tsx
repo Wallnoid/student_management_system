@@ -25,7 +25,7 @@ import {
   Carreras,
   Semestres,
   Roles,
-} from "../../../../utils/member_schema";
+} from "../../../../schemas/member_schema";
 import { DateValue, parseDate } from "@internationalized/date";
 
 export default function FormModal() {

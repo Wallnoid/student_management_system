@@ -7,7 +7,7 @@ export interface Proyecto{
     fecha_inicio: string;
     fecha_fin: string;
     estado: string;
-    responsable?: string;
+    responsable: ClubInternos;
     creado_por: string;
     fecha_hora_creacion: string;
     actualizado_por?: string;

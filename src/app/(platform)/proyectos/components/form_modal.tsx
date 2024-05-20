@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { PlusIcon } from "../../../../components/shared/icons";
 
-import { proyectSchema, actualDate } from "../../../../utils/proyect_schema";
+import { proyectSchema, actualDate } from "../../../../schemas/proyect_schema";
 import {
   DateValue,
   parseDate,

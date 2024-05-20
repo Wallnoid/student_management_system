@@ -18,7 +18,12 @@ import {
 
 import { getMembers } from "@/services/members.service";
 
-import { DeleteIcon, EyeIcon, EditIcon, MemberIcon } from "../../../components/shared/icons";
+import {
+  DeleteIcon,
+  EyeIcon,
+  EditIcon,
+  MemberIcon,
+} from "../../../components/shared/icons";
 
 import { columns, statusOptions } from "./data/data";
 import BottomContent from "./components/bottom_content";
@@ -26,13 +31,11 @@ import TopContent from "./components/top_content";
 import { Member } from "@/interfaces/Member";
 import { currentUser } from "@/services/users.service";
 
-
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "success",
   inactivo: "danger",
   suspendido: "warning",
 };
-
 
 const INITIAL_VISIBLE_COLUMNS = ["nombre", "categoria", "estado", "actions"];
 
@@ -44,7 +47,7 @@ export default function MembersPage() {
     getMembers()
       .then((data) => {
         setUsers(data);
-        console.log(currentUser!);
+        console.log(data);
       })
       .catch((error) => {
         console.log(error);
@@ -144,12 +147,10 @@ export default function MembersPage() {
         return (
           <User
             avatarProps={{
-              radius: "xl",
+              radius: "lg",
               showFallback: true,
-              src: 'https://images.unsplash.com/broken',
-              fallback: (
-                <MemberIcon className="text-primary" size="large" color="primary" />
-              ),
+              src: "https://images.unsplash.com/broken",
+              fallback: <MemberIcon />,
             }}
             description={user.correo}
             name={cellValue + " " + user.apellido}
@@ -289,7 +290,7 @@ export default function MembersPage() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No users found"} items={sortedItems}>
+      <TableBody emptyContent={"Algo salio mal..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
