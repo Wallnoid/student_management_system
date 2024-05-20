@@ -97,7 +97,7 @@ export default function InfoProyect({ proyect }: { proyect: Proyecto }) {
                         Descripcion:
                       </h2>
 
-                      <p className="text-tiny mx-2 my-4 text-center text-slate-600">
+                      <p className="text-tiny mx-2 my-4 mt-2 text-center text-slate-600">
                         {proyect.descripcion}
                       </p>
 

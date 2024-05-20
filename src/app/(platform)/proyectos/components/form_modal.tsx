@@ -64,7 +64,14 @@ export default function FormModal({
       fechaInicio: proyect?.fecha_inicio || "",
       fechaFinal: proyect?.fecha_fin || "",
     },
-    validationSchema: proyectSchema,
+    validationSchema: proyectSchema(
+      fecha instanceof Date
+        ? fecha
+        : new Date(fecha.year, fecha.month - 1, fecha.day),
+      fechaFinal instanceof Date
+        ? fechaFinal
+        : new Date(fechaFinal.year, fechaFinal.month - 1, fechaFinal.day)
+    ),
     onSubmit: (values) => {
       console.log(values);
       //AQUI HAY UN ERROR
