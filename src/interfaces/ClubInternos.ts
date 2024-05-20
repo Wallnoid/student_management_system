@@ -6,7 +6,7 @@ export interface ClubInternos {
     descripcion: string;
     ubicacion: string;
     presidente: string;
-    estado?: string;
+    estado: string;
     creador_por: string;
     fecha_hora_creacion?: string;
     actualizado_por?: string;

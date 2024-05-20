@@ -2,6 +2,7 @@ import {createClient as supabase} from "@/supabase/client";
 import {ClubInternos} from "@/interfaces/ClubInternos";
 import {Member} from "@/interfaces/Member";
 import {AsignacionesClubes} from "@/interfaces/AsignacionesClubes";
+import {getMemberById} from "@/services/members.service";
 
 export async function insertClub(club: ClubInternos) {
     const    { nombre,
@@ -71,13 +72,24 @@ export async function updateEstadoClub(id: string, estado: string) {
 export async function getClubes(){
     const clubes = await supabase()
         .from('clubes_internos')
-        .select()
+        .select('*')
+    console.log(clubes);
     if (clubes.error) {
         console.error("Error getting clubs:", clubes.error);
-        return false;
+        return [];
     }
-    return clubes.data as ClubInternos[];
+    let formattedClubes = await setPresidentName(clubes.data as ClubInternos[])
+    return formattedClubes as ClubInternos[];
 }
+
+async function setPresidentName(data: ClubInternos[]){
+    for (let i = 0; i < data.length; i++) {
+        const presidente = await getMemberById(data[i].presidente)
+        data[i].presidente = presidente[0].nombre
+    }
+    return data
+}
+
 export async function getClub(ids: string[]){
     const club = await supabase().rpc( 'club_con_datos', { ids: ids } )
     if (club.error) {
