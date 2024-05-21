@@ -11,10 +11,11 @@ import {
   DatePicker,
   Textarea,
   Tooltip,
+  AutocompleteItem,
 } from "@nextui-org/react";
 import { PlusIcon } from "../../../../components/shared/icons";
 
-import { proyectSchema, actualDate } from "../../../../schemas/proyect_schema";
+import { projectSchema, actualDate } from "../../../../schemas/project_schema";
 import {
   DateValue,
   parseDate,
@@ -30,6 +31,7 @@ import {
   getClubesAsignacionProyectos,
   ingresarProyecto,
 } from "@/services/proyectos.service";
+import { ClubInternos } from "@/interfaces/ClubInternos";
 
 export type Presidente = {
   nombre: string;
@@ -43,7 +45,7 @@ export type Clubes = {
 };
 
 export default function FormModal({
-  proyect,
+  proyect: project,
   icon,
 }: {
   proyect?: Proyecto;
@@ -63,22 +65,41 @@ export default function FormModal({
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [fecha, setFecha] = useState<DateValue>(
-    parseDate(proyect?.fecha_inicio || currentDate)
+    parseDate(project?.fecha_inicio || currentDate)
   );
   const [fechaFinal, setFechaFinal] = useState<DateValue>(
-    parseDate(proyect?.fecha_fin || finalDate)
+    parseDate(project?.fecha_fin || finalDate)
   );
 
   const [clubes, setClubes] = useState<Clubes[]>([]);
 
+  const createObject = (data: Clubes) => {
+    return (
+      <AutocompleteItem key={data.id} textValue={data.nombre}>
+        <div className="flex flex-col">
+          <p className="text-bold text-small capitalize">{data.nombre}</p>
+          <p className="text-bold text-tiny capitalize text-default-400">
+            {data.presidente.nombre + " " + data.presidente.apellido}
+          </p>
+        </div>
+      </AutocompleteItem>
+    );
+  };
+
+  const onChanges = (value: string) => {
+    console.log(typeof value);
+    formik.setFieldValue("responsable", value);
+  };
+
   const formik = useFormik({
     initialValues: {
-      nombre: proyect?.nombre || "",
-      descripcion: proyect?.descripcion || "",
-      fechaInicio: proyect?.fecha_inicio || "",
-      fechaFinal: proyect?.fecha_fin || "",
+      nombre: project?.nombre || "",
+      descripcion: project?.descripcion || "",
+      fechaInicio: project?.fecha_inicio || "",
+      fechaFinal: project?.fecha_fin || "",
+      responsable: project?.responsable || "",
     },
-    validationSchema: proyectSchema(
+    validationSchema: projectSchema(
       fecha instanceof Date
         ? fecha
         : new Date(fecha.year, fecha.month - 1, fecha.day),
@@ -100,9 +121,9 @@ export default function FormModal({
         responsable: "6839840e-5a65-4349-aaa8-8bd0c128d757",
       };
 
-      if (proyect) {
+      if (project) {
         console.log("Actualizando miembro");
-        proyectLocal.id = proyect.id;
+        proyectLocal.id = project.id;
 
         console.log(proyectLocal);
 
@@ -134,8 +155,7 @@ export default function FormModal({
           success: () => {
             console.log("Miembro guardado!");
             formik.resetForm();
-            //onClose();
-            //onReload!(true);
+          
             window.location.reload();
 
             return <b>Proyecto Guardado!</b>;
@@ -180,7 +200,7 @@ export default function FormModal({
   return (
     <>
       <Toaster />
-      {!proyect ? (
+      {!project ? (
         <Button
           color="primary"
           endContent={<PlusIcon />}
@@ -235,7 +255,19 @@ export default function FormModal({
                     variant="bordered"
                     maxRows={3}
                   />
-                  {<InputSearch datas={clubes}></InputSearch>}
+                  {
+                    <InputSearch
+                      datas={clubes}
+                      name="responsable"
+                      value={formik.values.responsable.toString()} // Convert the value to a string
+                      onChange={onChanges}
+                      isInvalid={formik.errors.responsable !== undefined}
+                      className={`flex 
+                      ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
+                      justify-between`}
+                      errorMessage={formik.errors.responsable}
+                    ></InputSearch>
+                  }
 
                   <div
                     className={`flex 
