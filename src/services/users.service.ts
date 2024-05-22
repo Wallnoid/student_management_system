@@ -14,8 +14,7 @@ supabase().auth.onAuthStateChange((event, session) => {
 
 export async function registerUser(member: Member) {
   if (!(await duplicateUser(member))) {
-    console.log("Usuario ya existe.");
-    throw new Error("Usuario ya existe.");
+    throw new Error("Cedula o correo ya registrados.");
   }
 
   const userauth: any = await supabase().auth.signUp({

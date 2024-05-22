@@ -21,8 +21,6 @@ export default function InputSearch({
   errorMessage?: string;
   className?: string;
 }) {
-  const [selectedValue, setSelectedValue] = useState<string>("");
-
   return (
     <Autocomplete
       defaultItems={datas}
