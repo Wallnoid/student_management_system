@@ -21,10 +21,6 @@ export const projectSchema = (inicioDate: Date, finalDate: Date) => {
     fechaFinalFormateada = format(finalDate, "dd/MM/yyyy");
   }
 
-  console.log(fechaInicioFormateada);
-
-  console.log(fechaFinalFormateada);
-
   return yup.object().shape({
     nombre: yup
       .string()
