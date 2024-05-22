@@ -118,7 +118,7 @@ export default function FormModal({
         estado: "activo",
         creado_por: currentUser!.user.id,
         actualizado_por: currentUser!.user.id,
-        responsable: "6839840e-5a65-4349-aaa8-8bd0c128d757",
+        responsable: values.responsable,
       };
 
       if (project) {
@@ -155,7 +155,7 @@ export default function FormModal({
           success: () => {
             console.log("Miembro guardado!");
             formik.resetForm();
-          
+
             window.location.reload();
 
             return <b>Proyecto Guardado!</b>;
