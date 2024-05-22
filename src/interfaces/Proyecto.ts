@@ -6,9 +6,9 @@ export interface Proyecto {
   descripcion: string;
   fecha_inicio: string;
   fecha_fin: string;
-  estado: string;
+  estado?: string;
   responsable: ClubInternos | string;
-  creado_por: string;
+  creado_por?: string;
   fecha_hora_creacion?: string;
   actualizado_por?: string;
   fecha_hora_actualizacion?: string;

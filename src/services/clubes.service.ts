@@ -4,32 +4,21 @@ import {Member} from "@/interfaces/Member";
 import {AsignacionesClubes} from "@/interfaces/AsignacionesClubes";
 
 export async function insertClub(club: ClubInternos) {
-    const    { nombre,
-    descripcion,
-    ubicacion,
-    presidente,
-    creado_por} = club
-
-
-    const { data, error } = await supabase()
+    const{ nombre, descripcion, ubicacion, presidente, creado_por, fecha_hora_creacion} = club;
+    let { error } = await supabase()
         .from('clubes_internos')
-        .insert([
-            {
-                nombre,
-                descripcion,
-                ubicacion,
-                presidente,
-                estado: 'activo',
-                creado_por,
-                fecha_hora_creacion: 'NOW()',
-                actualizado_por: creado_por,
-                fecha_hora_actualizacion: 'NOW()'
-            },
-        ])
-        .select()
+        .insert({
+                    nombre,
+                    descripcion,
+                    ubicacion,
+                    presidente,
+                    creado_por,
+                    fecha_hora_creacion
+                })
+        .select();
     if (error) {
-        console.error("Error inserting club:", error);
-        return false;
+        console.log(error);
+        throw new Error('Ha ocurrido un error al insertar el club. Recargue la página e intente de nuevo');
     }
     return true;
 }
@@ -49,9 +38,7 @@ export async function updateClub(club: ClubInternos) {
         .eq('id', id)
         .select();
     if (error) {
-        console.error("Error updating club");
-        console.error("Error " + error);
-        return false;
+        throw new Error('Ha ocurrido un error al actualizar la información del club. Recargue la página e intente de nuevo.');
     }
     return true;
 }
@@ -65,28 +52,28 @@ export async function updateEstadoClub(id: string, estado: string) {
         .eq('id', id)
         .select();
     if (error) {
-        console.error("Error updating club:", error);
+        throw new Error('Ha ocurrido un error al intentar eliminar el club, intente de nuevo.');
     }
     return true;
 }
 export async function getClubes(){
     const clubes = await supabase()
         .from('clubes_internos')
-        .select()
+        .select();
     if (clubes.error) {
-        console.error("Error getting clubs:", clubes.error);
+        throw new Error('Error al recuperar los datos del servidor, intente más tarde.');
     }
     return clubes.data as ClubInternos[];
 }
 export async function getClub(ids: string[]){
-    const club = await supabase().rpc( 'club_con_datos', { ids: ids } )
-    if (club.error) {
-        console.error("Error getting club:", club.error);
+    let {data, error} = await supabase().rpc( 'club_con_datos', { ids: ids } )
+    if (error) {
+        throw new Error('Error al obtener la información solicitada. Recargue la página e intente de nuevo');
     }
-    return club.data as ClubInternos[]
+    return data as ClubInternos[];
 }
 export async function addMemberToClub(miembro : AsignacionesClubes) {
-    const { id_club_interno, id_miembro, comentario_asignacion, estado, creado_por, categoria } = miembro
+    const { id_club_interno, id_miembro, comentario_asignacion, creado_por, categoria } = miembro
     const { error } = await supabase()
         .from('asignacion_miembros_clubes')
         .insert([
@@ -101,8 +88,7 @@ export async function addMemberToClub(miembro : AsignacionesClubes) {
         ])
         .select();
     if (error) {
-        console.error("Error adding member to club:", error);
-        return false;
+        throw new Error('Error al intentar asignar un club al miembro. Intente más tarde.');
     }
     return true;
 }
@@ -122,30 +108,28 @@ export async function updateMemberClub(miembro : AsignacionesClubes) {
         .eq('id', id)
         .select();
     if (error) {
-        console.error("Error updating member club:", error);
-        return false;
+        throw new Error('Error al actualizar la información del miembro del club. Intenter más tarde.');
     }
     return true;
 }
 export async function deleteMemberClub(id: string) {
-    const { data, error } = await supabase()
+    const { error } = await supabase()
         .from('asignacion_miembros_clubes')
         .delete()
         .eq('id', id)
-        .select()
+        .select();
     if (error) {
-        console.error("Error deleting member club:", error);
-        return false;
+        throw new Error('Error al intentar eliminar el miembro del club. Intente de nuevo.');
     }
     return true;
 }
 export async function getMembersClub(id: string){
-    const miembros = await supabase().rpc(
+    let { data, error } = await supabase().rpc(
         'miembros_de_club',
         { id_club: id }
     )
-    if (miembros.error) {
-        console.error("Error getting members club:", miembros.error);
+    if (error) {
+        throw new Error('Error al recuperar los miembros del club. Intente más tarde.');
     }
-    return miembros.data as Member[];
+    return data as Member[];
 }

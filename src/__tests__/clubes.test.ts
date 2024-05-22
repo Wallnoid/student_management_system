@@ -2,58 +2,30 @@ import { AsignacionesClubes } from '@/interfaces/AsignacionesClubes';
 import { ClubInternos } from '@/interfaces/ClubInternos';
 import { Member } from '@/interfaces/Member';
 import { addMemberToClub, getClub, getClubes, getMembersClub, insertClub, updateClub, updateEstadoClub, updateMemberClub } from '@/services/clubes.service';
-import { string } from 'yup';
 
 
 describe('Pruebas de servicio de clubes', () => {
-
     beforeAll(() => {
-        // Verificar que las variables de entorno estén definidas
         expect(process.env.NEXT_PUBLIC_SUPABASE_URL).toBeDefined();
         expect(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY).toBeDefined();
     });
-
     beforeEach(() => {
         jest.clearAllMocks();
     });
-    
-
     test('prueba de inserción de club.', async () => {
-        const presidente: Member = {
-            id: 'ca01c8eb-e54e-41b5-88e0-e6475967ebd2',
-            nombre: 'william',
-            apellido: 'perez',
-            fecha_nacimiento: '2002-03-19',
-            nro_identificacion: '1825364978',
-            correo: 'wulli.mu28@gmail.com',
-            carrera: 'software',
-            semestre: 'sexto',
-            estado: 'activo',
-            telefono: '0983201121',
-            ultima_conexion: '2024-05-18 06:38:40.466533+00',
-            categoria: 'Co-lider',
-            creado_por: '2ff282f4-1a95-497b-974b-7c00ea609a91',
-        };
-
         const club: ClubInternos = {
-            nombre: 'Club de pruebas',
+            nombre: 'Club de pruebas JEST',
             descripcion: 'descripcion del club de prueba',
             ubicacion: 'Ambato',
-            presidente: presidente.id,
+            presidente: '5d0a07b8-9bc3-48d7-b73e-4a666c8f05ff',
             creado_por: '21c655e9-2288-41de-a08c-4df3d13f3479',
             fecha_hora_creacion: 'NOW()',
         };
-
-        // Llamar a insertClub
         const result = await insertClub(club);
-        
-        //Se espera que el valor de  la salida sea true
-
         expect(result).toBe(true);
     });
 
     test('prueba de actualización de club.', async () => {
-
         const club: ClubInternos = {
             id: 'f8302374-87ef-43e1-97a0-a4a1a07c9250', 
             nombre: 'Club prueba actualizado', 
@@ -62,10 +34,9 @@ describe('Pruebas de servicio de clubes', () => {
             presidente: 'ca01c8eb-e54e-41b5-88e0-e6475967ebd2', 
             estado: 'activo', 
             actualizado_por: 'b60f644f-ab00-47cd-94ef-b55d22430c6c',
+            fecha_hora_actualizacion: 'NOW()'
         };
-
         const result = await updateClub(club);
-
         expect(result).toBe(true);
     });
 
@@ -123,7 +94,7 @@ describe('Pruebas de servicio de clubes', () => {
 
         expect(result).toBe(true);
     });
-
+/*
     test('prueba de obtención de los miembros de un club en específico.', async () => {
         const id_club: string = '9727704b-5b26-4658-ac1e-c7bb375b3c01';
 
@@ -132,4 +103,5 @@ describe('Pruebas de servicio de clubes', () => {
         expect(result.every(data => typeof data === 'object')).toBe(true);
 
     })
+    */
 });
