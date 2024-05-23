@@ -15,7 +15,7 @@ supabase().auth.onAuthStateChange((event, session) => {
 export async function registerUser(member: Member) {
   const {nombre, apellido, fecha_nacimiento, nro_identificacion, correo, carrera, semestre, telefono, creado_por, categoria } = member;
   if (!(await duplicateUser(member))) {
-    throw new Error('Usuario ya registrado en el sistema.');
+    throw new Error('Usuario ya registrado en el sistema. Verificar cédula/correo e intente de nuevo.');
   }
   const userAuth = await supabase().auth.signUp({
     email: correo,

@@ -2,6 +2,7 @@ import { EyeIcon, ProjectIcon } from "@/components/shared/icons";
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Member } from "@/interfaces/Member";
 import { Proyecto } from "@/interfaces/Proyecto";
+import { formatDate, formatDateTime } from "@/utils/utils";
 import {
   Modal,
   ModalContent,
@@ -20,7 +21,6 @@ import {
   Chip,
   ChipProps,
 } from "@nextui-org/react";
-import { parseISO, format } from "date-fns";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   completado: "success",
@@ -28,26 +28,28 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   suspendido: "danger",
 };
 
-export default function InfoProyect({ proyect }: { proyect: Proyecto }) {
+export default function InfoProject({
+  proyect: project,
+}: {
+  proyect: Proyecto;
+}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const fechaInicio = proyect.fecha_inicio;
-  const fechaInicioFormateada = format(parseISO(fechaInicio), "dd/MM/yyyy");
+  const fechaInicio = project.fecha_inicio;
+  const fechaInicioFormateada = fechaInicio ? formatDate(fechaInicio!) : "----";
 
-  const fechaCreacion = proyect.fecha_hora_creacion;
-  const fechaCreacionFormateada = format(
-    parseISO(fechaCreacion!),
-    "dd/MM/yyyy HH:mm"
-  );
+  const fechaCreacion = project.fecha_hora_creacion;
+  const fechaCreacionFormateada = fechaCreacion
+    ? formatDateTime(fechaCreacion!)
+    : "----";
 
-  const fechaActualizacion = proyect.fecha_hora_actualizacion;
+  const fechaActualizacion = project.fecha_hora_actualizacion;
   const fechaActualizacionFormateada = fechaActualizacion
-    ? format(parseISO(fechaActualizacion!), "dd/MM/yyyy HH:mm")
-    : "N/A";
+    ? formatDateTime(fechaActualizacion!)
+    : "----";
 
-  const fechaFin = proyect.fecha_fin;
-  const fechaFinFormateada = format(parseISO(fechaFin!), "dd/MM/yyyy HH:mm");
-
+  const fechaFin = project.fecha_fin;
+  const fechaFinFormateada = fechaFin ? formatDate(fechaFin!) : "----";
   return (
     <>
       <Tooltip content="Detalles">
@@ -69,11 +71,11 @@ export default function InfoProyect({ proyect }: { proyect: Proyecto }) {
                 <Card className="py-4">
                   <Chip
                     className="capitalize mx-4"
-                    color={statusColorMap[proyect.estado]}
+                    color={statusColorMap[project.estado]}
                     size="sm"
                     variant="flat"
                   >
-                    {proyect.estado}
+                    {project.estado}
                   </Chip>
                   <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
                     <Avatar
@@ -85,10 +87,10 @@ export default function InfoProyect({ proyect }: { proyect: Proyecto }) {
                   </CardHeader>
                   <CardBody className="overflow-visible py-2 items-center">
                     <h4 className="font-bold uppercase text-large text-slate-600 ">
-                      {proyect.nombre}
+                      {project.nombre}
                     </h4>
                     <small className="text-default-500">
-                      {(proyect.responsable! as ClubInternos).nombre}
+                      {(project.responsable! as ClubInternos).nombre}
                     </small>
 
                     <Divider className="mt-1" />
@@ -98,7 +100,7 @@ export default function InfoProyect({ proyect }: { proyect: Proyecto }) {
                       </h2>
 
                       <p className="text-tiny mx-2 my-4 mt-2 text-center text-slate-600">
-                        {proyect.descripcion}
+                        {project.descripcion}
                       </p>
 
                       <Option

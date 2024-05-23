@@ -9,7 +9,7 @@ import {
   TableRow,
   TableCell,
   Chip,
-  User as Proyect,
+  User as Project,
   Selection,
   ChipProps,
   SortDescriptor,
@@ -37,9 +37,10 @@ import { ClubInternos } from "@/interfaces/ClubInternos";
 import FormModal from "./components/form_modal";
 
 import AddTaskModal from "./components/add_tasks_modal";
-import InfoProyect from "./components/info_proyect";
+import InfoProject from "./components/info_proyect";
 import toast from "react-hot-toast";
 import AlertDelete from "@/components/shared/alert_delete";
+import { cutString, formatDate } from "@/utils/utils";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
@@ -47,10 +48,10 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   suspendido: "danger",
 };
 
-type Proyect = Proyecto;
+type Project = Proyecto;
 
 export default function ProyectsPage() {
-  const [proyects, setProyects] = useState<Proyect[]>([]);
+  const [proyects, setProyects] = useState<Project[]>([]);
 
   useEffect(() => {
     getProyectos()
@@ -165,9 +166,9 @@ export default function ProyectsPage() {
 
   const sortedItems = React.useMemo(() => {
     try {
-      return [...items!].sort((a: Proyect, b: Proyect) => {
-        const first = a[sortDescriptor.column as keyof Proyect] as string;
-        const second = b[sortDescriptor.column as keyof Proyect] as string;
+      return [...items!].sort((a: Project, b: Project) => {
+        const first = a[sortDescriptor.column as keyof Project] as string;
+        const second = b[sortDescriptor.column as keyof Project] as string;
         const cmp = first < second ? -1 : first > second ? 1 : 0;
 
         return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -178,13 +179,13 @@ export default function ProyectsPage() {
   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback(
-    (proyect: Proyect, columnKey: React.Key) => {
-      const cellValue = proyect[columnKey as keyof Proyect];
+    (project: Project, columnKey: React.Key) => {
+      const cellValue = project[columnKey as keyof Project];
 
       switch (columnKey) {
         case "nombre":
           return (
-            <Proyect
+            <Project
               avatarProps={{
                 radius: "lg",
                 showFallback: true,
@@ -192,21 +193,22 @@ export default function ProyectsPage() {
                 fallback: <ProjectIcon />,
               }}
               //description={proyect.responsable.nombre}
-              name={cellValue as string}
-            >
-              {/*{proyect.responsable.nombre}*/}
-            </Proyect>
+              name={cutString(cellValue as string, 20)}
+            ></Project>
           );
         case "responsable":
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">
-                {(cellValue as ClubInternos).nombre as string}
+                {cutString((cellValue as ClubInternos).nombre, 15) as string}
               </p>
               <p className="text-bold text-tiny capitalize text-default-400">
-                {(proyect.responsable as ClubInternos).presidente.nombre +
-                  " " +
-                  (proyect.responsable as ClubInternos).presidente.apellido}
+                {cutString(
+                  (project.responsable as ClubInternos).presidente.nombre +
+                    " " +
+                    (project.responsable as ClubInternos).presidente.apellido,
+                  20
+                )}
               </p>
             </div>
           );
@@ -214,7 +216,7 @@ export default function ProyectsPage() {
           return (
             <Chip
               className="capitalize"
-              color={statusColorMap[proyect.estado]}
+              color={statusColorMap[project.estado]}
               size="sm"
               variant="flat"
             >
@@ -224,24 +226,30 @@ export default function ProyectsPage() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <InfoProyect proyect={proyect}></InfoProyect>
+              <InfoProject proyect={project}></InfoProject>
 
               <FormModal
-                proyect={proyect as Proyect}
+                proyect={project as Project}
                 icon={<EditIcon />}
               ></FormModal>
 
               <Tooltip color="danger" content="Eliminar Proyecto">
                 <span
                   className="text-lg text-danger cursor-pointer active:opacity-50"
-                  onClick={() => deleteUser(proyect!.id ?? "")}
+                  onClick={() => deleteUser(project!.id ?? "")}
                 >
                   <DeleteIcon />
                 </span>
               </Tooltip>
-              <AddTaskModal proyect={proyect as Proyect} icon={<PlusIcon />} />
+              <AddTaskModal proyect={project as Project} icon={<PlusIcon />} />
             </div>
           );
+        case "fecha_inicio":
+          return formatDate(cellValue as string);
+
+        case "fecha_fin":
+          return formatDate(cellValue as string);
+
         default:
           return cellValue;
       }
