@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactElement } from "react";
 import {
   Modal,
   ModalContent,
@@ -8,13 +8,14 @@ import {
   Button,
   useDisclosure,
   Input,
-  DatePicker,
+  DateInput,
   Textarea,
   Tooltip,
+  AutocompleteItem,
 } from "@nextui-org/react";
 import { PlusIcon } from "../../../../components/shared/icons";
 
-import { proyectSchema, actualDate } from "../../../../schemas/proyect_schema";
+import { projectSchema, actualDate } from "../../../../schemas/project_schema";
 import {
   DateValue,
   parseDate,
@@ -30,6 +31,7 @@ import {
   getClubesAsignacionProyectos,
   ingresarProyecto,
 } from "@/services/proyectos.service";
+import { ClubInternos } from "@/interfaces/ClubInternos";
 
 export type Presidente = {
   nombre: string;
@@ -43,7 +45,7 @@ export type Clubes = {
 };
 
 export default function FormModal({
-  proyect,
+  proyect: project,
   icon,
 }: {
   proyect?: Proyecto;
@@ -63,32 +65,43 @@ export default function FormModal({
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [fecha, setFecha] = useState<DateValue>(
-    parseDate(proyect?.fecha_inicio || currentDate)
+    parseDate(project?.fecha_inicio || currentDate)
   );
   const [fechaFinal, setFechaFinal] = useState<DateValue>(
-    parseDate(proyect?.fecha_fin || finalDate)
+    parseDate(project?.fecha_fin || finalDate)
   );
 
-  const [clubes, setClubes] = useState<Clubes[]>([]);
+  const [clubElements, setClubElements] = useState<ReactElement[]>([]);
+
+  const createObject = (data: Clubes): ReactElement => {
+    return (
+      <AutocompleteItem key={data.id} textValue={data.nombre}>
+        <div className="flex flex-col">
+          <p className="text-bold text-small capitalize">{data.nombre}</p>
+          <p className="text-bold text-tiny capitalize text-default-400">
+            {data.presidente.nombre + " " + data.presidente.apellido}
+          </p>
+        </div>
+      </AutocompleteItem>
+    );
+  };
+
+  const onChanges = (value: string) => {
+    formik.setFieldValue("responsable", value);
+  };
 
   const formik = useFormik({
     initialValues: {
-      nombre: proyect?.nombre || "",
-      descripcion: proyect?.descripcion || "",
-      fechaInicio: proyect?.fecha_inicio || "",
-      fechaFinal: proyect?.fecha_fin || "",
+      nombre: project?.nombre || "",
+      descripcion: project?.descripcion || "",
+      fechaInicio: project?.fecha_inicio || currentDate,
+      fechaFinal: project?.fecha_fin || currentDate,
+      responsable: (project?.responsable as ClubInternos)?.id || "",
     },
-    validationSchema: proyectSchema(
-      fecha instanceof Date
-        ? fecha
-        : new Date(fecha.year, fecha.month - 1, fecha.day),
-      fechaFinal instanceof Date
-        ? fechaFinal
-        : new Date(fechaFinal.year, fechaFinal.month - 1, fechaFinal.day)
-    ),
+    validationSchema: projectSchema(),
     onSubmit: (values) => {
-      console.log(values);
       //AQUI HAY UN ERROR
+      console.log(values);
       const proyectLocal: Proyecto = {
         nombre: values.nombre,
         descripcion: values.descripcion,
@@ -97,21 +110,17 @@ export default function FormModal({
         estado: "activo",
         creado_por: currentUser!.user.id,
         actualizado_por: currentUser!.user.id,
-        responsable: "6839840e-5a65-4349-aaa8-8bd0c128d757",
+        responsable: values.responsable,
       };
 
-      if (proyect) {
-        console.log("Actualizando miembro");
-        proyectLocal.id = proyect.id;
-
-        console.log(proyectLocal);
+      if (project) {
+        proyectLocal.id = project.id;
 
         toast.promise(
           actualizarProyecto(proyectLocal?.id || "", proyectLocal),
           {
             loading: "Saving...",
             success: () => {
-              console.log("Proyect actualizado!");
               formik.resetForm();
               //onClose();
               //onReload!(true);
@@ -128,21 +137,18 @@ export default function FormModal({
 
         return;
       } else {
-        console.log("Registrando miembro");
         toast.promise(ingresarProyecto(proyectLocal), {
           loading: "Saving...",
           success: () => {
-            console.log("Miembro guardado!");
             formik.resetForm();
-            //onClose();
-            //onReload!(true);
+
             window.location.reload();
 
             return <b>Proyecto Guardado!</b>;
           },
           error: (err) => {
             formik.setSubmitting(false);
-            console.log(err);
+
             return `${err.message.toString()}`;
           },
         });
@@ -153,9 +159,9 @@ export default function FormModal({
   useEffect(() => {
     getClubesAsignacionProyectos()
       .then((data) => {
-        setClubes(data);
+        const elements = data.map((club: Clubes) => createObject(club));
 
-        console.log(clubes);
+        setClubElements(elements);
       })
       .catch((error) => {
         console.log(error);
@@ -163,7 +169,9 @@ export default function FormModal({
   }, []);
 
   const asignFechas = () => {
+    console.log(typeof fecha);
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
+
     const fechaFinalAsDate = new Date(
       fechaFinal.year,
       fechaFinal.month - 1,
@@ -180,7 +188,7 @@ export default function FormModal({
   return (
     <>
       <Toaster />
-      {!proyect ? (
+      {!project ? (
         <Button
           color="primary"
           endContent={<PlusIcon />}
@@ -235,7 +243,18 @@ export default function FormModal({
                     variant="bordered"
                     maxRows={3}
                   />
-                  {<InputSearch datas={clubes}></InputSearch>}
+
+                  <InputSearch
+                    elements={clubElements}
+                    name="responsable"
+                    value={formik.values.responsable.toString()} // Convert the value to a string
+                    onChange={onChanges}
+                    isInvalid={formik.errors.responsable !== undefined}
+                    className={`flex 
+                      ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
+                      justify-between`}
+                    errorMessage={formik.errors.responsable}
+                  ></InputSearch>
 
                   <div
                     className={`flex 
@@ -243,26 +262,24 @@ export default function FormModal({
                     formik.errors.descripcion !== undefined ? "py-0" : "py-3"
                   } justify-between`}
                   >
-                    <DatePicker
+                    <DateInput
                       value={fecha}
                       onChange={(date) => {
                         setFecha(date);
                       }}
                       label="Fecha Inicio"
-                      showMonthAndYearPickers
                       className="max-w-[284px]"
                       isInvalid={formik.errors.fechaInicio !== undefined}
                       errorMessage={formik.errors.fechaInicio}
                     />
 
                     <div className=" w-2"></div>
-                    <DatePicker
+                    <DateInput
                       value={fechaFinal}
                       onChange={(date) => {
                         setFechaFinal(date);
                       }}
                       label="Fecha Final"
-                      showMonthAndYearPickers
                       className="max-w-[284px]"
                       isInvalid={formik.errors.fechaFinal !== undefined}
                       errorMessage={formik.errors.fechaFinal}
