@@ -29,7 +29,7 @@ export async function ingresarProyecto(proyecto: Proyecto) {
   const project = await supabase().from("proyectos").insert(proyecto);
   if (project.error) {
     console.log("Error al insertar proyecto." + project.error.message);
-    return false;
+    throw new Error("Error al insertar proyecto.");
   }
   return true;
 }

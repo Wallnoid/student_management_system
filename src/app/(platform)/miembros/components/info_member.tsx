@@ -46,12 +46,6 @@ export default function InfoMembers({ member }: { member: Member }) {
     ? format(parseISO(fechaActualizacion!), "dd/MM/yyyy HH:mm")
     : "N/A";
 
-  const fechaUltimaConexion = member.ultima_conexion;
-  const fechaUltimaConexionFormateada = format(
-    parseISO(fechaUltimaConexion!),
-    "dd/MM/yyyy HH:mm"
-  );
-
   return (
     <>
       <Tooltip content="Detalles">
@@ -113,11 +107,6 @@ export default function InfoMembers({ member }: { member: Member }) {
                       <Option
                         label={"F. de Nacimiento"}
                         value={fechaNacimientoFormateada}
-                      ></Option>
-
-                      <Option
-                        label={"Ultima Conexion"}
-                        value={fechaUltimaConexionFormateada}
                       ></Option>
 
                       <Option

@@ -9,22 +9,7 @@ console.log(
   } AQIO ESTOY `
 );
 
-export const projectSchema = (inicioDate: Date, finalDate: Date) => {
-  let fechaInicioFormateada: string;
-  let fechaFinalFormateada: string;
-
-  if (inicioDate === undefined || finalDate === undefined) {
-    fechaInicioFormateada = format(actualDate, "dd/MM/yyyy");
-    fechaFinalFormateada = format(actualDate, "dd/MM/yyyy");
-  } else {
-    fechaInicioFormateada = format(inicioDate, "dd/MM/yyyy");
-    fechaFinalFormateada = format(finalDate, "dd/MM/yyyy");
-  }
-
-  console.log(fechaInicioFormateada);
-
-  console.log(fechaFinalFormateada);
-
+export const projectSchema = () => {
   return yup.object().shape({
     nombre: yup
       .string()
@@ -42,19 +27,7 @@ export const projectSchema = (inicioDate: Date, finalDate: Date) => {
       .required("El responsable es requerido"),
     fechaInicio: yup
       .date()
-      .min(
-        new Date(
-          fechaInicioFormateada &&
-          !isNaN(new Date(fechaInicioFormateada).getTime())
-            ? new Date(fechaInicioFormateada)
-            : new Date(
-                `${actualDate.getFullYear()}-${
-                  actualDate.getMonth() + 1
-                }-${actualDate.getDate()}`
-              )
-        ),
-        "La fecha de inicio debe ser mayor o igual a la actual"
-      )
+      .min(actualDate, "La fecha de inicio debe ser mayor o igual a la actual")
       .max(
         new Date(`${actualDate.getFullYear() + 1}-01-01`),
         "La fecha de inicio debe ser menor a un año"
