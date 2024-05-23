@@ -19,8 +19,8 @@ export default function BottomContent({
   onNextPage: any;
 }) {
   return (
-    <div className="py-2 px-2 flex justify-between items-center">
-      <span className="w-[30%] text-small text-default-400">
+    <div className="py-2 px-2 flex justify-between items-center ">
+      <span className="w-[30%] text-small text-default-400 hidden sm:flex">
         {selectedKeys === "all"
           ? "All items selected"
           : `${selectedKeys.size} of ${filteredItems.length} selected`}

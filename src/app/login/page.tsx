@@ -4,7 +4,7 @@ import React, { FormEvent } from "react";
 import { Card, CardBody, Image } from "@nextui-org/react";
 import LoginInput from "./components/login_input";
 import LoginSubmit from "./components/login_submit";
-import Alert from "../components/alert";
+import Alert from "../../components/shared/alert";
 import { login, redirectIfAuth } from "./actions";
 
 export default function LoginPage() {

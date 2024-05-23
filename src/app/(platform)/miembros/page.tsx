@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -8,38 +8,88 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Input,
-  Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
   User,
-  Pagination,
   Selection,
   ChipProps,
   SortDescriptor,
   Tooltip,
 } from "@nextui-org/react";
-import { DeleteIcon, EyeIcon, EditIcon } from "./components/icons";
 
-import { columns, users, statusOptions } from "./data/data";
-import BottomContent from "./components/bottomContent";
-import TopContent from "./components/topContent";
+import { getMembers, updateMemberStatus } from "@/services/members.service";
+
+import {
+  DeleteIcon,
+  EyeIcon,
+  EditIcon,
+  MemberIcon,
+} from "../../../components/shared/icons";
+
+import { columns, statusOptions } from "./data/data";
+import BottomContent from "./components/bottom_content";
+import TopContent from "./components/top_content";
+import { Member } from "@/interfaces/Member";
+
+import FormModal from "./components/form_modal";
+import InfoMembers from "./components/info_member";
+import toast from "react-hot-toast";
+import AlertDelete from "@/components/shared/alert_delete";
+import { cutString } from "@/utils/utils";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
+  activo: "success",
+  inactivo: "danger",
+  suspendido: "warning",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["nombre", "categoria", "estado", "actions"];
 
-type User = (typeof users)[0];
+type User = Member;
 
 export default function MembersPage() {
-  const [filterValue, setFilterValue] = React.useState("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    getMembers()
+      .then((members) => {
+        setUsers(members);
+        console.log(members);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [loading]);
+
+  const deleteUser = async (id: string) => {
+    toast.custom(
+      (t) => (
+        <AlertDelete
+          onCancel={() => {
+            toast.dismiss(t.id);
+          }}
+          onSubmit={() => {
+            toast.promise(updateMemberStatus(id, "eliminado"), {
+              loading: "Saving...",
+              success: () => {
+                window.location.reload();
+
+                return <b>Miembro Eliminado!</b>;
+              },
+              error: (err) => {
+                return `${err.message.toString()}`;
+              },
+            });
+
+            toast.dismiss(t.id);
+          }}
+          visible={t.visible}
+        ></AlertDelete>
+      ),
+      { duration: Infinity }
+    );
+  };
+
+  const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
   );
@@ -66,72 +116,102 @@ export default function MembersPage() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    try {
+      let filteredUsers = [...users];
 
-    if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
-      );
-    }
+      if (hasSearchFilter) {
+        filteredUsers = filteredUsers.filter(
+          (user) =>
+            user.nombre.toLowerCase().includes(filterValue.toLowerCase()) ||
+            user.nro_identificacion
+              .toLowerCase()
+              .includes(filterValue.toLowerCase()) ||
+            user.apellido.toLowerCase().includes(filterValue.toLowerCase())
+        );
+      }
+      if (
+        statusFilter !== "all" &&
+        Array.from(statusFilter).length !== statusOptions.length
+      ) {
+        filteredUsers = filteredUsers.filter((user) =>
+          Array.from(statusFilter).includes(user.estado)
+        );
+      }
 
-    return filteredUsers;
+      return filteredUsers;
+    } catch (e) {
+      console.log(e);
+    }
   }, [users, filterValue, statusFilter]);
 
-  const pages = Math.ceil(filteredItems.length / rowsPerPage);
+  const filteredItemsLength = function () {
+    try {
+      return filteredItems!.length;
+    } catch (e) {
+      return 0;
+    }
+  };
+
+  const pages = Math.ceil(filteredItemsLength() / rowsPerPage);
 
   const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
+    try {
+      const start = (page - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
 
-    return filteredItems.slice(start, end);
+      return filteredItems!.slice(start, end);
+    } catch (e) {
+      console.log(e);
+    }
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
+    try {
+      return [...items!].sort((a: User, b: User) => {
+        const first = a[sortDescriptor.column as keyof User] as string;
+        const second = b[sortDescriptor.column as keyof User] as string;
+        const cmp = first < second ? -1 : first > second ? 1 : 0;
 
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
+        return sortDescriptor.direction === "descending" ? -cmp : cmp;
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
     switch (columnKey) {
-      case "name":
+      case "nombre":
         return (
           <User
-            avatarProps={{ radius: "lg" }}
-            description={user.email}
-            name={cellValue}
+            avatarProps={{
+              radius: "lg",
+              showFallback: true,
+              src: "https://images.unsplash.com/broken",
+              fallback: <MemberIcon />,
+            }}
+            description={user.correo}
+            name={cutString(cellValue + " " + user.apellido, 20)}
           >
-            {user.email}
+            {user.correo}
           </User>
         );
-      case "role":
+      case "categoria":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
+              {user.categoria}
             </p>
           </div>
         );
-      case "status":
+      case "estado":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.estado]}
             size="sm"
             variant="flat"
           >
@@ -141,18 +221,15 @@ export default function MembersPage() {
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EyeIcon />
-              </span>
-            </Tooltip>
-            <Tooltip content="Edit user">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete user">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+            <InfoMembers member={user}></InfoMembers>
+
+            <FormModal icon={<EditIcon />} member={user as Member}></FormModal>
+
+            <Tooltip color="danger" content="Eliminar Miembro">
+              <span
+                className="text-lg text-danger cursor-pointer active:opacity-50"
+                onClick={() => deleteUser(user!.id ?? "")}
+              >
                 <DeleteIcon />
               </span>
             </Tooltip>
@@ -233,6 +310,7 @@ export default function MembersPage() {
           statusOptions={statusOptions}
           users={users}
           onRowsPerPageChange={onRowsPerPageChange}
+          onReload={setLoading}
         ></TopContent>
       }
       topContentPlacement="outside"
@@ -250,7 +328,7 @@ export default function MembersPage() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No users found"} items={sortedItems}>
+      <TableBody emptyContent={"Cargando..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
