@@ -149,6 +149,7 @@ export async function getMembersClub(id: string){
         'miembros_de_club',
         { id_club: id }
     )
+    console.log(miembros);
     if (miembros.error) {
         console.error("Error getting members club:", miembros.error);
         return [];

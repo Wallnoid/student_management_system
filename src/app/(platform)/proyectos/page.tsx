@@ -245,7 +245,7 @@ export default function ProyectsPage() {
               <Tooltip content="Agregar Tareas">
                 <span
                   className="text-lg cursor-pointer active:opacity-50"
-                  onClick={() => goToTasks(proyect!.id ?? "")}
+                  onClick={() => goToTasks(project!.id ?? "")}
                 >
                 <MdChecklistRtl color="grey" />
                 </span>
