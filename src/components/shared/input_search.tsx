@@ -2,8 +2,6 @@ import React, { ReactElement, useState } from "react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { Clubes } from "@/app/(platform)/proyectos/components/form_modal";
 
-type Data = Clubes;
-
 export default function InputSearch({
   elements,
   name,
@@ -12,6 +10,9 @@ export default function InputSearch({
   isInvalid,
   errorMessage,
   className,
+  label,
+  placeholder,
+  color,
 }: {
   elements: ReactElement[];
   name: string;
@@ -20,20 +21,24 @@ export default function InputSearch({
   isInvalid?: boolean;
   errorMessage?: string;
   className?: string;
+  label: string;
+  placeholder: string;
+  color?: any;
 }) {
   return (
     <Autocomplete
       defaultItems={elements}
       name={name}
-      label="Club asignado"
-      placeholder="Buscar Club"
-      className={`${className}`}
-      variant="bordered"
+      label={label}
+      placeholder={placeholder}
+      className={`${className} `}
+      variant={color ? "flat" : "bordered"}
       value={value}
       onSelectionChange={(value) => onChange(String(value) || "")}
       isInvalid={isInvalid}
       errorMessage={errorMessage}
       defaultSelectedKey={value}
+      color={color}
     >
       {elements}
     </Autocomplete>

@@ -8,9 +8,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
-  Image,
-  Button,
   useDisclosure,
   Card,
   CardHeader,
@@ -65,7 +62,7 @@ export default function InfoProject({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 items-center justify-center">
-                Miembro
+                Proyecto
               </ModalHeader>
               <ModalBody>
                 <Card className="py-4">
