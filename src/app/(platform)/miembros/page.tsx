@@ -29,12 +29,12 @@ import { columns, statusOptions } from "./data/data";
 import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
 import { Member } from "@/interfaces/Member";
-import { currentUser, updateUser } from "@/services/users.service";
-import { useRouter } from "next/router";
+
 import FormModal from "./components/form_modal";
 import InfoMembers from "./components/info_member";
 import toast from "react-hot-toast";
 import AlertDelete from "@/components/shared/alert_delete";
+import { cutString } from "@/utils/utils";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "success",
@@ -48,7 +48,6 @@ type User = Member;
 
 export default function MembersPage() {
   const [users, setUsers] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<Member>();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getMembers()
@@ -194,7 +193,7 @@ export default function MembersPage() {
               fallback: <MemberIcon />,
             }}
             description={user.correo}
-            name={cellValue + " " + user.apellido}
+            name={cutString(cellValue + " " + user.apellido, 20)}
           >
             {user.correo}
           </User>

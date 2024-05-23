@@ -2,6 +2,7 @@ import { EyeIcon, ProjectIcon } from "@/components/shared/icons";
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Member } from "@/interfaces/Member";
 import { Proyecto } from "@/interfaces/Proyecto";
+import { formatDate, formatDateTime } from "@/utils/utils";
 import {
   Modal,
   ModalContent,
@@ -20,7 +21,6 @@ import {
   Chip,
   ChipProps,
 } from "@nextui-org/react";
-import { parseISO, format } from "date-fns";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   completado: "success",
@@ -28,26 +28,28 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   suspendido: "danger",
 };
 
-export default function InfoProject({ proyect: project }: { proyect: Proyecto }) {
+export default function InfoProject({
+  proyect: project,
+}: {
+  proyect: Proyecto;
+}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const fechaInicio = project.fecha_inicio;
-  const fechaInicioFormateada = format(parseISO(fechaInicio), "dd/MM/yyyy");
+  const fechaInicioFormateada = fechaInicio ? formatDate(fechaInicio!) : "----";
 
   const fechaCreacion = project.fecha_hora_creacion;
-  const fechaCreacionFormateada = format(
-    parseISO(fechaCreacion!),
-    "dd/MM/yyyy HH:mm"
-  );
+  const fechaCreacionFormateada = fechaCreacion
+    ? formatDateTime(fechaCreacion!)
+    : "----";
 
   const fechaActualizacion = project.fecha_hora_actualizacion;
   const fechaActualizacionFormateada = fechaActualizacion
-    ? format(parseISO(fechaActualizacion!), "dd/MM/yyyy HH:mm")
-    : "N/A";
+    ? formatDateTime(fechaActualizacion!)
+    : "----";
 
   const fechaFin = project.fecha_fin;
-  const fechaFinFormateada = format(parseISO(fechaFin!), "dd/MM/yyyy HH:mm");
-
+  const fechaFinFormateada = fechaFin ? formatDate(fechaFin!) : "----";
   return (
     <>
       <Tooltip content="Detalles">

@@ -40,6 +40,7 @@ import AddTaskModal from "./components/add_tasks_modal";
 import InfoProject from "./components/info_proyect";
 import toast from "react-hot-toast";
 import AlertDelete from "@/components/shared/alert_delete";
+import { cutString, formatDate } from "@/utils/utils";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
@@ -192,21 +193,22 @@ export default function ProyectsPage() {
                 fallback: <ProjectIcon />,
               }}
               //description={proyect.responsable.nombre}
-              name={cellValue as string}
-            >
-              {/*{proyect.responsable.nombre}*/}
-            </Project>
+              name={cutString(cellValue as string, 20)}
+            ></Project>
           );
         case "responsable":
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">
-                {(cellValue as ClubInternos).nombre as string}
+                {cutString((cellValue as ClubInternos).nombre, 15) as string}
               </p>
               <p className="text-bold text-tiny capitalize text-default-400">
-                {(project.responsable as ClubInternos).presidente.nombre +
-                  " " +
-                  (project.responsable as ClubInternos).presidente.apellido}
+                {cutString(
+                  (project.responsable as ClubInternos).presidente.nombre +
+                    " " +
+                    (project.responsable as ClubInternos).presidente.apellido,
+                  20
+                )}
               </p>
             </div>
           );
@@ -242,6 +244,12 @@ export default function ProyectsPage() {
               <AddTaskModal proyect={project as Project} icon={<PlusIcon />} />
             </div>
           );
+        case "fecha_inicio":
+          return formatDate(cellValue as string);
+
+        case "fecha_fin":
+          return formatDate(cellValue as string);
+
         default:
           return cellValue;
       }
