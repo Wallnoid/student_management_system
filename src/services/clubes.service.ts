@@ -66,7 +66,7 @@ export async function getClubes(){
     return clubes.data as ClubInternos[];
 }
 export async function getClub(ids: string[]){
-    let {data, error} = await supabase().rpc( 'club_con_datos', { ids: ids } )
+    let {data, error} = await supabase().rpc( 'club_con_datos', { ids_club: ids } )
     if (error) {
         throw new Error('Error al obtener la información solicitada. Recargue la página e intente de nuevo');
     }

@@ -12,6 +12,7 @@ describe('Pruebas de servicio de clubes', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
     test('prueba de inserción de club.', async () => {
         const club: ClubInternos = {
             nombre: 'Club de pruebas JEST',
@@ -41,28 +42,25 @@ describe('Pruebas de servicio de clubes', () => {
     });
 
     test('prueba de cambio de estado de club (eliminar).', async () => {
-
         const id_club: string = 'f8302374-87ef-43e1-97a0-a4a1a07c9250';
         const estado_club: string = 'eliminado';
-
         const result = await updateEstadoClub(id_club, estado_club);
-
         expect(result).toBe(true);
-    })
+    });
 
     test('prueba de obtención de clubes internos.', async () => {
         const result = await getClubes();
         expect(Array.isArray(result)).toBe(true);
         expect(result.every(club => typeof club === 'object')).toBe(true);
-    })
-/*
+    });
+
     test('prueba de obtención de club en específico.', async () => {
         const clubIds: string[] = ['cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081'];
         const result = await getClub(clubIds);
-        expect(Array.isArray(result)).toBe(false);
-        expect(result.every(club => typeof club === 'object')).toBe(false);
-    })
-*/
+        expect(Array.isArray(result)).toBe(true);
+        expect(result.length).toBeGreaterThan(0);
+    });
+
     test('prueba de asignación de un miembro a un club interno.', async () => {
         const asignacion: AsignacionesClubes = {
             id_club_interno: 'cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081',
@@ -71,11 +69,8 @@ describe('Pruebas de servicio de clubes', () => {
             creado_por: '54acf6d9-8c8d-482f-8041-ae1cc7556c4d',
             fecha_hora_creacion: 'NOW()'
         };
-
         const result = await addMemberToClub(asignacion);
-
         expect(result).toBe(true);
-
     });
 
     test('prueba de actualización de asignación de miembro a club interno.', async () => {
@@ -94,14 +89,12 @@ describe('Pruebas de servicio de clubes', () => {
 
         expect(result).toBe(true);
     });
-/*
+
     test('prueba de obtención de los miembros de un club en específico.', async () => {
         const id_club: string = '9727704b-5b26-4658-ac1e-c7bb375b3c01';
-
         const result = await getMembersClub(id_club);
         expect(Array.isArray(result)).toBe(true);
-        expect(result.every(data => typeof data === 'object')).toBe(true);
-
-    })
-    */
+        expect(result.length).toBeGreaterThan(0);
+    });
+    
 });

@@ -13,36 +13,47 @@ supabase().auth.onAuthStateChange((event, session) => {
 });
 
 export async function registerUser(member: Member) {
+  const {nombre, apellido, fecha_nacimiento, nro_identificacion, correo, carrera, semestre, telefono, creado_por, categoria } = member;
   if (!(await duplicateUser(member))) {
-    console.log("Usuario ya existe.");
-    throw new Error("Usuario ya existe.");
+    throw new Error('Usuario ya registrado en el sistema.');
   }
-
-  const userauth: any = await supabase().auth.signUp({
-    email: member.correo,
-    password: member.nro_identificacion,
+  const userAuth = await supabase().auth.signUp({
+    email: correo,
+    password: nro_identificacion,
     options: {
       data: {
-        role: member.categoria,
+        role: categoria,
       },
     },
   });
-  console.log(userauth);
-  console.log(userauth.error);
-  //Reemplazar por un procedure para mejorar el retorno de error y campos especiales
+  
+  if(userAuth.error){
+    throw new Error('Error al intentar registrar la información de autenticación. Intente más tarde');
+  }
   const userTable = await supabase()
     .from("miembros")
-    .update(member)
-    .eq("id", userauth.data.user.id);
+    .update({
+      nombre,
+      apellido,
+      fecha_nacimiento,
+      nro_identificacion,
+      correo,
+      carrera,
+      semestre,
+      telefono,
+      creado_por,
+      fecha_hora_creacion: 'NOW()',
+      categoria
+    })
+    .eq("id", userAuth.data.user.id);
   if (userTable.error) {
-    console.log("Error al insertar miembro.");
-    console.log(userTable.error);
-    return false;
+    throw new Error('Error al intentar registrar un usuario en el sistema. Intente de nuevo.');
   }
   return true;
 }
 
 export async function updateUser(member: Member) {
+/*
   const userauth = await supabase().auth.updateUser({
     email: member.correo,
     data: {
@@ -50,8 +61,10 @@ export async function updateUser(member: Member) {
     },
   });
 
-  console.log(userauth.data.user?.id);
-
+  if(userauth.error){
+    throw new Error('Error al actualizar la información de autenticación del usuario. Intente de nuevo');
+  }
+  */
   const userTable = await supabase()
     .from("miembros")
     .update({
@@ -63,21 +76,24 @@ export async function updateUser(member: Member) {
       estado: member.estado,
       telefono: member.telefono,
       categoria: member.categoria,
+      actualizado_por: member.actualizado_por,
+      fecha_hora_actualizacion: 'NOW()'
     })
-    .eq("id", userauth.data.user?.id);
-
+    .eq("id", member.id);
   if (userTable.error) {
-    console.log("Error al actualizar miembro.");
-    throw new Error("Error al actualizar miembro." + userTable.error.message);
+    throw new Error("Error al actualizar la información del miembro. Intente de nuevo.");
   }
   return true;
 }
 
-export async function updateRole(member: Member, id: string) {
-  const { data: user, error } = await supabase().auth.admin.updateUserById(id, {
+export async function updateRole(member: Member) {
+  const { error } = await supabase().auth.admin.updateUserById(member.id, {
     user_metadata: { role: member.categoria },
     email: member.correo,
   });
+  if (error) {
+    throw new Error('Error al actualizar información del administrador.');
+  }
   const userTable = await supabase()
     .from("miembros")
     .update({
@@ -90,23 +106,24 @@ export async function updateRole(member: Member, id: string) {
       telefono: member.telefono,
       categoria: member.categoria,
     })
-    .eq("id", id);
+    .eq("id", member.id);
 
   if (userTable.error) {
-    console.log("Error al actualizar miembro.");
-    return false;
+    throw new Error('Error al actualizar la categoría del usuario seleccionado. Intente de nuevo.');
   }
   return true;
 }
 
-async function duplicateUser(member: Member) {
+export async function duplicateUser(member: Member) {
   const { data, error } = await supabase()
     .from("miembros")
-    .select("*")
+    .select("correo, nro_identificacion")
     .or(
-      `correo.eq.${member.correo}, nro_identificacion.eq.${member.nro_identificacion}`
-    );
-  // @ts-ignore
+        `correo.eq.${member.correo}, nro_identificacion.eq.${member.nro_identificacion}`
+      );
+  if(error){
+    throw new Error('Información duplicada, revise las entradas e intente de nuevo.');
+  }
   return data?.length <= 0;
 }
 
