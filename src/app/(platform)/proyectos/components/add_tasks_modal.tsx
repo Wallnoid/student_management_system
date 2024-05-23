@@ -14,7 +14,7 @@ import {
 } from "@nextui-org/react";
 import { PlusIcon } from "../../../../components/shared/icons";
 
-import { proyectSchema, actualDate } from "../../../../schemas/proyect_schema";
+import { projectSchema, actualDate } from "../../../../schemas/project_schema";
 import {
   DateValue,
   parseDate,
@@ -32,10 +32,8 @@ import {
 import { Task } from "@/interfaces/Task";
 import { insertTasksAndAssignments } from "@/services/task.service";
 
-
-
 export default function AddTaskModal({
-  proyect,
+  proyect: project,
   icon,
 }: {
   proyect?: Proyecto;
@@ -55,20 +53,20 @@ export default function AddTaskModal({
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [fecha, setFecha] = useState<DateValue>(
-    parseDate(proyect?.fecha_inicio || currentDate)
+    parseDate(project?.fecha_inicio || currentDate)
   );
   const [fechaFinal, setFechaFinal] = useState<DateValue>(
-    parseDate(proyect?.fecha_fin || finalDate)
+    parseDate(project?.fecha_fin || finalDate)
   );
 
   const formik = useFormik({
     initialValues: {
-      nombre: proyect?.nombre || "",
-      descripcion: proyect?.descripcion || "",
-      fechaInicio: proyect?.fecha_inicio || "",
-      fechaFinal: proyect?.fecha_fin || "",
+      nombre: project?.nombre || "",
+      descripcion: project?.descripcion || "",
+      fechaInicio: project?.fecha_inicio || "",
+      fechaFinal: project?.fecha_fin || "",
     },
-    validationSchema: proyectSchema,
+    validationSchema: projectSchema,
     onSubmit: (values) => {
       console.log(values);
       //AQUI HAY UN ERROR
@@ -89,33 +87,28 @@ export default function AddTaskModal({
         fecha_inicio: values.fechaInicio,
         fecha_fin: values.fechaFinal,
         creado_por: currentUser!.user.id,
-        proyecto: proyect?.id || "",
-        responsables: ['d1ca1fbe-54c4-4992-9622-b3c44da3e5c3'],
-        comentario: ""
+        proyecto: project?.id || "",
+        responsables: ["d1ca1fbe-54c4-4992-9622-b3c44da3e5c3"],
       };
 
-      if (proyect) {
-        proyectLocal.id = proyect.id;
-        toast.promise(
+      if (project) {
+        proyectLocal.id = project.id;
+        toast.promise(insertTasksAndAssignments(task), {
+          loading: "Saving...",
+          success: () => {
+            console.log("Tarea agregada al proyecto!");
+            formik.resetForm();
+            //onClose();
+            //onReload!(true);
+            //window.location.reload();
 
-          insertTasksAndAssignments(task),
-          {
-            loading: "Saving...",
-            success: () => {
-              console.log("Tarea agregada al proyecto!");
-              formik.resetForm();
-              //onClose();
-              //onReload!(true);
-              //window.location.reload();
-
-              return <b>Tarea Agregada</b>;
-            },
-            error: (err) => {
-              formik.setSubmitting(false);
-              return `${err.message.toString()}`;
-            },
-          }
-        );
+            return <b>Tarea Agregada</b>;
+          },
+          error: (err) => {
+            formik.setSubmitting(false);
+            return `${err.message.toString()}`;
+          },
+        });
 
         return;
       } else {
@@ -159,7 +152,7 @@ export default function AddTaskModal({
   return (
     <>
       <Toaster />
-      {!proyect ? (
+      {!project ? (
         <Button
           color="primary"
           endContent={<PlusIcon />}
@@ -183,7 +176,7 @@ export default function AddTaskModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Agregar tarea a: {proyect?.nombre}
+                Agregar tarea a: {project?.nombre}
               </ModalHeader>
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
@@ -216,8 +209,9 @@ export default function AddTaskModal({
 
                   <div
                     className={`flex 
-                  ${formik.errors.descripcion !== undefined ? "py-0" : "py-3"
-                      } justify-between`}
+                  ${
+                    formik.errors.descripcion !== undefined ? "py-0" : "py-3"
+                  } justify-between`}
                   >
                     <DatePicker
                       value={fecha}

@@ -226,7 +226,7 @@ export default function MembersPage() {
 
             <FormModal icon={<EditIcon />} member={user as Member}></FormModal>
 
-            <Tooltip color="danger" content="Delete user">
+            <Tooltip color="danger" content="Eliminar Miembro">
               <span
                 className="text-lg text-danger cursor-pointer active:opacity-50"
                 onClick={() => deleteUser(user!.id ?? "")}
