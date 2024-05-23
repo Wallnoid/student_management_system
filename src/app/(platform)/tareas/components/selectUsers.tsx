@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Autocomplete, AutocompleteItem, Select, SelectItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { Member } from "@/interfaces/Member";
 
 type Data = Member;
@@ -22,26 +22,28 @@ export default function SelectUsers({
   className?: string;
 }) {
   return (
-    <div className="flex w-full max-w-xs flex-col gap-2">
-      <Select
+    <Autocomplete
+      defaultItems={datas}
       name={name}
-      label="Miembros del Club"
-      placeholder="Buscar Miembro"
+      label="Club asignado"
+      placeholder="Buscar Club"
       className={`${className}`}
       variant="bordered"
       value={value}
       onSelectionChange={(value) => onChange(String(value) || "")}
       isInvalid={isInvalid}
       errorMessage={errorMessage}
-      >
-        {datas.map((member) => (
-          <SelectItem key={member.id ?? ''} value={member.id}>
-            {member.nombre} 
-          </SelectItem>
-        ))}
-      </Select>
-      <p className="text-small text-default-500">Miembros Seleccionados: {Array.from(datas).join(", ")}</p>
-    </div>
-
+    >
+      {(data) => (
+        <AutocompleteItem key={data.id || `default-${Math.random()}`} textValue={data.nombre} value={data.id}>
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{data.nombre}</p>
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {data.nombre + " " + data.apellido}
+            </p>
+          </div>
+        </AutocompleteItem>
+      )}
+    </Autocomplete>
   );
 }

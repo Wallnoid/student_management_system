@@ -87,7 +87,7 @@ export default function AddTaskModal({
         fecha_fin: values.fechaFinal,
         creado_por: currentUser!.user.id,
         proyecto: proyect?.id || "",
-        responsables: ["eee0f410-3ba3-43a1-99a1-07993344a0d7"], //cambiar por el sele
+        responsables: [values.user as string], //cambiar por el sele
         comentario: ""
       };
       toast.promise(
@@ -134,6 +134,7 @@ export default function AddTaskModal({
   };
 
   useEffect(() => {
+    
     getMembersClub('cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081').then((members) => {
       setUsers(members);
       console.log("Miembros del club", users);
@@ -144,8 +145,8 @@ export default function AddTaskModal({
 
 
   const onChanges = (value: string) => {
-    console.log(typeof value);
-    formik.setFieldValue("member_on_charge", value);
+    console.log(value);
+    formik.setFieldValue("user", value);
   };
 
 
