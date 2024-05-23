@@ -41,6 +41,7 @@ import InfoProject from "./components/info_proyect";
 import toast from "react-hot-toast";
 import AlertDelete from "@/components/shared/alert_delete";
 import { cutString, formatDate } from "@/utils/utils";
+import { Member } from "@/interfaces/Member";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
@@ -204,9 +205,11 @@ export default function ProyectsPage() {
               </p>
               <p className="text-bold text-tiny capitalize text-default-400">
                 {cutString(
-                  (project.responsable as ClubInternos).presidente.nombre +
+                  ((project.responsable as ClubInternos).presidente as Member)
+                    .nombre +
                     " " +
-                    (project.responsable as ClubInternos).presidente.apellido,
+                    ((project.responsable as ClubInternos).presidente as Member)
+                      .apellido,
                   20
                 )}
               </p>

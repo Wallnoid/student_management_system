@@ -107,7 +107,6 @@ export default function FormModal({
         descripcion: values.descripcion,
         fecha_inicio: values.fechaInicio,
         fecha_fin: values.fechaFinal,
-        estado: "activo",
         creado_por: currentUser!.user.id,
         actualizado_por: currentUser!.user.id,
         responsable: values.responsable,
@@ -116,27 +115,26 @@ export default function FormModal({
       if (project) {
         proyectLocal.id = project.id;
 
-        toast.promise(
-          actualizarProyecto(proyectLocal?.id || "", proyectLocal),
-          {
-            loading: "Saving...",
-            success: () => {
-              formik.resetForm();
-              //onClose();
-              //onReload!(true);
-              window.location.reload();
+        toast.promise(actualizarProyecto(proyectLocal), {
+          loading: "Saving...",
+          success: () => {
+            formik.resetForm();
+            //onClose();
+            //onReload!(true);
+            window.location.reload();
 
-              return <b>Proyecto Actualizado!</b>;
-            },
-            error: (err) => {
-              formik.setSubmitting(false);
-              return `${err.message.toString()}`;
-            },
-          }
-        );
+            return <b>Proyecto Actualizado!</b>;
+          },
+          error: (err) => {
+            formik.setSubmitting(false);
+            return `${err.message.toString()}`;
+          },
+        });
 
         return;
       } else {
+        proyectLocal.actualizado_por = null;
+
         toast.promise(ingresarProyecto(proyectLocal), {
           loading: "Saving...",
           success: () => {
@@ -212,7 +210,7 @@ export default function FormModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Agregar proyecto
+                {project ? "Actualizar Proyecto" : "Agregar Proyecto"}
               </ModalHeader>
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
@@ -246,6 +244,8 @@ export default function FormModal({
 
                   <InputSearch
                     elements={clubElements}
+                    label="Responsable"
+                    placeholder="Buscar Club"
                     name="responsable"
                     value={formik.values.responsable.toString()} // Convert the value to a string
                     onChange={onChanges}
@@ -290,8 +290,13 @@ export default function FormModal({
                   <Button color="danger" variant="flat" onPress={onClose}>
                     Close
                   </Button>
-                  <Button color="primary" type="submit" onPress={asignFechas}>
-                    Registrar
+                  <Button
+                    color="primary"
+                    type="submit"
+                    onPress={asignFechas}
+                    isLoading={formik.isSubmitting}
+                  >
+                    {project ? "Actualizar" : "Registrar"}
                   </Button>
                 </ModalFooter>
               </form>
