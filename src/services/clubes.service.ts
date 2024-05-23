@@ -2,6 +2,7 @@ import {createClient as supabase} from "@/supabase/client";
 import {ClubInternos} from "@/interfaces/ClubInternos";
 import {Member} from "@/interfaces/Member";
 import {AsignacionesClubes} from "@/interfaces/AsignacionesClubes";
+import { GiConsoleController } from "react-icons/gi";
 
 export async function insertClub(club: ClubInternos) {
     const{ nombre, descripcion, ubicacion, presidente, creado_por, fecha_hora_creacion} = club;

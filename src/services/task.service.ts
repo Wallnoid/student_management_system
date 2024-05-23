@@ -28,6 +28,26 @@ export async function insertTasksAndAssignments(tarea: Task) {
         console.log(error);
         throw new Error('Error al intentar asignar la tarea. Intente de nuevo.');
     }
+    else {
+        return true
+    }
+}
+
+export async function getTaskByProject(proyecto: string) {
+    console.log(proyecto)
+    let {data, error} = await supabase().from('tareas').select('*').eq('id_proyecto', proyecto)
+    if (error) {
+        console.error("Error fetching tasks:", error);
+        return [];
+    }
+    return data as Task[];
+}
+
+export async function getTasks() {
+    let { data, error } = await supabase()
+        .from('tareas')
+        .select('*')
+        .neq('estado', 'eliminado')
     return true
 }
 

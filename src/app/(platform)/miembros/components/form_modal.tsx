@@ -10,6 +10,9 @@ import {
   Input,
   DatePicker,
   Tooltip,
+  AutocompleteItem,
+  Chip,
+  ChipProps,
 } from "@nextui-org/react";
 
 import { PlusIcon } from "../../../../components/shared/icons";
@@ -27,7 +30,7 @@ import {
   Carreras,
   Semestres,
   Roles,
-} from "../../../../schemas/member_schema";
+} from "@/schemas/member_schema";
 import { DateValue, parseDate } from "@internationalized/date";
 import {
   currentUser,
@@ -36,6 +39,8 @@ import {
   updateUser,
 } from "@/services/users.service";
 import { Member } from "@/interfaces/Member";
+import InputSearch from "@/components/shared/input_search";
+import { statusOptions } from "../data/data";
 
 export default function FormModal({
   member,
@@ -58,6 +63,27 @@ export default function FormModal({
     parseDate(member?.fecha_nacimiento || currentDate)
   );
 
+  const statusColorMap: Record<string, ChipProps["color"]> = {
+    activo: "success",
+    inactivo: "danger",
+    suspendido: "warning",
+  };
+
+  const optionsElements = statusOptions.map((option) => (
+    <AutocompleteItem
+      key={option.uid}
+      textValue={option.name}
+      color={statusColorMap[option.uid]}
+      className={`text-primary-800 `}
+    >
+      {option.name}
+    </AutocompleteItem>
+  ));
+
+  const onChanges = (value: string) => {
+    formik.setFieldValue("estado", value);
+  };
+
   const formik = useFormik({
     initialValues: {
       cedula: member?.nro_identificacion || "",
@@ -69,11 +95,12 @@ export default function FormModal({
       semestre: member?.semestre || "",
       fechaNacimiento: member?.fecha_nacimiento || "",
       rol: member?.categoria || "",
+      estado: member?.estado || "",
     },
+    validateOnChange: false,
+    validateOnBlur: true,
     validationSchema: memberSchema,
     onSubmit: (values) => {
-      console.log(values);
-
       const memberLocal: Member = {
         nombre: values.nombre,
         apellido: values.apellido,
@@ -82,17 +109,20 @@ export default function FormModal({
         correo: values.correo,
         carrera: values.carrera,
         semestre: values.semestre,
-        estado: "activo",
         telefono: values.telefono,
         categoria: values.rol,
+        estado: values.estado == "null" ? "activo" : values.estado,
         creado_por: currentUser!.user.id,
+        actualizado_por: currentUser!.user.id,
       };
 
-      if (member) {
-        console.log("Actualizando miembro");
-        memberLocal.id = member.id;
+      console.log(memberLocal);
 
-        toast.promise(updateRole(memberLocal, memberLocal!.id || ""), {
+      if (member) {
+        memberLocal.id = member.id;
+        console.log(memberLocal.id);
+
+        toast.promise(updateRole(memberLocal), {
           loading: "Saving...",
           success: () => {
             console.log("Miembro actualizado!");
@@ -111,6 +141,9 @@ export default function FormModal({
 
         return;
       } else {
+        memberLocal.actualizado_por = null;
+        memberLocal.estado = null;
+
         console.log("Registrando miembro");
         toast.promise(registerUser(memberLocal), {
           loading: "Saving...",
@@ -167,11 +200,41 @@ export default function FormModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Agregar miembro
+                {member ? (
+                  <div className="flex flex-row items-center">
+                    <div className="w-1/2">{"Actualizar miembro"}</div>
+
+                    <div className="w-1/2 mx-5">
+                      <InputSearch
+                        label=""
+                        placeholder=""
+                        elements={optionsElements}
+                        name="estado"
+                        onChange={onChanges}
+                        value={formik.values.estado}
+                        color={statusColorMap[formik.values.estado]}
+                      ></InputSearch>
+                    </div>
+                  </div>
+                ) : (
+                  "Ingresar Miembro"
+                )}
               </ModalHeader>
 
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
+                  {member ? (
+                    <Input
+                      isDisabled
+                      id={`correo_disable_${member?.id || ""}`}
+                      label="Correo"
+                      name="correo"
+                      value={formik.values.correo}
+                      placeholder="Ingresa tu correo"
+                      variant="bordered"
+                      type="email"
+                    />
+                  ) : null}
                   <Input
                     autoFocus
                     id={`cedula_${member?.id || ""}`}
@@ -238,21 +301,23 @@ export default function FormModal({
                     type="text"
                   />
 
-                  <Input
-                    id={`correo_${member?.id || ""}`}
-                    label="Correo"
-                    name="correo"
-                    value={formik.values.correo}
-                    onChange={formik.handleChange}
-                    isInvalid={formik.errors.correo !== undefined}
-                    errorMessage={formik.errors.correo}
-                    placeholder="Ingresa tu correo"
-                    className={
-                      formik.errors.telefono !== undefined ? "py-0" : "py-3"
-                    }
-                    variant="bordered"
-                    type="email"
-                  />
+                  {!member ? (
+                    <Input
+                      id={`correo_${member?.id || ""}`}
+                      label="Correo"
+                      name="correo"
+                      value={formik.values.correo}
+                      onChange={formik.handleChange}
+                      isInvalid={formik.errors.correo !== undefined}
+                      errorMessage={formik.errors.correo}
+                      placeholder="Ingresa tu correo"
+                      className={
+                        formik.errors.telefono !== undefined ? "py-0" : "py-3"
+                      }
+                      variant="bordered"
+                      type="email"
+                    />
+                  ) : null}
 
                   <div
                     className={`flex 
@@ -332,7 +397,7 @@ export default function FormModal({
                     onPress={asignFechaNacimiento}
                     isLoading={formik.isSubmitting}
                   >
-                    Registrar
+                    {member ? "Actualizar" : "Registrar"}
                   </Button>
                 </ModalFooter>
               </form>

@@ -9,6 +9,14 @@ supabase().auth.onAuthStateChange((event, session) => {
   }
 });
 
+export async function getSingleProject(id: String) {
+  let { data, error } = await supabase().rpc("get_proyectos");
+  let proyecto = data.find((proyecto: Proyecto) => proyecto.id === id);
+  if (error) console.error(error);
+  else console.log(proyecto);
+  return proyecto as Proyecto;
+}
+
 export async function getProyectos() {
   let { data, error } = await supabase().rpc("get_proyectos");
   if (error){ 

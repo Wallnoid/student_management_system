@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactElement } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -8,14 +8,13 @@ import {
   Button,
   useDisclosure,
   Input,
-  DateInput,
+  DatePicker,
   Textarea,
   Tooltip,
-  AutocompleteItem,
+  user,
 } from "@nextui-org/react";
 import { PlusIcon } from "../../../../components/shared/icons";
 
-import { projectSchema, actualDate } from "../../../../schemas/project_schema";
 import {
   DateValue,
   parseDate,
@@ -28,28 +27,27 @@ import toast, { Toaster } from "react-hot-toast";
 import { currentUser } from "@/services/users.service";
 import {
   actualizarProyecto,
-  getClubesAsignacionProyectos,
   ingresarProyecto,
 } from "@/services/proyectos.service";
+import { Task } from "@/interfaces/Task";
+import { insertTasksAndAssignments } from "@/services/task.service";
+import SelectUsers from "./selectUsers";
+import { Member } from "@/interfaces/Member";
+import { getMembers } from "@/services/members.service";
+import { getMembersClub } from "@/services/clubes.service";
 import { ClubInternos } from "@/interfaces/ClubInternos";
+import { actualDate, projectSchema } from "@/schemas/project_schema";
 
-export type Presidente = {
-  nombre: string;
-  apellido: string;
-};
 
-export type Clubes = {
-  id: string;
-  nombre: string;
-  presidente: Presidente;
-};
 
-export default function FormModal({
-  proyect: project,
+export default function AddTaskModal({
+  proyect,
   icon,
+  members,
 }: {
   proyect?: Proyecto;
   icon?: JSX.Element;
+  members?: Member[];
 }) {
   const currentDate: string = `${actualDate.getFullYear()}-${(
     actualDate.getMonth() + 1
@@ -65,152 +63,110 @@ export default function FormModal({
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [fecha, setFecha] = useState<DateValue>(
-    parseDate(project?.fecha_inicio || currentDate)
+    parseDate(proyect?.fecha_inicio || currentDate)
   );
   const [fechaFinal, setFechaFinal] = useState<DateValue>(
-    parseDate(project?.fecha_fin || finalDate)
+    parseDate(proyect?.fecha_fin || finalDate)
   );
-
-  const [clubElements, setClubElements] = useState<ReactElement[]>([]);
-
-  const createObject = (data: Clubes): ReactElement => {
-    return (
-      <AutocompleteItem key={data.id} textValue={data.nombre}>
-        <div className="flex flex-col">
-          <p className="text-bold text-small capitalize">{data.nombre}</p>
-          <p className="text-bold text-tiny capitalize text-default-400">
-            {data.presidente.nombre + " " + data.presidente.apellido}
-          </p>
-        </div>
-      </AutocompleteItem>
-    );
-  };
-
-  const onChanges = (value: string) => {
-    formik.setFieldValue("responsable", value);
-  };
 
   const formik = useFormik({
     initialValues: {
-      nombre: project?.nombre || "",
-      descripcion: project?.descripcion || "",
-      fechaInicio: project?.fecha_inicio || currentDate,
-      fechaFinal: project?.fecha_fin || currentDate,
-      responsable: (project?.responsable as ClubInternos)?.id || "",
+      nombre: proyect?.nombre || "",
+      descripcion: proyect?.descripcion || "",
+      fechaInicio: proyect?.fecha_inicio || "",
+      fechaFinal: proyect?.fecha_fin || "",
+      user: proyect?.responsable || "",
     },
-    validationSchema: projectSchema(),
+    //validationSchema: projectSchema,
     onSubmit: (values) => {
-      //AQUI HAY UN ERROR
       console.log(values);
-      const proyectLocal: Proyecto = {
+      const task: Task = {
         nombre: values.nombre,
         descripcion: values.descripcion,
         fecha_inicio: values.fechaInicio,
         fecha_fin: values.fechaFinal,
         creado_por: currentUser!.user.id,
-        actualizado_por: currentUser!.user.id,
-        responsable: values.responsable,
+        id_proyecto: proyect?.id || "",
+        responsables: [values.user as string], //cambiar por el sele
+        comentario: ""
       };
-
-      if (project) {
-        proyectLocal.id = project.id;
-
-        toast.promise(actualizarProyecto(proyectLocal), {
+      toast.promise(
+        insertTasksAndAssignments(task),
+        {
           loading: "Saving...",
           success: () => {
+            console.log("Tarea agregada al proyecto!");
             formik.resetForm();
             //onClose();
             //onReload!(true);
-            window.location.reload();
+            //window.location.reload();
 
-            return <b>Proyecto Actualizado!</b>;
+            return <b>Tarea Agregada</b>;
           },
           error: (err) => {
             formik.setSubmitting(false);
             return `${err.message.toString()}`;
           },
-        });
-
-        return;
-      } else {
-        proyectLocal.actualizado_por = null;
-
-        toast.promise(ingresarProyecto(proyectLocal), {
-          loading: "Saving...",
-          success: () => {
-            formik.resetForm();
-
-            window.location.reload();
-
-            return <b>Proyecto Guardado!</b>;
-          },
-          error: (err) => {
-            formik.setSubmitting(false);
-
-            return `${err.message.toString()}`;
-          },
-        });
-      }
+        }
+      );
     },
   });
 
-  useEffect(() => {
-    getClubesAsignacionProyectos()
-      .then((data) => {
-        const elements = data.map((club: Clubes) => createObject(club));
-
-        setClubElements(elements);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   const asignFechas = () => {
-    console.log(typeof fecha);
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
-
     const fechaFinalAsDate = new Date(
       fechaFinal.year,
       fechaFinal.month - 1,
       fechaFinal.day
     );
-
-    console.log(fechaAsDate);
-    console.log(fechaFinalAsDate);
-
     formik.setFieldValue("fechaInicio", fechaAsDate);
     formik.setFieldValue("fechaFinal", fechaFinalAsDate);
   };
 
+  const [selectedUser, setSelectedUser] = useState<Member | null>(null);
+  const [users, setUsers] = useState<Member[]>([]);
+
+
+
+  const handleUserSelection = (user: Member) => {
+    setSelectedUser(user);
+    console.log("Este ususario jeje:", user);
+  };
+
+  useEffect(() => {
+    
+    getMembersClub('cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081').then((members) => {
+      setUsers(members);
+      console.log("Miembros del club", users);
+    }).catch((error) => {
+      console.error("Error al obtener los miembros del club:", error);
+    });
+  }, [proyect]);
+
+
+  const onChanges = (value: string) => {
+    console.log(value);
+    formik.setFieldValue("user", value);
+  };
+
+
   return (
     <>
       <Toaster />
-      {!project ? (
-        <Button
-          color="primary"
-          endContent={<PlusIcon />}
-          onPress={onOpen}
-          id="AddMemberButton"
-        >
-          Agregar proyecto
-        </Button>
-      ) : (
-        <Tooltip content="Editar Proyecto">
-          <span
-            className="text-lg text-default-400 cursor-pointer active:opacity-50"
-            onClick={onOpen}
-          >
-            {icon}
-          </span>
-        </Tooltip>
-      )}
+      <Button
+        color="primary"
+        endContent={<PlusIcon />}
+        onPress={onOpen}
+        id="AddMemberButton"
+      >
+        Agregar Tarea
+      </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {project ? "Actualizar Proyecto" : "Agregar Proyecto"}
+                Agregar tarea a: {proyect?.nombre}
               </ModalHeader>
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
@@ -218,11 +174,10 @@ export default function FormModal({
                     autoFocus
                     label="Nombre"
                     name="nombre"
-                    value={formik.values.nombre}
                     onChange={formik.handleChange}
                     isInvalid={formik.errors.nombre !== undefined}
                     errorMessage={formik.errors.nombre}
-                    placeholder="Ingresa el nombre del proyecto"
+                    placeholder="Ingresa el nombre de la tarea"
                     variant="bordered"
                     type="text"
                   />
@@ -230,7 +185,6 @@ export default function FormModal({
                   <Textarea
                     label="Descripcion"
                     name="descripcion"
-                    value={formik.values.descripcion}
                     onChange={formik.handleChange}
                     isInvalid={formik.errors.descripcion !== undefined}
                     errorMessage={formik.errors.descripcion}
@@ -241,45 +195,42 @@ export default function FormModal({
                     variant="bordered"
                     maxRows={3}
                   />
-
-                  <InputSearch
-                    elements={clubElements}
-                    label="Responsable"
-                    placeholder="Buscar Club"
-                    name="responsable"
-                    value={formik.values.responsable.toString()} // Convert the value to a string
+                  <SelectUsers
+                    datas={users}
+                    name="usuario"
+                    value={formik.values.user.toString()} // Convert the value to a string
                     onChange={onChanges}
-                    isInvalid={formik.errors.responsable !== undefined}
+                    isInvalid={formik.errors.user !== undefined}
                     className={`flex 
-                      ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
-                      justify-between`}
-                    errorMessage={formik.errors.responsable}
-                  ></InputSearch>
-
+                                        ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
+                                        justify-between`}
+                    errorMessage={formik.errors.user}
+                  ></SelectUsers>
                   <div
                     className={`flex 
-                  ${
-                    formik.errors.descripcion !== undefined ? "py-0" : "py-3"
-                  } justify-between`}
+                  ${formik.errors.descripcion !== undefined ? "py-0" : "py-3"
+                      } justify-between`}
                   >
-                    <DateInput
+                    <DatePicker
                       value={fecha}
                       onChange={(date) => {
                         setFecha(date);
                       }}
                       label="Fecha Inicio"
+                      showMonthAndYearPickers
                       className="max-w-[284px]"
                       isInvalid={formik.errors.fechaInicio !== undefined}
                       errorMessage={formik.errors.fechaInicio}
                     />
 
                     <div className=" w-2"></div>
-                    <DateInput
+                    <DatePicker
                       value={fechaFinal}
                       onChange={(date) => {
                         setFechaFinal(date);
                       }}
                       label="Fecha Final"
+                      showMonthAndYearPickers
                       className="max-w-[284px]"
                       isInvalid={formik.errors.fechaFinal !== undefined}
                       errorMessage={formik.errors.fechaFinal}
@@ -290,13 +241,8 @@ export default function FormModal({
                   <Button color="danger" variant="flat" onPress={onClose}>
                     Close
                   </Button>
-                  <Button
-                    color="primary"
-                    type="submit"
-                    onPress={asignFechas}
-                    isLoading={formik.isSubmitting}
-                  >
-                    {project ? "Actualizar" : "Registrar"}
+                  <Button color="primary" type="submit" onPress={asignFechas}>
+                    Registrar
                   </Button>
                 </ModalFooter>
               </form>
@@ -306,4 +252,6 @@ export default function FormModal({
       </Modal>
     </>
   );
+
+
 }
