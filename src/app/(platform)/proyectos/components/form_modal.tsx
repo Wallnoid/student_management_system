@@ -71,8 +71,6 @@ export default function FormModal({
     parseDate(project?.fecha_fin || finalDate)
   );
 
-  const [clubes, setClubes] = useState<Clubes[]>([]);
-
   const [clubElements, setClubElements] = useState<ReactElement[]>([]);
 
   const createObject = (data: Clubes): ReactElement => {
@@ -98,18 +96,13 @@ export default function FormModal({
       descripcion: project?.descripcion || "",
       fechaInicio: project?.fecha_inicio || "",
       fechaFinal: project?.fecha_fin || "",
+      fechaValida: project?.fecha_inicio || currentDate,
       responsable: (project?.responsable as ClubInternos)?.id || "",
     },
-    validationSchema: projectSchema(
-      fecha instanceof Date
-        ? fecha
-        : new Date(fecha.year, fecha.month - 1, fecha.day),
-      fechaFinal instanceof Date
-        ? fechaFinal
-        : new Date(fechaFinal.year, fechaFinal.month - 1, fechaFinal.day)
-    ),
+    validationSchema: projectSchema(),
     onSubmit: (values) => {
       //AQUI HAY UN ERROR
+      console.log(values);
       const proyectLocal: Proyecto = {
         nombre: values.nombre,
         descripcion: values.descripcion,
@@ -121,54 +114,52 @@ export default function FormModal({
         responsable: values.responsable,
       };
 
-      if (project) {
-        proyectLocal.id = project.id;
+      // if (project) {
+      //   proyectLocal.id = project.id;
 
-        toast.promise(
-          actualizarProyecto(proyectLocal?.id || "", proyectLocal),
-          {
-            loading: "Saving...",
-            success: () => {
-              formik.resetForm();
-              //onClose();
-              //onReload!(true);
-              window.location.reload();
+      //   toast.promise(
+      //     actualizarProyecto(proyectLocal?.id || "", proyectLocal),
+      //     {
+      //       loading: "Saving...",
+      //       success: () => {
+      //         formik.resetForm();
+      //         //onClose();
+      //         //onReload!(true);
+      //         window.location.reload();
 
-              return <b>Proyecto Actualizado!</b>;
-            },
-            error: (err) => {
-              formik.setSubmitting(false);
-              return `${err.message.toString()}`;
-            },
-          }
-        );
+      //         return <b>Proyecto Actualizado!</b>;
+      //       },
+      //       error: (err) => {
+      //         formik.setSubmitting(false);
+      //         return `${err.message.toString()}`;
+      //       },
+      //     }
+      //   );
 
-        return;
-      } else {
-        toast.promise(ingresarProyecto(proyectLocal), {
-          loading: "Saving...",
-          success: () => {
-            formik.resetForm();
+      //   return;
+      // } else {
+      //   toast.promise(ingresarProyecto(proyectLocal), {
+      //     loading: "Saving...",
+      //     success: () => {
+      //       formik.resetForm();
 
-            window.location.reload();
+      //       window.location.reload();
 
-            return <b>Proyecto Guardado!</b>;
-          },
-          error: (err) => {
-            formik.setSubmitting(false);
+      //       return <b>Proyecto Guardado!</b>;
+      //     },
+      //     error: (err) => {
+      //       formik.setSubmitting(false);
 
-            return `${err.message.toString()}`;
-          },
-        });
-      }
+      //       return `${err.message.toString()}`;
+      //     },
+      //   });
+      // }
     },
   });
 
   useEffect(() => {
     getClubesAsignacionProyectos()
       .then((data) => {
-        setClubes(data);
-
         const elements = data.map((club: Clubes) => createObject(club));
 
         setClubElements(elements);
@@ -179,12 +170,20 @@ export default function FormModal({
   }, []);
 
   const asignFechas = () => {
+    console.log(typeof fecha);
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
     const fechaFinalAsDate = new Date(
       fechaFinal.year,
       fechaFinal.month - 1,
       fechaFinal.day
     );
+
+    const fechaValida = new Date(formik.values.fechaValida);
+
+    console.log(fechaAsDate);
+    console.log(fechaFinalAsDate);
+
+    console.log(fechaValida);
 
     formik.setFieldValue("fechaInicio", fechaAsDate);
     formik.setFieldValue("fechaFinal", fechaFinalAsDate);
