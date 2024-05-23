@@ -97,9 +97,7 @@ export default function AddTaskModal({
           success: () => {
             console.log("Tarea agregada al proyecto!");
             formik.resetForm();
-            //onClose();
-            //onReload!(true);
-            //window.location.reload();
+            window.location.reload();
 
             return <b>Tarea Agregada</b>;
           },
