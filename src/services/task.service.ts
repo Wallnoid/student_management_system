@@ -12,7 +12,7 @@ supabase().auth.onAuthStateChange((event, session) => {
 });
 
 export async function insertTasksAndAssignments(tarea: Task) {
-    const { comentario, creado_por, descripcion, fecha_fin, fecha_inicio, nombre, proyecto, responsables } = tarea
+    const { comentario, creado_por, descripcion, fecha_fin, fecha_inicio, nombre, id_proyecto, responsables } = tarea
     let { data, error } = await supabase()
         .rpc('agregar_tarea', {
             'comentario':comentario ?? '',
@@ -22,7 +22,7 @@ export async function insertTasksAndAssignments(tarea: Task) {
             'fecha_fin':fecha_fin,
             'fecha_inicio':fecha_inicio,
             'nombre':nombre,
-            'proyecto':proyecto,
+            'proyecto':id_proyecto,
             'responsables':responsables
         })
     if (error) {
@@ -73,7 +73,7 @@ export async function updateTaskStatus(id: string, estado: string) {
     return true;
 }
 export async function updateTask(tarea: Task) {
-    const { comentario, descripcion, fecha_fin, fecha_inicio, nombre, proyecto, actualizado_por, estado } = tarea
+    const { comentario, descripcion, fecha_fin, fecha_inicio, nombre, id_proyecto, actualizado_por, estado } = tarea
     const { data, error } = await supabase()
         .from('tareas')
         .update({
@@ -83,7 +83,7 @@ export async function updateTask(tarea: Task) {
             fecha_fin,
             fecha_inicio,
             nombre,
-            proyecto,
+            id_proyecto,
             actualizado_por: actualizado_por,
             fecha_hora_actuación: 'NOW()'
         })

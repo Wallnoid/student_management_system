@@ -86,7 +86,7 @@ export default function AddTaskModal({
         fecha_inicio: values.fechaInicio,
         fecha_fin: values.fechaFinal,
         creado_por: currentUser!.user.id,
-        proyecto: proyect?.id || "",
+        id_proyecto: proyect?.id || "",
         responsables: [values.user as string], //cambiar por el sele
         comentario: ""
       };
