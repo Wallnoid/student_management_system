@@ -16,20 +16,25 @@ export async function getMembers() {
     .neq("estado", "eliminado");
   //.neq("id", currentUser!.user.id);
   if (error) {
-    console.error("Error fetching members:", error);
-    return [];
+      throw new Error('Error al recuperar datos del servidor. Intente más tarde.');
   }
   return data as Member[];
 }
 
 export async function getMemberById(id: string) {
-  let usarios = await supabase().from("miembros").select("*").eq("id", id);
-  return usarios.data as Member[];
+  let {data, error} = await supabase().from("miembros").select("*").eq("id", id);
+  if(error){
+    throw new Error('Error al recuperar datos del miembro. Recargue la página e intente de nuevo.');
+  }
+  return data as Member[];
 }
 
 export async function getMemberStatus(id: string) {
-  let usarios = await supabase().from("miembros").select("estado").eq("id", id);
-  return usarios.data as Member[];
+  let {data, error} = await supabase().from("miembros").select("estado").eq("id", id);
+  if(error){
+    throw new Error('Error al recuperar el estado del miembro seleccionado. Intente de nuevo.');
+  }
+  return data as Member[];
 }
 
 export async function updateMemberStatus(id: string, estado: string) {
@@ -38,8 +43,7 @@ export async function updateMemberStatus(id: string, estado: string) {
     .update({ estado: estado })
     .eq("id", id);
   if (error) {
-    console.log("Error al actualizar estado.");
-    return false;
+    throw new Error('Error al actualizar el miembro del estado. Recargue la página e intente de nuevo.');
   }
   return true;
 }
