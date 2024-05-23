@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactElement } from "react";
 import {
   Modal,
   ModalContent,
@@ -71,9 +71,9 @@ export default function FormModal({
     parseDate(project?.fecha_fin || finalDate)
   );
 
-  const [clubes, setClubes] = useState<Clubes[]>([]);
+  const [clubElements, setClubElements] = useState<ReactElement[]>([]);
 
-  const createObject = (data: Clubes) => {
+  const createObject = (data: Clubes): ReactElement => {
     return (
       <AutocompleteItem key={data.id} textValue={data.nombre}>
         <div className="flex flex-col">
@@ -87,7 +87,6 @@ export default function FormModal({
   };
 
   const onChanges = (value: string) => {
-    console.log(typeof value);
     formik.setFieldValue("responsable", value);
   };
 
@@ -97,19 +96,13 @@ export default function FormModal({
       descripcion: project?.descripcion || "",
       fechaInicio: project?.fecha_inicio || "",
       fechaFinal: project?.fecha_fin || "",
-      responsable: project?.responsable || "",
+      fechaValida: project?.fecha_inicio || currentDate,
+      responsable: (project?.responsable as ClubInternos)?.id || "",
     },
-    validationSchema: projectSchema(
-      fecha instanceof Date
-        ? fecha
-        : new Date(fecha.year, fecha.month - 1, fecha.day),
-      fechaFinal instanceof Date
-        ? fechaFinal
-        : new Date(fechaFinal.year, fechaFinal.month - 1, fechaFinal.day)
-    ),
+    validationSchema: projectSchema(),
     onSubmit: (values) => {
-      console.log(values);
       //AQUI HAY UN ERROR
+      console.log(values);
       const proyectLocal: Proyecto = {
         nombre: values.nombre,
         descripcion: values.descripcion,
@@ -121,61 +114,55 @@ export default function FormModal({
         responsable: values.responsable,
       };
 
-      if (project) {
-        console.log("Actualizando miembro");
-        proyectLocal.id = project.id;
+      // if (project) {
+      //   proyectLocal.id = project.id;
 
-        console.log(proyectLocal);
+      //   toast.promise(
+      //     actualizarProyecto(proyectLocal?.id || "", proyectLocal),
+      //     {
+      //       loading: "Saving...",
+      //       success: () => {
+      //         formik.resetForm();
+      //         //onClose();
+      //         //onReload!(true);
+      //         window.location.reload();
 
-        toast.promise(
-          actualizarProyecto(proyectLocal?.id || "", proyectLocal),
-          {
-            loading: "Saving...",
-            success: () => {
-              console.log("Proyect actualizado!");
-              formik.resetForm();
-              //onClose();
-              //onReload!(true);
-              window.location.reload();
+      //         return <b>Proyecto Actualizado!</b>;
+      //       },
+      //       error: (err) => {
+      //         formik.setSubmitting(false);
+      //         return `${err.message.toString()}`;
+      //       },
+      //     }
+      //   );
 
-              return <b>Proyecto Actualizado!</b>;
-            },
-            error: (err) => {
-              formik.setSubmitting(false);
-              return `${err.message.toString()}`;
-            },
-          }
-        );
+      //   return;
+      // } else {
+      //   toast.promise(ingresarProyecto(proyectLocal), {
+      //     loading: "Saving...",
+      //     success: () => {
+      //       formik.resetForm();
 
-        return;
-      } else {
-        console.log("Registrando miembro");
-        toast.promise(ingresarProyecto(proyectLocal), {
-          loading: "Saving...",
-          success: () => {
-            console.log("Miembro guardado!");
-            formik.resetForm();
+      //       window.location.reload();
 
-            window.location.reload();
+      //       return <b>Proyecto Guardado!</b>;
+      //     },
+      //     error: (err) => {
+      //       formik.setSubmitting(false);
 
-            return <b>Proyecto Guardado!</b>;
-          },
-          error: (err) => {
-            formik.setSubmitting(false);
-            console.log(err);
-            return `${err.message.toString()}`;
-          },
-        });
-      }
+      //       return `${err.message.toString()}`;
+      //     },
+      //   });
+      // }
     },
   });
 
   useEffect(() => {
     getClubesAsignacionProyectos()
       .then((data) => {
-        setClubes(data);
+        const elements = data.map((club: Clubes) => createObject(club));
 
-        console.log(clubes);
+        setClubElements(elements);
       })
       .catch((error) => {
         console.log(error);
@@ -183,6 +170,7 @@ export default function FormModal({
   }, []);
 
   const asignFechas = () => {
+    console.log(typeof fecha);
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
     const fechaFinalAsDate = new Date(
       fechaFinal.year,
@@ -190,8 +178,12 @@ export default function FormModal({
       fechaFinal.day
     );
 
+    const fechaValida = new Date(formik.values.fechaValida);
+
     console.log(fechaAsDate);
     console.log(fechaFinalAsDate);
+
+    console.log(fechaValida);
 
     formik.setFieldValue("fechaInicio", fechaAsDate);
     formik.setFieldValue("fechaFinal", fechaFinalAsDate);
@@ -255,19 +247,18 @@ export default function FormModal({
                     variant="bordered"
                     maxRows={3}
                   />
-                  {
-                    <InputSearch
-                      datas={clubes}
-                      name="responsable"
-                      value={formik.values.responsable.toString()} // Convert the value to a string
-                      onChange={onChanges}
-                      isInvalid={formik.errors.responsable !== undefined}
-                      className={`flex 
+
+                  <InputSearch
+                    elements={clubElements}
+                    name="responsable"
+                    value={formik.values.responsable.toString()} // Convert the value to a string
+                    onChange={onChanges}
+                    isInvalid={formik.errors.responsable !== undefined}
+                    className={`flex 
                       ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
                       justify-between`}
-                      errorMessage={formik.errors.responsable}
-                    ></InputSearch>
-                  }
+                    errorMessage={formik.errors.responsable}
+                  ></InputSearch>
 
                   <div
                     className={`flex 
