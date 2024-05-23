@@ -2,16 +2,62 @@
 
 import { useEffect, useState } from "react";
 import { Task } from "@/interfaces/Task";
-import { getTaskByProject, getTasks } from "@/services/task.service";
+import { getTaskByProject, getTasks, updateTaskStatus } from "@/services/task.service";
 import { Button, Chip } from "@nextui-org/react";
 import '../styles/styles-tasks.css'
-import { FaEye, FaRegEdit } from "react-icons/fa";
+import { FaCaretRight, FaEye, FaRegEdit } from "react-icons/fa";
 import { DeleteIcon } from "@/components/shared/icons";
 import AlertDelete from "@/components/shared/alert_delete";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { Member } from "@/interfaces/Member";
 interface TaskContainerProps {
   title: string;
   tasks: Task[];
+}
+
+const onDelete = (id: string) => {
+  toast.custom(
+    (t) => (
+      <AlertDelete
+        onCancel={() => {
+          toast.dismiss(t.id);
+        }}
+        onSubmit={() => {
+          toast.promise(updateTaskStatus(id, "Eliminado"), {
+            loading: "Actualizando...",
+            success: () => {
+              window.location.reload();
+              return <b>Tarea eliminada</b>;
+            },
+            error: (err) => {
+              return `${err.message.toString()}`;
+            },
+          });
+
+          toast.dismiss(t.id);
+        }}
+        visible={t.visible}
+      ></AlertDelete>
+    ),
+    { duration: Infinity }
+  );
+}
+
+const onUpdate = (id: string, status: string) => {
+  updateTaskStatus(id, status).then(() => {
+    window.location.reload();
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+const taskStatus = (task: Task) => {
+  if(task.estado === 'Activa'){
+    return 'En Progreso';
+  }else if(task.estado === 'En Progreso'){
+    return 'Completada';
+  }
+  return 'Activa';
 }
 
 
@@ -29,19 +75,19 @@ const TaskContainer: React.FC<TaskContainerProps> = ({ title, tasks }) => (
               className="text-lg cursor-pointer active:opacity-50"
               onClick={() => { }}
             >
-              <FaEye />
-            </span>
-            <span
-              className="text-lg cursor-pointer active:opacity-50"
-              onClick={() => { }}
-            >
               <FaRegEdit />
             </span>
             <span
               className="text-lg text-danger cursor-pointer active:opacity-50"
-              onClick={() => {}}
+              onClick={() => {onDelete(task.id)}}
             >
               <DeleteIcon />
+            </span>
+            <span
+              className="text-lg cursor-pointer active:opacity-50"
+              onClick={() => {onUpdate(task.id,taskStatus(task))}}
+            >
+              <FaCaretRight />
             </span>
           </div>
         </div>
@@ -50,7 +96,7 @@ const TaskContainer: React.FC<TaskContainerProps> = ({ title, tasks }) => (
   </div>
 );
 
-export default function TasksList({ id }: { id: string}) {
+export default function TasksList({ id }: { id: string }) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
@@ -68,10 +114,15 @@ export default function TasksList({ id }: { id: string}) {
   const completedTasks = tasks.filter(task => task.estado === 'Completada');
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
-      <TaskContainer title="Activa" tasks={pendingTasks}/>
-      <TaskContainer title="En Progreso" tasks={inProgressTasks} />
-      <TaskContainer title="Completedas" tasks={completedTasks} />
-    </div>
+    <>
+      <Toaster />
+      <div className="flex flex-col md:flex-row gap-4">
+        <TaskContainer title="Activa" tasks={pendingTasks} />
+        <TaskContainer title="En Progreso" tasks={inProgressTasks} />
+        <TaskContainer title="Completedas" tasks={completedTasks} />
+      </div>
+
+    </>
+
   );
 }
