@@ -8,7 +8,7 @@ import {
   Button,
   useDisclosure,
   Input,
-  DatePicker,
+  DateInput,
   Textarea,
   Tooltip,
   AutocompleteItem,
@@ -94,9 +94,8 @@ export default function FormModal({
     initialValues: {
       nombre: project?.nombre || "",
       descripcion: project?.descripcion || "",
-      fechaInicio: project?.fecha_inicio || "",
-      fechaFinal: project?.fecha_fin || "",
-      fechaValida: project?.fecha_inicio || currentDate,
+      fechaInicio: project?.fecha_inicio || currentDate,
+      fechaFinal: project?.fecha_fin || currentDate,
       responsable: (project?.responsable as ClubInternos)?.id || "",
     },
     validationSchema: projectSchema(),
@@ -114,46 +113,46 @@ export default function FormModal({
         responsable: values.responsable,
       };
 
-      // if (project) {
-      //   proyectLocal.id = project.id;
+      if (project) {
+        proyectLocal.id = project.id;
 
-      //   toast.promise(
-      //     actualizarProyecto(proyectLocal?.id || "", proyectLocal),
-      //     {
-      //       loading: "Saving...",
-      //       success: () => {
-      //         formik.resetForm();
-      //         //onClose();
-      //         //onReload!(true);
-      //         window.location.reload();
+        toast.promise(
+          actualizarProyecto(proyectLocal?.id || "", proyectLocal),
+          {
+            loading: "Saving...",
+            success: () => {
+              formik.resetForm();
+              //onClose();
+              //onReload!(true);
+              window.location.reload();
 
-      //         return <b>Proyecto Actualizado!</b>;
-      //       },
-      //       error: (err) => {
-      //         formik.setSubmitting(false);
-      //         return `${err.message.toString()}`;
-      //       },
-      //     }
-      //   );
+              return <b>Proyecto Actualizado!</b>;
+            },
+            error: (err) => {
+              formik.setSubmitting(false);
+              return `${err.message.toString()}`;
+            },
+          }
+        );
 
-      //   return;
-      // } else {
-      //   toast.promise(ingresarProyecto(proyectLocal), {
-      //     loading: "Saving...",
-      //     success: () => {
-      //       formik.resetForm();
+        return;
+      } else {
+        toast.promise(ingresarProyecto(proyectLocal), {
+          loading: "Saving...",
+          success: () => {
+            formik.resetForm();
 
-      //       window.location.reload();
+            window.location.reload();
 
-      //       return <b>Proyecto Guardado!</b>;
-      //     },
-      //     error: (err) => {
-      //       formik.setSubmitting(false);
+            return <b>Proyecto Guardado!</b>;
+          },
+          error: (err) => {
+            formik.setSubmitting(false);
 
-      //       return `${err.message.toString()}`;
-      //     },
-      //   });
-      // }
+            return `${err.message.toString()}`;
+          },
+        });
+      }
     },
   });
 
@@ -172,18 +171,15 @@ export default function FormModal({
   const asignFechas = () => {
     console.log(typeof fecha);
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
+
     const fechaFinalAsDate = new Date(
       fechaFinal.year,
       fechaFinal.month - 1,
       fechaFinal.day
     );
 
-    const fechaValida = new Date(formik.values.fechaValida);
-
     console.log(fechaAsDate);
     console.log(fechaFinalAsDate);
-
-    console.log(fechaValida);
 
     formik.setFieldValue("fechaInicio", fechaAsDate);
     formik.setFieldValue("fechaFinal", fechaFinalAsDate);
@@ -266,26 +262,24 @@ export default function FormModal({
                     formik.errors.descripcion !== undefined ? "py-0" : "py-3"
                   } justify-between`}
                   >
-                    <DatePicker
+                    <DateInput
                       value={fecha}
                       onChange={(date) => {
                         setFecha(date);
                       }}
                       label="Fecha Inicio"
-                      showMonthAndYearPickers
                       className="max-w-[284px]"
                       isInvalid={formik.errors.fechaInicio !== undefined}
                       errorMessage={formik.errors.fechaInicio}
                     />
 
                     <div className=" w-2"></div>
-                    <DatePicker
+                    <DateInput
                       value={fechaFinal}
                       onChange={(date) => {
                         setFechaFinal(date);
                       }}
                       label="Fecha Final"
-                      showMonthAndYearPickers
                       className="max-w-[284px]"
                       isInvalid={formik.errors.fechaFinal !== undefined}
                       errorMessage={formik.errors.fechaFinal}

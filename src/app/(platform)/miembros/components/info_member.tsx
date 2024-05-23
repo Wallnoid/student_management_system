@@ -1,5 +1,6 @@
 import { EyeIcon } from "@/components/shared/icons";
 import { Member } from "@/interfaces/Member";
+import { formatDate } from "@/utils/utils";
 import {
   Modal,
   ModalContent,
@@ -18,7 +19,6 @@ import {
   Chip,
   ChipProps,
 } from "@nextui-org/react";
-import { parseISO, format } from "date-fns";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "success",
@@ -30,21 +30,19 @@ export default function InfoMembers({ member }: { member: Member }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const fechaNacimiento = member.fecha_nacimiento;
-  const fechaNacimientoFormateada = format(
-    parseISO(fechaNacimiento),
-    "dd/MM/yyyy"
-  );
+  const fechaNacimientoFormateada = fechaNacimiento
+    ? formatDate(fechaNacimiento!)
+    : "----";
 
   const fechaCreacion = member.fecha_hora_creacion;
-  const fechaCreacionFormateada = format(
-    parseISO(fechaCreacion!),
-    "dd/MM/yyyy HH:mm"
-  );
+  const fechaCreacionFormateada = fechaCreacion
+    ? formatDate(fechaCreacion!)
+    : "----";
 
   const fechaActualizacion = member.fecha_hora_actualizacion;
   const fechaActualizacionFormateada = fechaActualizacion
-    ? format(parseISO(fechaActualizacion!), "dd/MM/yyyy HH:mm")
-    : "N/A";
+    ? formatDate(fechaActualizacion)
+    : "----";
 
   return (
     <>
