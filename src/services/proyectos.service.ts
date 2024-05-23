@@ -4,9 +4,11 @@ import { createClient as supabase } from "@/supabase/client";
 let currentUser = null;
 
 supabase().auth.onAuthStateChange((event, session) => {
-  if (session) {
-    currentUser = session;
-  }
+    if (event === 'SIGNED_IN') {
+        // Solo actualiza currentUser cuando se inicia sesión
+        currentUser = session;
+    }
+    console.log("User logged in: ", currentUser!);
 });
 
 export async function getProyectos() {

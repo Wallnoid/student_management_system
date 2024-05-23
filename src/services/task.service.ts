@@ -1,14 +1,15 @@
 import { createClient as supabase } from "@/supabase/client";
 import { Task } from "@/interfaces/Task";
 import { AsignacionesTareas } from "@/interfaces/AsignacionesTareas";
+import { Project } from "next/dist/build/swc";
 let currentUser = null;
 
 supabase().auth.onAuthStateChange((event, session) => {
-    if (session) {
+    if (event === 'SIGNED_IN') {
+        // Solo actualiza currentUser cuando se inicia sesión
         currentUser = session;
-    } else {
-        currentUser = null;
     }
+    console.log("User logged in: ", currentUser!);
 });
 
 export async function insertTasksAndAssignments(tarea: Task) {
@@ -119,4 +120,12 @@ export async function eliminarResponsable(id: string) {
         console.error("Error deleting responsible:", error);
         return false;
     }
+}
+export async function getTaskByProject(proyecto: string) {
+    let {data, error} = await supabase().from('tareas').select('*').eq('id_proyecto', proyecto)
+    if (error) {
+        console.error("Error fetching tasks:", error);
+        return [];
+    }
+    return data as Task[];
 }

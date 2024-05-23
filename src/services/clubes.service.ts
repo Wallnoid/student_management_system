@@ -3,6 +3,16 @@ import {ClubInternos} from "@/interfaces/ClubInternos";
 import {Member} from "@/interfaces/Member";
 import {AsignacionesClubes} from "@/interfaces/AsignacionesClubes";
 
+let currentUser = null;
+
+supabase().auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN') {
+        // Solo actualiza currentUser cuando se inicia sesión
+        currentUser = session;
+    }
+    console.log("User logged in: ", currentUser!);
+});
+
 export async function insertClub(club: ClubInternos) {
     const    { nombre,
     descripcion,
