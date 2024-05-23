@@ -27,7 +27,7 @@ export const projectSchema = () => {
       .required("El responsable es requerido"),
     fechaInicio: yup
       .date()
-      .min(actualDate, "La fecha de inicio debe ser mayor o igual a la actual")
+
       .max(
         new Date(`${actualDate.getFullYear() + 1}-01-01`),
         "La fecha de inicio debe ser menor a un año"
