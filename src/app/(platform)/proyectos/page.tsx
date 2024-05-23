@@ -14,6 +14,7 @@ import {
   ChipProps,
   SortDescriptor,
   Tooltip,
+  Link,
 } from "@nextui-org/react";
 
 import {
@@ -27,6 +28,7 @@ import {
   EditIcon,
   ProjectIcon,
   PlusIcon,
+  TaskIcon,
 } from "../../../components/shared/icons";
 
 import { columns, statusOptions, INITIAL_VISIBLE_COLUMNS } from "./data/data";
@@ -41,6 +43,9 @@ import InfoProject from "./components/info_proyect";
 import toast from "react-hot-toast";
 import AlertDelete from "@/components/shared/alert_delete";
 import { cutString, formatDate } from "@/utils/utils";
+import { Member } from "@/interfaces/Member";
+import { useRouter } from "next/navigation";
+import { MdChecklistRtl } from "react-icons/md";
 import { Member } from "@/interfaces/Member";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -93,7 +98,7 @@ export default function ProyectsPage() {
       { duration: Infinity }
     );
   };
-
+  const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -151,7 +156,6 @@ export default function ProyectsPage() {
       return 0;
     }
   };
-
   const pages = Math.ceil(filteredItemsLength() / rowsPerPage);
 
   const items = React.useMemo(() => {
@@ -205,12 +209,10 @@ export default function ProyectsPage() {
               </p>
               <p className="text-bold text-tiny capitalize text-default-400">
                 {cutString(
-                  ((project.responsable as ClubInternos).presidente as Member)
-                    .nombre +
+                  ((project.responsable as ClubInternos).presidente as Member).nombre +
                     " " +
-                    ((project.responsable as ClubInternos).presidente as Member)
-                      .apellido,
-                  20
+                  ((project.responsable as ClubInternos).presidente as Member).apellido,
+                  20  
                 )}
               </p>
             </div>
@@ -244,7 +246,14 @@ export default function ProyectsPage() {
                   <DeleteIcon />
                 </span>
               </Tooltip>
-              <AddTaskModal proyect={project as Project} icon={<PlusIcon />} />
+              <Tooltip content="Agregar Tareas">
+                <span
+                  className="text-lg cursor-pointer active:opacity-50"
+                  onClick={() => goToTasks(project!.id ?? "")}
+                >
+                <MdChecklistRtl color="grey" />
+                </span>
+              </Tooltip>
             </div>
           );
         case "fecha_inicio":
@@ -259,6 +268,12 @@ export default function ProyectsPage() {
     },
     []
   );
+
+  const goToTasks = async (id: string) => {
+    router.push(`/tareas/${id}`);
+    
+  }
+
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {

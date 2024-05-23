@@ -30,7 +30,7 @@ import {
   Carreras,
   Semestres,
   Roles,
-} from "../../../../schemas/member_schema";
+} from "@/schemas/member_schema";
 import { DateValue, parseDate } from "@internationalized/date";
 import {
   currentUser,

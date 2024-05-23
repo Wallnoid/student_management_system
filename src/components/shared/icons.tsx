@@ -191,6 +191,41 @@ export const DeleteIcon = ({ props }: { props?: object }) => (
   </svg>
 );
 
+export const TaskIcon = ({ props }: { props?: object }) => (
+  <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height="1em"
+    role="presentation"
+    viewBox="0 0 20 20"
+    width="1em"
+    {...props}
+  >
+    <path
+      d="M2.5 5.83331H17.5"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+    />
+    <path
+      d="M2.5 10H17.5"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+    />
+    <path
+      d="M2.5 14.1667H17.5"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+    />
+  </svg>
+);
+
 export const EyeIcon = ({ props }: { props?: object }) => (
   <svg
     aria-hidden="true"
