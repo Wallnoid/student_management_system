@@ -14,6 +14,7 @@ import {
   ChipProps,
   SortDescriptor,
   Tooltip,
+  Link,
 } from "@nextui-org/react";
 
 import {
@@ -27,6 +28,7 @@ import {
   EditIcon,
   ProjectIcon,
   PlusIcon,
+  TaskIcon,
 } from "../../../components/shared/icons";
 
 import { columns, statusOptions, INITIAL_VISIBLE_COLUMNS } from "./data/data";
@@ -40,6 +42,8 @@ import AddTaskModal from "./components/add_tasks_modal";
 import InfoProyect from "./components/info_proyect";
 import toast from "react-hot-toast";
 import AlertDelete from "@/components/shared/alert_delete";
+import { useRouter } from "next/navigation";
+import { MdChecklistRtl } from "react-icons/md";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
@@ -91,7 +95,7 @@ export default function ProyectsPage() {
       { duration: Infinity }
     );
   };
-
+  const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -149,7 +153,6 @@ export default function ProyectsPage() {
       return 0;
     }
   };
-
   const pages = Math.ceil(filteredItemsLength() / rowsPerPage);
 
   const items = React.useMemo(() => {
@@ -230,7 +233,6 @@ export default function ProyectsPage() {
                 proyect={proyect as Proyect}
                 icon={<EditIcon />}
               ></FormModal>
-              
 
               <Tooltip color="danger" content="Delete user">
                 <span
@@ -240,7 +242,14 @@ export default function ProyectsPage() {
                   <DeleteIcon />
                 </span>
               </Tooltip>
-              <AddTaskModal proyect={proyect as Proyect} icon={<PlusIcon />} />
+              <Tooltip content="Agregar Tareas">
+                <span
+                  className="text-lg cursor-pointer active:opacity-50"
+                  onClick={() => goToTasks(proyect!.id ?? "")}
+                >
+                <MdChecklistRtl color="grey" />
+                </span>
+              </Tooltip>
             </div>
           );
         default:
@@ -249,6 +258,12 @@ export default function ProyectsPage() {
     },
     []
   );
+
+  const goToTasks = async (id: string) => {
+    router.push(`/tareas/${id}`);
+    
+  }
+
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {

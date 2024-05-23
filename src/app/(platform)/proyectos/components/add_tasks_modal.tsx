@@ -91,6 +91,7 @@ export default function AddTaskModal({
         creado_por: currentUser!.user.id,
         proyecto: proyect?.id || "",
         responsables: ['d1ca1fbe-54c4-4992-9622-b3c44da3e5c3'],
+        comentario: ""
       };
 
       if (proyect) {

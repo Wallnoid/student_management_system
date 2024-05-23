@@ -52,9 +52,9 @@ export default function MembersPage() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getMembers()
-      .then((data) => {
-        setUsers(data);
-        console.log(data);
+      .then((members) => {
+        setUsers(members);
+        console.log(members);
       })
       .catch((error) => {
         console.log(error);

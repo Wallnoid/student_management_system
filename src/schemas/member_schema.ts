@@ -10,16 +10,15 @@ const roles = ["lider", "colider", "secretario", "tesorero", "vocal", "normal"] 
 
 export const actualDate = new Date();
 
-
 export type Carreras = (typeof carreras)[number]
 
 export type Semestres = (typeof semestres)[number]
 
 export type Roles = (typeof roles)[number]
 
-
 // ESTE ES EL TIPO QUE ENVIAMOS A LOS SELECT PARA QUE ACEPTEN LOS DATOS 
 export type Data = { [key in Carreras | Semestres | Roles]: string };
+
 
 
 
