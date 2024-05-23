@@ -97,8 +97,7 @@ export default function FormModal({
       rol: member?.categoria || "",
       estado: member?.estado || "",
     },
-    validateOnChange: false,
-    validateOnBlur: true,
+
     validationSchema: memberSchema,
     onSubmit: (values) => {
       const memberLocal: Member = {
