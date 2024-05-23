@@ -43,6 +43,7 @@ import InfoProject from "./components/info_proyect";
 import toast from "react-hot-toast";
 import AlertDelete from "@/components/shared/alert_delete";
 import { cutString, formatDate } from "@/utils/utils";
+import { Member } from "@/interfaces/Member";
 import { useRouter } from "next/navigation";
 import { MdChecklistRtl } from "react-icons/md";
 import { Member } from "@/interfaces/Member";
