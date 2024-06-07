@@ -19,20 +19,10 @@ import { Toaster } from "react-hot-toast";
 import { currentUser } from "@/services/users.service";
 
 import { dateFinalHook, dateInicioHook } from "../hooks/date_hook";
-import { actualDate } from "@/components/shared/table/constants/date_constants";
 import FormikProject from "../constants/formik";
 import ClubElementHook from "../hooks/asignation_club_hook";
+import { actualDate } from "@/constants/date_constants";
 
-export type Presidente = {
-  nombre: string;
-  apellido: string;
-};
-
-export type Clubes = {
-  id: string;
-  nombre: string;
-  presidente: Presidente;
-};
 
 export default function FormModal({
   proyect: project,

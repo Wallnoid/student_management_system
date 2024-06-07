@@ -1,6 +1,6 @@
+import { Clubes } from "@/types/types";
 import { formatDate } from "@/utils/utils";
 import { AutocompleteItem, ChipProps } from "@nextui-org/react";
-import { Clubes } from "../components/form_modal";
 import { ReactElement } from "react";
 
 const columnsTable = [

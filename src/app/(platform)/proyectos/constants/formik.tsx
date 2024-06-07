@@ -1,9 +1,10 @@
-import { currentDate } from "@/components/shared/table/constants/date_constants";
+
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Proyecto } from "@/interfaces/Proyecto";
 import { projectSchema } from "@/schemas/project_schema";
 import { useFormik } from "formik";
 import { registerProject, updateProject } from "../actions/crud_proyect";
+import { currentDate } from "@/constants/date_constants";
 
 export default function FormikProject(
   project: Proyecto | null,

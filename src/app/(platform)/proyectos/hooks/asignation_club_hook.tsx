@@ -1,7 +1,7 @@
 import { getClubesAsignacionProyectos } from "@/services/proyectos.service";
 import { ReactElement, useEffect, useState } from "react";
-import { Clubes } from "../components/form_modal";
 import { createObject } from "../constants/constants";
+import { Clubes } from "@/types/types";
 
 export default function ClubElementHook() {
   const [clubElements, setClubElements] = useState<ReactElement[]>([]);

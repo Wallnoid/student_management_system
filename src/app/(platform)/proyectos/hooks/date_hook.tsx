@@ -2,7 +2,7 @@ import { Member } from "@/interfaces/Member";
 import { useState } from "react";
 import { DateValue, parseDate } from "@internationalized/date";
 import { Proyecto } from "@/interfaces/Proyecto";
-import { currentDate } from "@/components/shared/table/constants/date_constants";
+import { currentDate } from "@/constants/date_constants";
 
 export function dateInicioHook(actualDate: Date, project: Proyecto) {
 
