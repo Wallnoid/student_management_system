@@ -25,10 +25,10 @@ import rowsPerPageHook from "@/components/shared/table/hooks/rows_per_page_hook"
 import sortDescriptionHook from "@/components/shared/table/hooks/sort_descrpition_hook";
 import pageHook from "@/components/shared/table/hooks/page_hook";
 import headerColumnHook from "@/components/shared/table/hooks/header_column_hook";
-import filteredItemsHook from "@/components/shared/table/hooks/filtered_items_hook";
-import itemsHook from "@/components/shared/table/hooks/items_hook";
-import sortedItemsHook from "@/components/shared/table/hooks/sorted_items_hook";
-import renderCellHook from "@/components/shared/table/hooks/render_cell_hook";
+import { filteredItemsMemberHook } from "@/components/shared/table/hooks/filtered_items_hook";
+import { itemsMemberHook } from "@/components/shared/table/hooks/items_hook";
+import { sortedItemsMemberHook } from "@/components/shared/table/hooks/sorted_items_hook";
+import { renderCellMemberHook } from "@/components/shared/table/hooks/render_cell_hook";
 import renderItems from "./constants/render_item_members";
 import OnNextPageHook from "@/components/shared/table/hooks/on_next_page_hook";
 import OnPreviousPageHook from "@/components/shared/table/hooks/on_previous_page.hook";
@@ -59,7 +59,7 @@ export default function MembersPage() {
 
   const headerColumns = headerColumnHook(visibleColumns, columnsTable);
 
-  const filteredItems = filteredItemsHook(
+  const filteredItems = filteredItemsMemberHook(
     filterValue,
     statusFilter,
     users,
@@ -76,11 +76,11 @@ export default function MembersPage() {
 
   const pages = Math.ceil(filteredItemsLength() / rowsPerPage);
 
-  const items = itemsHook(page, rowsPerPage, filteredItems);
+  const items = itemsMemberHook(page, rowsPerPage, filteredItems);
 
-  const sortedItems = sortedItemsHook(items, sortDescriptor);
+  const sortedItems = sortedItemsMemberHook(items, sortDescriptor);
 
-  const renderCell = renderCellHook(renderItems);
+  const renderCell = renderCellMemberHook(renderItems);
 
   const onNextPage = OnNextPageHook(page, pages, setPage);
 

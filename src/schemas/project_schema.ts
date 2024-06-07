@@ -1,7 +1,6 @@
-import * as yup from "yup";
-import { parse, format } from "date-fns";
 
-export const actualDate = new Date();
+import { actualDate } from "@/components/shared/table/constants/date_constants";
+import * as yup from "yup";
 
 console.log(
   `${actualDate.getFullYear()}- ${actualDate.getMonth}-${

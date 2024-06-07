@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Modal,
   ModalContent,
@@ -21,7 +20,6 @@ import {
   mappeoCarreras,
   mappeoSemestres,
   mappeoRoles,
-  actualDate,
   Carreras,
   Semestres,
   Roles,
@@ -32,6 +30,7 @@ import InputSearch from "@/components/shared/input_search";
 import dateHook from "../hooks/date_hook";
 import { optionsElements, statusColorMap } from "../constants/constants";
 import FormikMember from "../constants/formik";
+import { actualDate } from "@/components/shared/table/constants/date_constants";
 
 export default function FormModal({
   member,
