@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -8,141 +7,64 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Chip,
-  User,
-  Selection,
-  ChipProps,
-  SortDescriptor,
-  Tooltip,
 } from "@nextui-org/react";
-
-import { getMembers, updateMemberStatus } from "@/services/members.service";
-
 import {
-  DeleteIcon,
-  EyeIcon,
-  EditIcon,
-  MemberIcon,
-} from "../../../components/shared/icons";
-
-import { columns, statusOptions } from "./data/data";
+  columnsTable,
+  INITIAL_VISIBLE_COLUMNS,
+  MembersStatusOptions,
+} from "./constants/constants";
 import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
-import { Member } from "@/interfaces/Member";
-
-import FormModal from "./components/form_modal";
-import InfoMembers from "./components/info_member";
-import toast from "react-hot-toast";
-import AlertDelete from "@/components/shared/alert_delete";
-import { cutString } from "@/utils/utils";
-
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  activo: "success",
-  inactivo: "danger",
-  suspendido: "warning",
-};
-
-const INITIAL_VISIBLE_COLUMNS = ["nombre", "categoria", "estado", "actions"];
-
-type User = Member;
+import userHook from "./hooks/member_hook";
+import loadingHook from "@/components/shared/table/hooks/loading_hook";
+import filterValueHook from "@/components/shared/table/hooks/filter_value_hook";
+import selectKeysHook from "@/components/shared/table/hooks/select_keys_hook";
+import visibleColumnsHook from "@/components/shared/table/hooks/visible_colums_hook";
+import statusFilterHook from "@/components/shared/table/hooks/status_filter_hook";
+import rowsPerPageHook from "@/components/shared/table/hooks/rows_per_page_hook";
+import sortDescriptionHook from "@/components/shared/table/hooks/sort_descrpition_hook";
+import pageHook from "@/components/shared/table/hooks/page_hook";
+import headerColumnHook from "@/components/shared/table/hooks/header_column_hook";
+import filteredItemsHook from "@/components/shared/table/hooks/filtered_items_hook";
+import itemsHook from "@/components/shared/table/hooks/items_hook";
+import sortedItemsHook from "@/components/shared/table/hooks/sorted_items_hook";
+import renderCellHook from "@/components/shared/table/hooks/render_cell_hook";
+import renderItems from "./constants/render_item_members";
+import OnNextPageHook from "@/components/shared/table/hooks/on_next_page_hook";
+import OnPreviousPageHook from "@/components/shared/table/hooks/on_previous_page.hook";
+import OnRowPerPageChangeHook from "@/components/shared/table/hooks/on_row_per_page_change";
+import OnSearchChangeHook from "@/components/shared/table/hooks/on_search_change_hook";
+import OnClearHook from "@/components/shared/table/hooks/on_clear_hook";
 
 export default function MembersPage() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    getMembers()
-      .then((members) => {
-        setUsers(members);
-        console.log(members);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [loading]);
+  const { loading, setLoading } = loadingHook();
 
-  const deleteUser = async (id: string) => {
-    toast.custom(
-      (t) => (
-        <AlertDelete
-          onCancel={() => {
-            toast.dismiss(t.id);
-          }}
-          onSubmit={() => {
-            toast.promise(updateMemberStatus(id, "eliminado"), {
-              loading: "Saving...",
-              success: () => {
-                window.location.reload();
+  const { users, setUsers } = userHook(loading);
 
-                return <b>Miembro Eliminado!</b>;
-              },
-              error: (err) => {
-                return `${err.message.toString()}`;
-              },
-            });
+  const { filterValue, setFilterValue } = filterValueHook();
 
-            toast.dismiss(t.id);
-          }}
-          visible={t.visible}
-        ></AlertDelete>
-      ),
-      { duration: Infinity }
-    );
-  };
+  const { selectedKeys, setSelectedKeys } = selectKeysHook();
 
-  const [filterValue, setFilterValue] = useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set([])
+  const { visibleColumns, setVisibleColumns } = visibleColumnsHook(
+    INITIAL_VISIBLE_COLUMNS
   );
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
-    new Set(INITIAL_VISIBLE_COLUMNS)
+
+  const { statusFilter, setStatusFilter } = statusFilterHook();
+
+  const { rowsPerPage, setRowsPerPage } = rowsPerPageHook();
+
+  const { sortDescriptor, setSortDescriptor } = sortDescriptionHook();
+
+  const { page, setPage } = pageHook();
+
+  const headerColumns = headerColumnHook(visibleColumns, columnsTable);
+
+  const filteredItems = filteredItemsHook(
+    filterValue,
+    statusFilter,
+    users,
+    MembersStatusOptions
   );
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "age",
-    direction: "ascending",
-  });
-
-  const [page, setPage] = React.useState(1);
-
-  const hasSearchFilter = Boolean(filterValue);
-
-  const headerColumns = React.useMemo(() => {
-    if (visibleColumns === "all") return columns;
-
-    return columns.filter((column) =>
-      Array.from(visibleColumns).includes(column.uid)
-    );
-  }, [visibleColumns]);
-
-  const filteredItems = React.useMemo(() => {
-    try {
-      let filteredUsers = [...users];
-
-      if (hasSearchFilter) {
-        filteredUsers = filteredUsers.filter(
-          (user) =>
-            user.nombre.toLowerCase().includes(filterValue.toLowerCase()) ||
-            user.nro_identificacion
-              .toLowerCase()
-              .includes(filterValue.toLowerCase()) ||
-            user.apellido.toLowerCase().includes(filterValue.toLowerCase())
-        );
-      }
-      if (
-        statusFilter !== "all" &&
-        Array.from(statusFilter).length !== statusOptions.length
-      ) {
-        filteredUsers = filteredUsers.filter((user) =>
-          Array.from(statusFilter).includes(user.estado)
-        );
-      }
-
-      return filteredUsers;
-    } catch (e) {
-      console.log(e);
-    }
-  }, [users, filterValue, statusFilter]);
 
   const filteredItemsLength = function () {
     try {
@@ -154,125 +76,21 @@ export default function MembersPage() {
 
   const pages = Math.ceil(filteredItemsLength() / rowsPerPage);
 
-  const items = React.useMemo(() => {
-    try {
-      const start = (page - 1) * rowsPerPage;
-      const end = start + rowsPerPage;
+  const items = itemsHook(page, rowsPerPage, filteredItems);
 
-      return filteredItems!.slice(start, end);
-    } catch (e) {
-      console.log(e);
-    }
-  }, [page, filteredItems, rowsPerPage]);
+  const sortedItems = sortedItemsHook(items, sortDescriptor);
 
-  const sortedItems = React.useMemo(() => {
-    try {
-      return [...items!].sort((a: User, b: User) => {
-        const first = a[sortDescriptor.column as keyof User] as string;
-        const second = b[sortDescriptor.column as keyof User] as string;
-        const cmp = first < second ? -1 : first > second ? 1 : 0;
+  const renderCell = renderCellHook(renderItems);
 
-        return sortDescriptor.direction === "descending" ? -cmp : cmp;
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }, [sortDescriptor, items]);
+  const onNextPage = OnNextPageHook(page, pages, setPage);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const onPreviousPage = OnPreviousPageHook(page, setPage);
 
-    switch (columnKey) {
-      case "nombre":
-        return (
-          <User
-            avatarProps={{
-              radius: "lg",
-              showFallback: true,
-              src: "https://images.unsplash.com/broken",
-              fallback: <MemberIcon />,
-            }}
-            description={user.correo}
-            name={cutString(cellValue + " " + user.apellido, 20)}
-          >
-            {user.correo}
-          </User>
-        );
-      case "categoria":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {user.categoria}
-            </p>
-          </div>
-        );
-      case "estado":
-        return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[user.estado]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex items-center gap-2">
-            <InfoMembers member={user}></InfoMembers>
+  const onRowsPerPageChange = OnRowPerPageChangeHook(setRowsPerPage, setPage);
 
-            <FormModal icon={<EditIcon />} member={user as Member}></FormModal>
+  const onSearchChange = OnSearchChangeHook(setFilterValue, setPage);
 
-            <Tooltip color="danger" content="Eliminar Miembro">
-              <span
-                className="text-lg text-danger cursor-pointer active:opacity-50"
-                onClick={() => deleteUser(user!.id ?? "")}
-              >
-                <DeleteIcon />
-              </span>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
-
-  const onNextPage = React.useCallback(() => {
-    if (page < pages) {
-      setPage(page + 1);
-    }
-  }, [page, pages]);
-
-  const onPreviousPage = React.useCallback(() => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  }, [page]);
-
-  const onRowsPerPageChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setRowsPerPage(Number(e.target.value));
-      setPage(1);
-    },
-    []
-  );
-
-  const onSearchChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
-
-  const onClear = React.useCallback(() => {
-    setFilterValue("");
-    setPage(1);
-  }, []);
+  const onClear = OnClearHook(setFilterValue, setPage);
 
   return (
     <Table
@@ -306,8 +124,8 @@ export default function MembersPage() {
           setStatusFilter={setStatusFilter}
           visibleColumns={visibleColumns}
           setVisibleColumns={setVisibleColumns}
-          columns={columns}
-          statusOptions={statusOptions}
+          columns={columnsTable}
+          statusOptions={MembersStatusOptions}
           users={users}
           onRowsPerPageChange={onRowsPerPageChange}
           onReload={setLoading}

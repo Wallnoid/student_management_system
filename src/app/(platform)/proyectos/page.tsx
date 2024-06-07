@@ -46,7 +46,7 @@ import { cutString, formatDate } from "@/utils/utils";
 import { Member } from "@/interfaces/Member";
 import { useRouter } from "next/navigation";
 import { MdChecklistRtl } from "react-icons/md";
-import { Member } from "@/interfaces/Member";
+
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   activo: "primary",
