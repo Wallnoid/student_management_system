@@ -1,3 +1,4 @@
+import { actualDate } from "@/components/shared/table/constants/date_constants";
 import * as yup from "yup";
 
 const carreras = [
@@ -18,8 +19,6 @@ const roles = [
   "vocal",
   "normal",
 ] as const;
-
-export const actualDate = new Date();
 
 export type Carreras = (typeof carreras)[number];
 

@@ -1,4 +1,3 @@
-import React, { useState, useEffect, ReactElement } from "react";
 import {
   Modal,
   ModalContent,
@@ -11,27 +10,18 @@ import {
   DateInput,
   Textarea,
   Tooltip,
-  AutocompleteItem,
 } from "@nextui-org/react";
 import { PlusIcon } from "../../../../components/shared/icons";
 
-import { projectSchema, actualDate } from "../../../../schemas/project_schema";
-import {
-  DateValue,
-  parseDate,
-  getLocalTimeZone,
-} from "@internationalized/date";
-import { useFormik } from "formik";
 import InputSearch from "@/components/shared/input_search";
 import { Proyecto } from "@/interfaces/Proyecto";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { currentUser } from "@/services/users.service";
-import {
-  actualizarProyecto,
-  getClubesAsignacionProyectos,
-  ingresarProyecto,
-} from "@/services/proyectos.service";
-import { ClubInternos } from "@/interfaces/ClubInternos";
+
+import { dateFinalHook, dateInicioHook } from "../hooks/date_hook";
+import { actualDate } from "@/components/shared/table/constants/date_constants";
+import FormikProject from "../constants/formik";
+import ClubElementHook from "../hooks/asignation_club_hook";
 
 export type Presidente = {
   nombre: string;
@@ -51,120 +41,19 @@ export default function FormModal({
   proyect?: Proyecto;
   icon?: JSX.Element;
 }) {
-  const currentDate: string = `${actualDate.getFullYear()}-${(
-    actualDate.getMonth() + 1
-  )
-    .toString()
-    .padStart(2, "0")}-${actualDate.getDate().toString().padStart(2, "0")}`;
-
-  const finalDate: string = `${actualDate.getFullYear()}-${(
-    actualDate.getMonth() + 2
-  )
-    .toString()
-    .padStart(2, "0")}-${actualDate.getDate().toString().padStart(2, "0")}`;
-
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [fecha, setFecha] = useState<DateValue>(
-    parseDate(project?.fecha_inicio || currentDate)
-  );
-  const [fechaFinal, setFechaFinal] = useState<DateValue>(
-    parseDate(project?.fecha_fin || finalDate)
-  );
 
-  const [clubElements, setClubElements] = useState<ReactElement[]>([]);
+  const { fecha, setFecha } = dateInicioHook(actualDate, project);
 
-  const createObject = (data: Clubes): ReactElement => {
-    return (
-      <AutocompleteItem key={data.id} textValue={data.nombre}>
-        <div className="flex flex-col">
-          <p className="text-bold text-small capitalize">{data.nombre}</p>
-          <p className="text-bold text-tiny capitalize text-default-400">
-            {data.presidente.nombre + " " + data.presidente.apellido}
-          </p>
-        </div>
-      </AutocompleteItem>
-    );
-  };
+  const { fechaFinal, setFechaFinal } = dateFinalHook(actualDate, project);
+
+  const { clubElements, setClubElements } = ClubElementHook();
 
   const onChanges = (value: string) => {
     formik.setFieldValue("responsable", value);
   };
 
-  const formik = useFormik({
-    initialValues: {
-      nombre: project?.nombre || "",
-      descripcion: project?.descripcion || "",
-      fechaInicio: project?.fecha_inicio || currentDate,
-      fechaFinal: project?.fecha_fin || currentDate,
-      responsable: (project?.responsable as ClubInternos)?.id || "",
-    },
-    validationSchema: projectSchema(),
-    onSubmit: (values) => {
-      //AQUI HAY UN ERROR
-      console.log(values);
-      const proyectLocal: Proyecto = {
-        nombre: values.nombre,
-        descripcion: values.descripcion,
-        fecha_inicio: values.fechaInicio,
-        fecha_fin: values.fechaFinal,
-        creado_por: currentUser!.user.id,
-        actualizado_por: currentUser!.user.id,
-        responsable: values.responsable,
-      };
-
-      if (project) {
-        proyectLocal.id = project.id;
-
-        toast.promise(actualizarProyecto(proyectLocal), {
-          loading: "Saving...",
-          success: () => {
-            formik.resetForm();
-            //onClose();
-            //onReload!(true);
-            window.location.reload();
-
-            return <b>Proyecto Actualizado!</b>;
-          },
-          error: (err) => {
-            formik.setSubmitting(false);
-            return `${err.message.toString()}`;
-          },
-        });
-
-        return;
-      } else {
-        proyectLocal.actualizado_por = null;
-
-        toast.promise(ingresarProyecto(proyectLocal), {
-          loading: "Saving...",
-          success: () => {
-            formik.resetForm();
-
-            window.location.reload();
-
-            return <b>Proyecto Guardado!</b>;
-          },
-          error: (err) => {
-            formik.setSubmitting(false);
-
-            return `${err.message.toString()}`;
-          },
-        });
-      }
-    },
-  });
-
-  useEffect(() => {
-    getClubesAsignacionProyectos()
-      .then((data) => {
-        const elements = data.map((club: Clubes) => createObject(club));
-
-        setClubElements(elements);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  const formik = FormikProject(project, currentUser);
 
   const asignFechas = () => {
     console.log(typeof fecha);

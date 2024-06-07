@@ -103,7 +103,7 @@ export default function topContent({
               ))}
             </DropdownMenu>
           </Dropdown>
-          <FormModal onReload={onReload} />
+          <FormModal />
         </div>
       </div>
       <div className="flex justify-between items-center">
