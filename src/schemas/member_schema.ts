@@ -1,4 +1,5 @@
-import { actualDate } from "@/components/shared/table/constants/date_constants";
+
+import { actualDate } from "@/constants/date_constants";
 import * as yup from "yup";
 
 const carreras = [

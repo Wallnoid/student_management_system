@@ -30,7 +30,7 @@ import InputSearch from "@/components/shared/input_search";
 import dateHook from "../hooks/date_hook";
 import { optionsElements, statusColorMap } from "../constants/constants";
 import FormikMember from "../constants/formik";
-import { actualDate } from "@/components/shared/table/constants/date_constants";
+import { actualDate } from "@/constants/date_constants";
 
 export default function FormModal({
   member,
