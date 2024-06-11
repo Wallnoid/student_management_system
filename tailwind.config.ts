@@ -36,7 +36,7 @@ const config: Config = {
               "900": "#284451",
               "950": "#162b36",
             },
-            tradewind: {
+            secondary: {
               "50": "#f3faf7",
               "100": "#d6f1e9",
               "200": "#aee1d2",
