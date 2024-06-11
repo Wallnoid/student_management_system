@@ -1,15 +1,5 @@
 "use client";
 
-import { ReactNode } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@nextui-org/react";
-
 import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
 import { useRouter } from "next/navigation";
@@ -39,9 +29,12 @@ import OnRowPerPageChangeHook from "@/components/shared/table/hooks/on_row_per_p
 import OnSearchChangeHook from "@/components/shared/table/hooks/on_search_change_hook";
 import OnClearHook from "@/components/shared/table/hooks/on_clear_hook";
 import DefaultTable from "@/components/shared/table/table";
+import loadingHook from "@/components/shared/table/hooks/loading_hook";
 
 export default function ProjectsPage() {
-  const { projects, setProjects } = ProjectHook(true);
+  const { loading, setLoading } = loadingHook();
+
+  const { projects, setProjects } = ProjectHook(loading);
 
   const router = useRouter();
 
