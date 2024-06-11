@@ -38,6 +38,7 @@ import OnPreviousPageHook from "@/components/shared/table/hooks/on_previous_page
 import OnRowPerPageChangeHook from "@/components/shared/table/hooks/on_row_per_page_change";
 import OnSearchChangeHook from "@/components/shared/table/hooks/on_search_change_hook";
 import OnClearHook from "@/components/shared/table/hooks/on_clear_hook";
+import DefaultTable from "@/components/shared/table/table";
 
 export default function ProjectsPage() {
   const { projects, setProjects } = ProjectHook(true);
@@ -98,67 +99,33 @@ export default function ProjectsPage() {
   const onClear = OnClearHook(setFilterValue, setPage);
 
   return (
-    <Table
-      className="p-10"
-      aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
-      bottomContent={
-        <BottomContent
-          selectedKeys={selectedKeys}
-          filteredItems={filteredItems}
-          page={page}
-          pages={pages}
-          setPage={setPage}
-          onPreviousPage={onPreviousPage}
-          onNextPage={onNextPage}
-        ></BottomContent>
-      }
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[382px] ",
-      }}
+    <DefaultTable
       selectedKeys={selectedKeys}
-      selectionMode="multiple"
+      setSelectedKeys={setSelectedKeys}
       sortDescriptor={sortDescriptor}
-      topContent={
-        <TopContent
-          filterValue={filterValue}
-          onClear={onClear}
-          onSearchChange={onSearchChange}
-          statusFilter={statusFilter}
-          setStatusFilter={setStatusFilter}
-          visibleColumns={visibleColumns}
-          setVisibleColumns={setVisibleColumns}
-          columns={columnsTable}
-          statusOptions={statusOptions}
-          users={projects}
-          onRowsPerPageChange={onRowsPerPageChange}
-        ></TopContent>
-      }
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"Cargando..."} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+      setSortDescriptor={setSortDescriptor}
+      filterValue={filterValue}
+      onSearchChange={onSearchChange}
+      onClear={onClear}
+      statusFilter={statusFilter}
+      setStatusFilter={setStatusFilter}
+      visibleColumns={visibleColumns}
+      setVisibleColumns={setVisibleColumns}
+      columnsTable={columnsTable}
+      statusOptions={statusOptions}
+      entities={projects}
+      onRowsPerPageChange={onRowsPerPageChange}
+      page={page}
+      setPage={setPage}
+      onPreviousPage={onPreviousPage}
+      onNextPage={onNextPage}
+      filteredItems={filteredItems}
+      pages={pages}
+      headerColumns={headerColumns}
+      BottomContent={BottomContent}
+      TopContent={TopContent}
+      sortedItems={sortedItems}
+      renderCell={renderCell}
+    ></DefaultTable>
   );
 }
