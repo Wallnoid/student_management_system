@@ -36,9 +36,8 @@ import { Member } from "@/interfaces/Member";
 import { getMembers } from "@/services/members.service";
 import { getMembersClub } from "@/services/clubes.service";
 import { ClubInternos } from "@/interfaces/ClubInternos";
-import { actualDate, projectSchema } from "@/schemas/project_schema";
-
-
+import { projectSchema } from "@/schemas/project_schema";
+import { actualDate } from "@/constants/date_constants";
 
 export default function AddTaskModal({
   proyect,
@@ -88,25 +87,22 @@ export default function AddTaskModal({
         creado_por: currentUser!.user.id,
         id_proyecto: proyect?.id || "",
         responsables: [values.user as string], //cambiar por el sele
-        comentario: ""
+        comentario: "",
       };
-      toast.promise(
-        insertTasksAndAssignments(task),
-        {
-          loading: "Saving...",
-          success: () => {
-            console.log("Tarea agregada al proyecto!");
-            formik.resetForm();
-            window.location.reload();
+      toast.promise(insertTasksAndAssignments(task), {
+        loading: "Saving...",
+        success: () => {
+          console.log("Tarea agregada al proyecto!");
+          formik.resetForm();
+          window.location.reload();
 
-            return <b>Tarea Agregada</b>;
-          },
-          error: (err) => {
-            formik.setSubmitting(false);
-            return `${err.message.toString()}`;
-          },
-        }
-      );
+          return <b>Tarea Agregada</b>;
+        },
+        error: (err) => {
+          formik.setSubmitting(false);
+          return `${err.message.toString()}`;
+        },
+      });
     },
   });
 
@@ -124,29 +120,26 @@ export default function AddTaskModal({
   const [selectedUser, setSelectedUser] = useState<Member | null>(null);
   const [users, setUsers] = useState<Member[]>([]);
 
-
-
   const handleUserSelection = (user: Member) => {
     setSelectedUser(user);
     console.log("Este ususario jeje:", user);
   };
 
   useEffect(() => {
-    
-    getMembersClub('cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081').then((members) => {
-      setUsers(members);
-      console.log("Miembros del club", users);
-    }).catch((error) => {
-      console.error("Error al obtener los miembros del club:", error);
-    });
+    getMembersClub("cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081")
+      .then((members) => {
+        setUsers(members);
+        console.log("Miembros del club", users);
+      })
+      .catch((error) => {
+        console.error("Error al obtener los miembros del club:", error);
+      });
   }, [proyect]);
-
 
   const onChanges = (value: string) => {
     console.log(value);
     formik.setFieldValue("user", value);
   };
-
 
   return (
     <>
@@ -200,14 +193,19 @@ export default function AddTaskModal({
                     onChange={onChanges}
                     isInvalid={formik.errors.user !== undefined}
                     className={`flex 
-                                        ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
+                                        ${
+                                          formik.errors.nombre !== undefined
+                                            ? "py-0"
+                                            : "py-3"
+                                        } 
                                         justify-between`}
                     errorMessage={formik.errors.user}
                   ></SelectUsers>
                   <div
                     className={`flex 
-                  ${formik.errors.descripcion !== undefined ? "py-0" : "py-3"
-                      } justify-between`}
+                  ${
+                    formik.errors.descripcion !== undefined ? "py-0" : "py-3"
+                  } justify-between`}
                   >
                     <DatePicker
                       value={fecha}
@@ -250,6 +248,4 @@ export default function AddTaskModal({
       </Modal>
     </>
   );
-
-
 }
