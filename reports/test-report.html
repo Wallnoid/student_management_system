@@ -1,0 +1,266 @@
+<html><head><meta charset="utf-8"/><title>Test Report</title><style type="text/css">html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+body {
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
+}
+.jesthtml-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: #777;
+  margin-top: 0.5rem;
+}
+
+/** SUMMARY */
+#summary {
+  color: #333;
+  margin: 2rem 0;
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 2rem;
+  background: #eee;
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 2rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: #4f8a10;
+  border-left: 0.4rem solid #4f8a10;
+  padding-left: 0.5rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: #d8000c;
+  border-left: 0.4rem solid #d8000c;
+  padding-left: 0.5rem;
+}
+.summary-pending {
+  color: #9f6000;
+  border-left: 0.4rem solid #9f6000;
+  padding-left: 0.5rem;
+}
+.summary-empty {
+  color: #999;
+  border-left: 0.4rem solid #999;
+}
+
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: #dff2bf;
+  color: #4f8a10;
+}
+.test-result.failed {
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.test-result.pending {
+  background-color: #ffdf61;
+  color: #9f6000;
+}
+
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-suitename {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 40%;
+  text-align: left;
+  font-style: italic;
+}
+.test-status {
+  width: 20%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.75rem;
+}
+
+.failureMessages {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  border-top: 1px dashed #d8000c;
+}
+.failureMessages.suiteFailure {
+  border-top: none;
+}
+.failureMsg {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.suite-container {
+  margin-bottom: 2rem;
+}
+.suite-container > input[type="checkbox"] {
+  position: absolute;
+  left: -100vw;
+}
+.suite-container label {
+  display: block;
+}
+.suite-container .suite-tests {
+  overflow-y: hidden;
+  height: 0;
+}
+.suite-container > input[type="checkbox"]:checked ~ .suite-tests {
+  height: auto;
+  overflow: visible;
+}
+.suite-info {
+  padding: 1rem;
+  background-color: #eee;
+  color: #777;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.suite-info:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+.suite-info .suite-path {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+.suite-info .suite-time {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.75rem;
+}
+.suite-info .suite-time.warn {
+  background-color: #d8000c;
+  color: #fff;
+}
+.suite-info:before {
+  content: "\2303";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transform: rotate(0deg);
+}
+.suite-container > input[type="checkbox"]:checked ~ label .suite-info:before {
+  transform: rotate(180deg);
+}
+
+/* CONSOLE LOGS */
+.suite-consolelog {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #efefef;
+}
+.suite-consolelog-header {
+  font-weight: bold;
+}
+.suite-consolelog-item {
+  padding: 0.5rem;
+}
+.suite-consolelog-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-consolelog-item-origin {
+  color: #777;
+  font-weight: bold;
+}
+.suite-consolelog-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+/* OBSOLETE SNAPSHOTS */
+.suite-obsolete-snapshots {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.suite-obsolete-snapshots-header {
+  font-weight: bold;
+}
+.suite-obsolete-snapshots-item {
+  padding: 0.5rem;
+}
+.suite-obsolete-snapshots-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-obsolete-snapshots-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+</style></head><body><div class="jesthtml-content"><header><h1 id="title">Test Report</h1></header><div id="metadata-container"><div id="timestamp">Started: 2024-06-11 01:28:57</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (9)</div><div class="summary-passed ">8 passed</div><div class="summary-failed ">1 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (40)</div><div class="summary-passed ">38 passed</div><div class="summary-failed ">2 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></div><div id="suite-1" class="suite-container"><input id="collapsible-0" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-0"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\users.test.ts</div><div class="suite-time warn">23.076s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="test-info"><div class="test-suitename">Prueba del servicio de Users.</div><div class="test-title">prueba de inserción de un miembro, registrando información de autenticación y almacenamiento.</div><div class="test-status">failed</div><div class="test-duration">0.918s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: Usuario ya registrado en el sistema. Verificar cédula/correo e intente de nuevo.
+    at registerUser (C:\Users\Matt\Desktop\students_management\src\services\users.service.ts:29:11)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at Object.&lt;anonymous&gt; (C:\Users\Matt\Desktop\students_management\src\__tests__\users.test.ts:27:25)</pre></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">Prueba del servicio de Users.</div><div class="test-title">prueba de actualización de la información de usuario específico.</div><div class="test-status">failed</div><div class="test-duration">0.003s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: Error al actualizar la información de autenticación del usuario. Intente de nuevo
+    at updateUser (C:\Users\Matt\Desktop\students_management\src\services\users.service.ts:78:11)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at Object.&lt;anonymous&gt; (C:\Users\Matt\Desktop\students_management\src\__tests__\users.test.ts:45:25)</pre></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Prueba del servicio de Users.</div><div class="test-title">prueba de verificación de que no exista información duplicada de registro.</div><div class="test-status">passed</div><div class="test-duration">0.262s</div></div></div></div></div><div id="suite-2" class="suite-container"><input id="collapsible-1" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-1"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\contests.test.ts</div><div class="suite-time warn">23.677s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de concursos</div><div class="test-title">Prueba de registro de un concurso en un evento ya existente.</div><div class="test-status">passed</div><div class="test-duration">0.961s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de concursos</div><div class="test-title">Prueba de recuperación de todos los concursos </div><div class="test-status">passed</div><div class="test-duration">0.264s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de concursos</div><div class="test-title">Prueba de actualización de la información de un concurso en específico.</div><div class="test-status">passed</div><div class="test-duration">0.289s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de concursos</div><div class="test-title">Prueba de cambio de estado (eliminar) de un concurso seleccionado.</div><div class="test-status">passed</div><div class="test-duration">0.276s</div></div></div></div></div><div id="suite-3" class="suite-container"><input id="collapsible-2" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-2"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\members.test.ts</div><div class="suite-time warn">23.75s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de miembros.</div><div class="test-title">prueba de recuperación de todos los miembros del sistema.</div><div class="test-status">passed</div><div class="test-duration">0.828s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de miembros.</div><div class="test-title">prueba de recuperacion de la información de un miembro en específico.</div><div class="test-status">passed</div><div class="test-duration">0.286s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de miembros.</div><div class="test-title">prueba de recuperación del estado en el sistema de un miembro específico.</div><div class="test-status">passed</div><div class="test-duration">0.258s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de miembros.</div><div class="test-title">prueba de actualización del estado de un miembro en específico.</div><div class="test-status">passed</div><div class="test-duration">0.241s</div></div></div></div></div><div id="suite-4" class="suite-container"><input id="collapsible-3" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-3"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\participations.test.ts</div><div class="suite-time warn">23.746s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de participaciones</div><div class="test-title">Prueba de inserción de una participación de un equipo en un concurso</div><div class="test-status">passed</div><div class="test-duration">0.946s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de participaciones</div><div class="test-title">Prueba de obtención de todas las participaciones, de todos los equipos en todos los concursos.</div><div class="test-status">passed</div><div class="test-duration">0.26s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de participaciones</div><div class="test-title">Prueba de obtención de todas las participaciones de un equipo en específico.</div><div class="test-status">passed</div><div class="test-duration">0.283s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de participaciones</div><div class="test-title">Prueba de obtención de todos los equipos que participaron en un concurso.</div><div class="test-status">passed</div><div class="test-duration">0.245s</div></div></div></div></div><div id="suite-5" class="suite-container"><input id="collapsible-4" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-4"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\proyectos.test.ts</div><div class="suite-time warn">23.99s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de proyectos.</div><div class="test-title">prueba de inserción de proyecto.</div><div class="test-status">passed</div><div class="test-duration">0.518s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de proyectos.</div><div class="test-title">prueba de recuperación de todos los proyectos</div><div class="test-status">passed</div><div class="test-duration">0.446s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de proyectos.</div><div class="test-title">prueba de actualización de proyecto.</div><div class="test-status">passed</div><div class="test-duration">0.261s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de proyectos.</div><div class="test-title">prueba de cambio de estado a "eliminado" de un proyecto. (eliminar proyecto)</div><div class="test-status">passed</div><div class="test-duration">0.256s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de proyectos.</div><div class="test-title">prueba de recuperación de información de los clubes con los datos del respectivo presidente.</div><div class="test-status">passed</div><div class="test-duration">0.247s</div></div></div></div></div><div id="suite-6" class="suite-container"><input id="collapsible-5" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-5"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\teams.test.ts</div><div class="suite-time">0.668s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de equipos</div><div class="test-title">Prueba de inserción de un equipo.</div><div class="test-status">passed</div><div class="test-duration">0.276s</div></div></div></div></div><div id="suite-7" class="suite-container"><input id="collapsible-6" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-6"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\task.test.ts</div><div class="suite-time warn">24.505s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de tareas</div><div class="test-title">prueba de inserción de tareas y asignación de responsables</div><div class="test-status">passed</div><div class="test-duration">1.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de tareas</div><div class="test-title">prueba de recuperación de todas las tareas de un club específico.</div><div class="test-status">passed</div><div class="test-duration">0.278s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de tareas</div><div class="test-title">prueba de actualización del estado de una tarea</div><div class="test-status">passed</div><div class="test-duration">0.263s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de tareas</div><div class="test-title">prueba para actualizar la información de una tarea específica.</div><div class="test-status">passed</div><div class="test-duration">0.26s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de tareas</div><div class="test-title">prueba de asignación de una tarea ya existente a un miembro del club</div><div class="test-status">passed</div><div class="test-duration">0.273s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de tareas</div><div class="test-title">prueba de actualización de la información de una asignación de tarea específica.</div><div class="test-status">passed</div><div class="test-duration">0.257s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de tareas</div><div class="test-title">prueba de eliminación de una asignación de tarea específica.</div><div class="test-status">passed</div><div class="test-duration">0.246s</div></div></div></div></div><div id="suite-8" class="suite-container"><input id="collapsible-7" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-7"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\clubes.test.ts</div><div class="suite-time warn">24.654s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de clubes</div><div class="test-title">prueba de inserción de club.</div><div class="test-status">passed</div><div class="test-duration">0.617s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de clubes</div><div class="test-title">prueba de actualización de club.</div><div class="test-status">passed</div><div class="test-duration">0.272s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de clubes</div><div class="test-title">prueba de cambio de estado de club (eliminar).</div><div class="test-status">passed</div><div class="test-duration">0.288s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de clubes</div><div class="test-title">prueba de obtención de clubes internos.</div><div class="test-status">passed</div><div class="test-duration">0.272s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de clubes</div><div class="test-title">prueba de obtención de club en específico.</div><div class="test-status">passed</div><div class="test-duration">0.281s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de clubes</div><div class="test-title">prueba de asignación de un miembro a un club interno.</div><div class="test-status">passed</div><div class="test-duration">0.254s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de clubes</div><div class="test-title">prueba de actualización de asignación de miembro a club interno.</div><div class="test-status">passed</div><div class="test-duration">0.25s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de servicio de clubes</div><div class="test-title">prueba de obtención de los miembros de un club en específico.</div><div class="test-status">passed</div><div class="test-duration">0.235s</div></div></div></div></div><div id="suite-9" class="suite-container"><input id="collapsible-8" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-8"><div class="suite-info"><div class="suite-path">C:\Users\Matt\Desktop\students_management\src\__tests__\events.test.ts</div><div class="suite-time">1.585s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de eventos</div><div class="test-title">Prueba de inserción de un evento.</div><div class="test-status">passed</div><div class="test-duration">0.256s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de eventos</div><div class="test-title">Prueba de actualización de un evento.</div><div class="test-status">passed</div><div class="test-duration">0.254s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de eventos</div><div class="test-title">Prueba de obtención de todos los eventos disponibles.</div><div class="test-status">passed</div><div class="test-duration">0.236s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del servicio de eventos</div><div class="test-title">Prueba de cambio de estado (eliminar) de un evento.</div><div class="test-status">passed</div><div class="test-duration">0.246s</div></div></div></div></div></div></body></html>
