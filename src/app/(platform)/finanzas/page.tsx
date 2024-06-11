@@ -1,29 +1,24 @@
+import GraphOneContainer from "./components/graph_1";
+import GraphTwoContainer from "./components/graph_2";
+import GraphThreeContainer from "./components/graph_3";
+import IncomeContainer from "./components/income";
+import MainInfoContainer from "./components/main-container/main_info";
+import OutcomeContainer from "./components/outcome";
+
 export default function Page() {
   return <>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-wrap">
-        <div className="w-full md:w-1/2 px-1 pt-4">
-          <div className="border-2 h-80 rounded-md">Container 1</div>
-        </div>
-        <div className="w-full md:w-1/4 px-1 pt-4">
-          <div className="border-2 h-80 rounded-md">Container 2</div>
-        </div>
-        <div className="w-full md:w-1/4 px-1 pt-4">
-          <div className="border-2 h-80 rounded-md">Container 3</div>
-        </div>
+        <MainInfoContainer></MainInfoContainer>
+        <GraphOneContainer></GraphOneContainer>
+        <GraphTwoContainer></GraphTwoContainer>
       </div>
     </div>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-wrap">
-        <div className="w-full md:w-1/4 px-1 py-1 pb-2">
-          <div className="border-2 h-64 rounded-md ">Container 1</div>
-        </div>
-        <div className="w-full md:w-1/4 px-1 py-1 pb-2">
-          <div className="border-2 h-64 rounded-md">Container 2</div>
-        </div>
-        <div className="w-full md:w-1/2 px-1 py-1 pb-2">
-          <div className="border-2 h-64 rounded-md">Container 3</div>
-        </div>
+        <OutcomeContainer></OutcomeContainer>
+        <IncomeContainer></IncomeContainer>
+        <GraphThreeContainer></GraphThreeContainer>
       </div>
     </div>
   </>;
