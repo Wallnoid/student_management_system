@@ -2,7 +2,6 @@ import {createClient as supabase} from "@/supabase/client";
 import {ClubInternos} from "@/interfaces/ClubInternos";
 import {Member} from "@/interfaces/Member";
 import {AsignacionesClubes} from "@/interfaces/AsignacionesClubes";
-import { GiConsoleController } from "react-icons/gi";
 
 export async function insertClub(club: ClubInternos) {
     const{ nombre, descripcion, ubicacion, presidente, creado_por, fecha_hora_creacion} = club;
@@ -18,7 +17,6 @@ export async function insertClub(club: ClubInternos) {
                 })
         .select();
     if (error) {
-        console.log(error);
         throw new Error('Ha ocurrido un error al insertar el club. Recargue la página e intente de nuevo');
     }
     return true;
