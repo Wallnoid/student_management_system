@@ -58,13 +58,12 @@ export async function updateEstadoClub(id: string, estado: string) {
     return true;
 }
 export async function getClubes(){
-    const clubes = await supabase()
-        .from('clubes_internos')
-        .select();
-    if (clubes.error) {
-        throw new Error('Error al recuperar los datos del servidor, intente más tarde.');
+    let { data, error } = await supabase()
+    .rpc('getclubes');
+    if (error) {
+        throw new Error('Error al recuperar los datos del servidor, intente más tarde. Error: ' + error.message);
     }
-    return clubes.data as ClubInternos[];
+    return data as [];
 }
 export async function getClub(ids: string[]){
     let {data, error} = await supabase().rpc( 'club_con_datos', { ids_club: ids } )
