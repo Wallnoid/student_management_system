@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Modal,
   ModalContent,
@@ -10,160 +9,45 @@ import {
   Input,
   DatePicker,
   Tooltip,
-  AutocompleteItem,
-  Chip,
-  ChipProps,
 } from "@nextui-org/react";
 
 import { PlusIcon } from "../../../../components/shared/icons";
 import DefaultSelect from "../../../../components/shared/select";
 import SelectIcon from "../../../../components/shared/selectIcon";
-import { useFormik } from "formik";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 import {
-  memberSchema,
   mappeoCarreras,
   mappeoSemestres,
   mappeoRoles,
-  actualDate,
   Carreras,
   Semestres,
   Roles,
 } from "@/schemas/member_schema";
-import { DateValue, parseDate } from "@internationalized/date";
-import {
-  currentUser,
-  registerUser,
-  updateRole,
-  updateUser,
-} from "@/services/users.service";
+import { currentUser } from "@/services/users.service";
 import { Member } from "@/interfaces/Member";
 import InputSearch from "@/components/shared/input_search";
-import { statusOptions } from "../data/data";
+import dateHook from "../hooks/date_hook";
+import { optionsElements, statusColorMap } from "../constants/constants";
+import FormikMember from "../constants/formik";
+import { actualDate } from "@/constants/date_constants";
 
 export default function FormModal({
   member,
-  onReload,
   icon: button,
 }: {
   member?: Member;
-  onReload?: Function;
   icon?: JSX.Element;
 }) {
-  const currentDate: string = `${actualDate.getFullYear()}-${(
-    actualDate.getMonth() + 1
-  )
-    .toString()
-    .padStart(2, "0")}-${actualDate.getDate().toString().padStart(2, "0")}`;
+  const { fecha, setFecha } = dateHook(actualDate, member);
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-
-  const [fecha, setFecha] = React.useState<DateValue>(
-    parseDate(member?.fecha_nacimiento || currentDate)
-  );
-
-  const statusColorMap: Record<string, ChipProps["color"]> = {
-    activo: "success",
-    inactivo: "danger",
-    suspendido: "warning",
-  };
-
-  const optionsElements = statusOptions.map((option) => (
-    <AutocompleteItem
-      key={option.uid}
-      textValue={option.name}
-      color={statusColorMap[option.uid]}
-      className={`text-primary-800 `}
-    >
-      {option.name}
-    </AutocompleteItem>
-  ));
 
   const onChanges = (value: string) => {
     formik.setFieldValue("estado", value);
   };
 
-  const formik = useFormik({
-    initialValues: {
-      cedula: member?.nro_identificacion || "",
-      nombre: member?.nombre || "",
-      apellido: member?.apellido || "",
-      telefono: member?.telefono || "",
-      correo: member?.correo || "",
-      carrera: member?.carrera || "",
-      semestre: member?.semestre || "",
-      fechaNacimiento: member?.fecha_nacimiento || "",
-      rol: member?.categoria || "",
-      estado: member?.estado || "",
-    },
-
-    validationSchema: memberSchema,
-    onSubmit: (values) => {
-      const memberLocal: Member = {
-        nombre: values.nombre,
-        apellido: values.apellido,
-        fecha_nacimiento: values.fechaNacimiento,
-        nro_identificacion: values.cedula,
-        correo: values.correo,
-        carrera: values.carrera,
-        semestre: values.semestre,
-        telefono: values.telefono,
-        categoria: values.rol,
-        estado: values.estado == "null" ? "activo" : values.estado,
-        creado_por: currentUser!.user.id,
-        actualizado_por: currentUser!.user.id,
-      };
-
-      console.log(memberLocal);
-
-      if (member) {
-        memberLocal.id = member.id;
-        console.log(memberLocal.id);
-
-        toast.promise(updateRole(memberLocal), {
-          loading: "Saving...",
-          success: () => {
-            console.log("Miembro actualizado!");
-            formik.resetForm();
-            //onClose();
-            //onReload!(true);
-            window.location.reload();
-
-            return <b>Miembro actualizado!</b>;
-          },
-          error: (err) => {
-            formik.setSubmitting(false);
-            return `${err.message.toString()}`;
-          },
-        });
-
-        return;
-      } else {
-        memberLocal.actualizado_por = null;
-        memberLocal.estado = null;
-
-        console.log("Registrando miembro");
-        toast.promise(registerUser(memberLocal), {
-          loading: "Saving...",
-          success: () => {
-            console.log("Miembro guardado!");
-            formik.resetForm();
-            //onClose();
-            //onReload!(true);
-            window.location.reload();
-
-            return <b>Miembro guardado!</b>;
-          },
-          error: (err) => {
-            formik.setSubmitting(false);
-            console.log(err);
-            return `${err.message.toString()}`;
-          },
-        });
-      }
-    },
-  });
+  const formik = FormikMember(member, currentUser);
 
   const asignFechaNacimiento = () => {
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
