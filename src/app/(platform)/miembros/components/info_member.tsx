@@ -1,6 +1,6 @@
 import { EyeIcon } from "@/components/shared/icons";
 import { Member } from "@/interfaces/Member";
-import { formatDate } from "@/utils/utils";
+import { formatDate, formatDateTime } from "@/utils/utils";
 import {
   Modal,
   ModalContent,
@@ -36,12 +36,12 @@ export default function InfoMembers({ member }: { member: Member }) {
 
   const fechaCreacion = member.fecha_hora_creacion;
   const fechaCreacionFormateada = fechaCreacion
-    ? formatDate(fechaCreacion!)
+    ? formatDateTime(fechaCreacion!)
     : "----";
 
   const fechaActualizacion = member.fecha_hora_actualizacion;
   const fechaActualizacionFormateada = fechaActualizacion
-    ? formatDate(fechaActualizacion)
+    ? formatDateTime(fechaActualizacion)
     : "----";
 
   return (
