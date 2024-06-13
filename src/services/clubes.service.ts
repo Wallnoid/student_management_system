@@ -4,7 +4,7 @@ import {Member} from "@/interfaces/Member";
 import {AsignacionesClubes} from "@/interfaces/AsignacionesClubes";
 
 export async function insertClub(club: ClubInternos) {
-    const{ nombre, descripcion, ubicacion, presidente, creado_por, fecha_hora_creacion} = club;
+    const{ nombre, descripcion, ubicacion, presidente, creado_por} = club;
     let { error } = await supabase()
         .from('clubes_internos')
         .insert({
@@ -13,7 +13,7 @@ export async function insertClub(club: ClubInternos) {
                     ubicacion,
                     presidente,
                     creado_por,
-                    fecha_hora_creacion
+                    fecha_hora_creacion: 'NOW()'
                 })
         .select();
     if (error) {
