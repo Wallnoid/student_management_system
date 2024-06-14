@@ -18,6 +18,13 @@ export type Clubes = {
   presidente: Presidente;
 };
 
+export type PresidenteWithRole = {
+  id: string;
+  nombre: string;
+  apellido: string;
+  categoria: string;
+};
+
 export type renderCellType = { key: string; reactHelement: React.ReactElement };
 
 export type StatusOptionsType = { name: string; uid: string };

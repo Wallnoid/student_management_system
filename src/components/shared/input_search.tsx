@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from "react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import { Clubes } from "@/app/(platform)/proyectos/components/form_modal";
 
 export default function InputSearch({
   elements,

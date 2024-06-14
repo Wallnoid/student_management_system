@@ -43,3 +43,5 @@ export const projectSchema = () => {
       ),
   });
 };
+
+export { actualDate };

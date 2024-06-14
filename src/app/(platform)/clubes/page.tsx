@@ -1,17 +1,15 @@
 "use client";
 
-import {
-  columnsTable,
-  INITIAL_VISIBLE_COLUMNS,
-  MembersStatusOptions,
-} from "./constants/constants";
-import BottomContent from "./components/bottom_content";
-import TopContent from "./components/top_content";
-import userHook from "./hooks/member_hook";
 import loadingHook from "@/components/shared/table/hooks/loading_hook";
+import ClubHook from "./hooks/club_hook";
 import filterValueHook from "@/components/shared/table/hooks/filter_value_hook";
 import selectKeysHook from "@/components/shared/table/hooks/select_keys_hook";
 import visibleColumnsHook from "@/components/shared/table/hooks/visible_colums_hook";
+import {
+  ClubesStatusOptions,
+  columnsTable,
+  INITIAL_VISIBLE_COLUMNS,
+} from "./constants/constants";
 import statusFilterHook from "@/components/shared/table/hooks/status_filter_hook";
 import rowsPerPageHook from "@/components/shared/table/hooks/rows_per_page_hook";
 import sortDescriptionHook from "@/components/shared/table/hooks/sort_descrpition_hook";
@@ -19,20 +17,22 @@ import pageHook from "@/components/shared/table/hooks/page_hook";
 import headerColumnHook from "@/components/shared/table/hooks/header_column_hook";
 import { filteredItemsHook } from "@/components/shared/table/hooks/filtered_items_hook";
 import { itemsHook } from "@/components/shared/table/hooks/items_hook";
-import { sortedItemsMemberHook } from "@/components/shared/table/hooks/sorted_items_hook";
-import { renderCellMemberHook } from "@/components/shared/table/hooks/render_cell_hook";
-import renderItems from "./constants/render_item_members";
+import { sortedItemsClubesHook } from "@/components/shared/table/hooks/sorted_items_hook";
+import { renderCellClubesHook } from "@/components/shared/table/hooks/render_cell_hook";
 import OnNextPageHook from "@/components/shared/table/hooks/on_next_page_hook";
 import OnPreviousPageHook from "@/components/shared/table/hooks/on_previous_page.hook";
 import OnRowPerPageChangeHook from "@/components/shared/table/hooks/on_row_per_page_change";
 import OnSearchChangeHook from "@/components/shared/table/hooks/on_search_change_hook";
 import OnClearHook from "@/components/shared/table/hooks/on_clear_hook";
 import DefaultTable from "@/components/shared/table/table";
+import BottomContent from "./components/bottom_content";
+import topContent from "./components/top_content";
+import renderItems from "./constants/render_item_clubes";
 
-export default function MembersPage() {
+export default function ClubsPage() {
   const { loading, setLoading } = loadingHook();
 
-  const { users, setUsers } = userHook(loading);
+  const { clubs, setClubs } = ClubHook(loading);
 
   const { filterValue, setFilterValue } = filterValueHook();
 
@@ -55,8 +55,8 @@ export default function MembersPage() {
   const filteredItems = filteredItemsHook(
     filterValue,
     statusFilter,
-    users,
-    MembersStatusOptions
+    clubs,
+    ClubesStatusOptions
   );
 
   const filteredItemsLength = function () {
@@ -71,9 +71,9 @@ export default function MembersPage() {
 
   const items = itemsHook(page, rowsPerPage, filteredItems);
 
-  const sortedItems = sortedItemsMemberHook(items, sortDescriptor);
+  const sortedItems = sortedItemsClubesHook(items, sortDescriptor);
 
-  const renderCell = renderCellMemberHook(renderItems);
+  const renderCell = renderCellClubesHook(renderItems);
 
   const onNextPage = OnNextPageHook(page, pages, setPage);
 
@@ -99,8 +99,8 @@ export default function MembersPage() {
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
       columnsTable={columnsTable}
-      statusOptions={MembersStatusOptions}
-      entities={users}
+      statusOptions={ClubesStatusOptions}
+      entities={clubs}
       onRowsPerPageChange={onRowsPerPageChange}
       page={page}
       setPage={setPage}
@@ -110,7 +110,7 @@ export default function MembersPage() {
       pages={pages}
       headerColumns={headerColumns}
       BottomContent={BottomContent}
-      TopContent={TopContent}
+      TopContent={topContent}
       sortedItems={sortedItems}
       renderCell={renderCell}
     ></DefaultTable>
