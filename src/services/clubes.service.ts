@@ -121,13 +121,11 @@ export async function deleteMemberClub(id: string) {
     }
     return true;
 }
-export async function getMembersClub(id: string){
-    let { data, error } = await supabase().rpc(
-        'miembros_de_club',
-        { id_club: id }
-    )
-    if (error) {
-        throw new Error('Error al recuperar los miembros del club. Intente más tarde.');
-    }
-    return data as Member[];
+export async function getMembersClub(id_club: string){
+    let { data, error } = await supabase()
+    .rpc('get_club_members_by_club_id', {
+        id_club
+    })
+    if (error) throw new Error('Error al intentar recuperar los miembros del club solicitado. Intente más tarde. Error: ' + error.message);
+    return data as { presidente: any, miembros: any[] };
 }
