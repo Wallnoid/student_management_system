@@ -150,3 +150,13 @@ export async function getMembersClub(id: string) {
   }
   return data as Member[];
 }
+
+export async function getMembersClub(id_club: string){
+    let { data, error } = await supabase()
+    .rpc('get_club_members_by_club_id', {
+        id_club
+    })
+    if (error) throw new Error('Error al intentar recuperar los miembros del club solicitado. Intente más tarde. Error: ' + error.message);
+    return data as { presidente: any, miembros: any[] };
+}
+

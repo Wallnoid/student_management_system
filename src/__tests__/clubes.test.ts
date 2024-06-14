@@ -90,10 +90,21 @@ describe('Pruebas de servicio de clubes', () => {
     });
 
     test('prueba de obtención de los miembros de un club en específico.', async () => {
-        const id_club: string = '9727704b-5b26-4658-ac1e-c7bb375b3c01';
+        const id_club: string = 'cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081';
         const result = await getMembersClub(id_club);
-        expect(Array.isArray(result)).toBe(true);
-        expect(result.length).toBeGreaterThan(0);
+
+        expect(result).toHaveProperty('presidente');
+        expect(result).toHaveProperty('miembros');
+
+        const miembros = result.miembros;
+        const presidente = result.presidente;
+
+        expect(Array.isArray(miembros)).toBe(true);
+
+        expect(typeof presidente).toBe('object');
+        expect(presidente).not.toBeNull();
+
+        expect(miembros.length).toBeGreaterThan(0);
     });
     
 });
