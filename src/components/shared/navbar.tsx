@@ -69,16 +69,25 @@ export default function SiteNavBar() {
             className="font-semibold"
             href="/miembros"
           >
-            Gestion de Miembros
+            Miembros
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={isActiveLink("/eventos")}>
+        <NavbarItem isActive={isActiveLink("/clubes")}>
           <Link
-            color={isActiveLink("/eventos") ? "primary" : "foreground"}
+            color={isActiveLink("/clubes") ? "primary" : "foreground"}
+            className="font-semibold"
+            href="/clubes"
+          >
+            Clubes
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            color={isActiveLink("/eventos") ? "secondary" : "foreground"}
             className="font-semibold"
             href="/eventos"
           >
-            Gestion de Eventos
+            Eventos
           </Link>
         </NavbarItem>
         <NavbarItem>
@@ -87,7 +96,7 @@ export default function SiteNavBar() {
             className="font-semibold"
             href="/proyectos"
           >
-            Gestion de Proyectos
+            Proyectos
           </Link>
         </NavbarItem>
       </NavbarContent>

@@ -5,6 +5,10 @@ export function capitalize(str: string) {
 }
 
 export function cutString(str: string, length: number) {
+  if (!str) {
+    return "";
+  }
+
   if (str.length > length) {
     return str.slice(0, length) + "...";
   }

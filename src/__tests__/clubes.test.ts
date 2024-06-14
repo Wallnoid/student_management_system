@@ -1,6 +1,5 @@
 import { AsignacionesClubes } from '@/interfaces/AsignacionesClubes';
 import { ClubInternos } from '@/interfaces/ClubInternos';
-import { Member } from '@/interfaces/Member';
 import { addMemberToClub, getClub, getClubes, getMembersClub, insertClub, updateClub, updateEstadoClub, updateMemberClub } from '@/services/clubes.service';
 
 
@@ -51,7 +50,7 @@ describe('Pruebas de servicio de clubes', () => {
     test('prueba de obtención de clubes internos.', async () => {
         const result = await getClubes();
         expect(Array.isArray(result)).toBe(true);
-        expect(result.every(club => typeof club === 'object')).toBe(true);
+        expect(result.length).toBeGreaterThan(0);
     });
 
     test('prueba de obtención de club en específico.', async () => {
