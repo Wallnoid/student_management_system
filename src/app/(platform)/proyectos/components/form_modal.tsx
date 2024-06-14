@@ -23,7 +23,6 @@ import FormikProject from "../constants/formik";
 import ClubElementHook from "../hooks/asignation_club_hook";
 import { actualDate } from "@/constants/date_constants";
 
-
 export default function FormModal({
   proyect: project,
   icon,
@@ -126,7 +125,7 @@ export default function FormModal({
                     label="Responsable"
                     placeholder="Buscar Club"
                     name="responsable"
-                    value={formik.values.responsable.toString()} // Convert the value to a string
+                    value={formik.values.responsable} // Convert the value to a string
                     onChange={onChanges}
                     isInvalid={formik.errors.responsable !== undefined}
                     className={`flex 
