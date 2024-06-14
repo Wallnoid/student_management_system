@@ -18,8 +18,8 @@ import sortDescriptionHook from "@/components/shared/table/hooks/sort_descrpitio
 
 import pageHook from "@/components/shared/table/hooks/page_hook";
 import headerColumnHook from "@/components/shared/table/hooks/header_column_hook";
-import { filteredItemsProjectHook } from "@/components/shared/table/hooks/filtered_items_hook";
-import { itemsProjectHook } from "@/components/shared/table/hooks/items_hook";
+import { filteredItemsHook } from "@/components/shared/table/hooks/filtered_items_hook";
+import { itemsHook } from "@/components/shared/table/hooks/items_hook";
 import { sortedItemsProjectHook } from "@/components/shared/table/hooks/sorted_items_hook";
 import { renderCellProjectHook } from "@/components/shared/table/hooks/render_cell_hook";
 import renderItems from "./constants/render_items_project";
@@ -58,7 +58,7 @@ export default function ProjectsPage() {
 
   const headerColumns = headerColumnHook(visibleColumns, columnsTable);
 
-  const filteredItems = filteredItemsProjectHook(
+  const filteredItems = filteredItemsHook(
     filterValue,
     statusFilter,
     projects,
@@ -75,7 +75,7 @@ export default function ProjectsPage() {
 
   const pages = Math.ceil(filteredItemsLength() / rowsPerPage);
 
-  const items = itemsProjectHook(page, rowsPerPage, filteredItems);
+  const items = itemsHook(page, rowsPerPage, filteredItems);
 
   const sortedItems = sortedItemsProjectHook(items, sortDescriptor);
 
