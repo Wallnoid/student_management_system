@@ -1,6 +1,5 @@
 import { AsignacionesClubes } from '@/interfaces/AsignacionesClubes';
 import { ClubInternos } from '@/interfaces/ClubInternos';
-import { Member } from '@/interfaces/Member';
 import { addMemberToClub, getClub, getClubes, getMembersClub, insertClub, updateClub, updateEstadoClub, updateMemberClub } from '@/services/clubes.service';
 
 

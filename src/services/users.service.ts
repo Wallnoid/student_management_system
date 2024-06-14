@@ -122,6 +122,8 @@ export async function updateRole(member: Member) {
       estado: member.estado,
       telefono: member.telefono,
       categoria: member.categoria,
+      actualizado_por: member.actualizado_por,
+      fecha_hora_actualizacion: "NOW()",
     })
     .eq("id", member.id);
 

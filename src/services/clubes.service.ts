@@ -1,29 +1,25 @@
-import { createClient as supabase } from "@/supabase/client";
-import { ClubInternos } from "@/interfaces/ClubInternos";
-import { Member } from "@/interfaces/Member";
-import { AsignacionesClubes } from "@/interfaces/AsignacionesClubes";
-import { GiConsoleController } from "react-icons/gi";
+import {createClient as supabase} from "@/supabase/client";
+import {ClubInternos} from "@/interfaces/ClubInternos";
+import {Member} from "@/interfaces/Member";
+import {AsignacionesClubes} from "@/interfaces/AsignacionesClubes";
 
 export async function insertClub(club: ClubInternos) {
-  const { nombre, descripcion, ubicacion, presidente, creado_por } = club;
-  let { error } = await supabase()
-    .from("clubes_internos")
-    .insert({
-      nombre,
-      descripcion,
-      ubicacion,
-      presidente,
-      creado_por,
-      fecha_hora_creacion: "NOW()",
-    })
-    .select();
-  if (error) {
-    console.log(error);
-    throw new Error(
-      "Ha ocurrido un error al insertar el club. Recargue la página e intente de nuevo"
-    );
-  }
-  return true;
+    const{ nombre, descripcion, ubicacion, presidente, creado_por} = club;
+    let { error } = await supabase()
+        .from('clubes_internos')
+        .insert({
+                    nombre,
+                    descripcion,
+                    ubicacion,
+                    presidente,
+                    creado_por,
+                    fecha_hora_creacion: 'NOW()'
+                })
+        .select();
+    if (error) {
+        throw new Error('Ha ocurrido un error al insertar el club. Recargue la página e intente de nuevo');
+    }
+    return true;
 }
 export async function updateClub(club: ClubInternos) {
   const {
@@ -92,64 +88,43 @@ export async function getClub(ids: string[]) {
   }
   return data as ClubInternos[];
 }
-export async function addMemberToClub(miembro: AsignacionesClubes) {
-  const {
-    id_club_interno,
-    id_miembro,
-    comentario_asignacion,
-    creado_por,
-    categoria,
-  } = miembro;
-  const { error } = await supabase()
-    .from("asignacion_miembros_clubes")
-    .insert([
-      {
-        id_club_interno,
-        id_miembro,
-        comentario_asignacion,
-        creado_por,
-        fecha_hora_creacion: "NOW()",
-        categoria,
-      },
-    ])
-    .select();
-  if (error) {
-    console.log(error);
-    throw new Error(
-      "Error al intentar asignar un club al miembro. Intente más tarde."
-    );
-  }
-  return true;
+export async function addMemberToClub(miembro : AsignacionesClubes) {
+    const { id_club_interno, id_miembro, comentario_asignacion, creado_por } = miembro
+    const { error } = await supabase()
+        .from('asignacion_miembros_clubes')
+        .insert([
+            {
+                id_club_interno,
+                id_miembro,
+                comentario_asignacion,
+                creado_por,
+                fecha_hora_creacion: 'NOW()'
+            },
+        ])
+        .select();
+    if (error) {
+        throw new Error('Error al intentar asignar un club al miembro. Intente más tarde.');
+    }
+    return true;
 }
-export async function updateMemberClub(miembro: AsignacionesClubes) {
-  const {
-    id,
-    id_club_interno,
-    id_miembro,
-    comentario_asignacion,
-    estado,
-    actualizado_por,
-    categoria,
-  } = miembro;
-  const { error } = await supabase()
-    .from("asignacion_miembros_clubes")
-    .update({
-      id_club_interno,
-      id_miembro,
-      comentario_asignacion,
-      estado,
-      actualizado_por,
-      fecha_hora_actualizacion: "NOW()",
-      categoria,
-    })
-    .eq("id", id)
-    .select();
-  if (error) {
-    throw new Error(
-      "Error al actualizar la información del miembro del club. Intenter más tarde."
-    );
-  }
-  return true;
+export async function updateMemberClub(miembro : AsignacionesClubes) {
+    const { id, id_club_interno, id_miembro, comentario_asignacion, estado, actualizado_por } = miembro
+    const { error } = await supabase()
+        .from('asignacion_miembros_clubes')
+        .update({
+            id_club_interno,
+            id_miembro,
+            comentario_asignacion,
+            estado,
+            actualizado_por,
+            fecha_hora_actualizacion: 'NOW()'
+        })
+        .eq('id', id)
+        .select();
+    if (error) {
+        throw new Error('Error al actualizar la información del miembro del club. Intenter más tarde.');
+    }
+    return true;
 }
 export async function deleteMemberClub(id: string) {
   const { error } = await supabase()
