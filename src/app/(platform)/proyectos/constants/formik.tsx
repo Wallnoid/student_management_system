@@ -1,4 +1,3 @@
-
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Proyecto } from "@/interfaces/Proyecto";
 import { projectSchema } from "@/schemas/project_schema";
@@ -10,6 +9,7 @@ export default function FormikProject(
   project: Proyecto | null,
   currentUser: any
 ) {
+  console.log((project?.responsable as ClubInternos)?.id + "responsable");
   const formik = useFormik({
     initialValues: {
       nombre: project?.nombre || "",
@@ -20,7 +20,6 @@ export default function FormikProject(
     },
     validationSchema: projectSchema(),
     onSubmit: (values) => {
-      //AQUI HAY UN ERROR
       console.log(values);
       const projectLocal: Proyecto = {
         nombre: values.nombre,
