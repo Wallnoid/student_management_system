@@ -3,7 +3,7 @@ import { cutString } from "@/utils/utils";
 import { User } from "@nextui-org/react";
 import { FaUser } from "react-icons/fa6";
 
-export default function DefaultAvatar({ user }: { user: Member }) {
+export default function DefaultAvatar({ user }: { user: any }) {
   return (
     <User
       avatarProps={{

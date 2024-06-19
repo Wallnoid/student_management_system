@@ -32,11 +32,15 @@ export default function FormModal({
 
   const { members, setMembers } = MemberElementHook();
 
-  const onChanges = (value: string) => {
+  const onChangesPresidente = (value: string) => {
+    formik.setFieldValue("presidente", value);
+  };
+
+  const onChangesEstado = (value: string) => {
     formik.setFieldValue("estado", value);
   };
 
-  const formik = FormikClubes(club, currentUser);
+  const formik = FormikClubes(club, currentUser, onClose);
 
   return (
     <>
@@ -51,7 +55,7 @@ export default function FormModal({
           Agregar Club
         </Button>
       ) : (
-        <Tooltip content="Editar Miembro">
+        <Tooltip content="Editar Club">
           <span
             className="text-lg text-default-400 cursor-pointer active:opacity-50"
             onClick={onOpen}
@@ -68,7 +72,7 @@ export default function FormModal({
               <ModalHeader className="flex flex-col gap-1">
                 {club ? (
                   <div className="flex flex-row items-center">
-                    <div className="w-1/2">{"Actualizar miembro"}</div>
+                    <div className="w-1/2">{"Actualizar club"}</div>
 
                     <div className="w-1/2 mx-5">
                       <InputSearch
@@ -76,14 +80,14 @@ export default function FormModal({
                         placeholder=""
                         elements={optionsElements}
                         name="estado"
-                        onChange={onChanges}
+                        onChange={onChangesEstado}
                         value={formik.values.estado}
                         color={statusColorMap[formik.values.estado]}
                       ></InputSearch>
                     </div>
                   </div>
                 ) : (
-                  "Ingresar Miembro"
+                  "Ingresar Club"
                 )}
               </ModalHeader>
 
@@ -120,11 +124,11 @@ export default function FormModal({
 
                   <InputSearch
                     elements={members}
-                    label="Responsable"
+                    label="Presidente"
                     placeholder="Buscar presidente"
-                    name="responsable"
-                    value={formik.values.presidente.toString()} // Convert the value to a string
-                    onChange={onChanges}
+                    name="presidente"
+                    value={formik.values.presidente}
+                    onChange={onChangesPresidente}
                     isInvalid={formik.errors.presidente !== undefined}
                     className={`flex 
                       ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
