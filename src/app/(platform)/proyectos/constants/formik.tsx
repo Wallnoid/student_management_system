@@ -9,7 +9,6 @@ export default function FormikProject(
   project: Proyecto | null,
   currentUser: any
 ) {
-  console.log((project?.responsable as ClubInternos)?.id + "responsable");
   const formik = useFormik({
     initialValues: {
       nombre: project?.nombre || "",

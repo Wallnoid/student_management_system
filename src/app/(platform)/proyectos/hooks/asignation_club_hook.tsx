@@ -9,6 +9,8 @@ export default function ClubElementHook() {
   useEffect(() => {
     getClubesAsignacionProyectos()
       .then((data) => {
+        console.log("CLUBES ASIGNACION PROYECTOS:");
+        console.log(data);
         const elements = data.map((club: Clubes) => createObject(club));
 
         setClubElements(elements);

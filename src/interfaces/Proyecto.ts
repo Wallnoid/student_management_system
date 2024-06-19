@@ -12,4 +12,5 @@ export interface Proyecto {
   fecha_hora_creacion?: string;
   actualizado_por?: string;
   fecha_hora_actualizacion?: string;
+  id_responsable?: string;
 }
