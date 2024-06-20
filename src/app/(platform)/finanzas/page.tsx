@@ -1,9 +1,10 @@
-import GraphOneContainer from "./components/graph_1";
-import GraphTwoContainer from "./components/graph_2";
-import GraphThreeContainer from "./components/graph_3";
+import GraphOneContainer from "./components/income-list-container/graph_1";
+import GraphTwoContainer from "./components/outcome-list-container/graph_2";
+import GraphThreeContainer from "./components/balance-graph/balance-graph";
 import IncomeContainer from "./components/income";
 import MainInfoContainer from "./components/main-container/main_info";
 import OutcomeContainer from "./components/outcome";
+import BalanceGraphContainer from "./components/balance-graph/balance-graph";
 
 export default function Page() {
   return <>
@@ -18,7 +19,7 @@ export default function Page() {
       <div className="flex flex-wrap">
         <OutcomeContainer></OutcomeContainer>
         <IncomeContainer></IncomeContainer>
-        <GraphThreeContainer></GraphThreeContainer>
+        <BalanceGraphContainer></BalanceGraphContainer>
       </div>
     </div>
   </>;
