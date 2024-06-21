@@ -23,12 +23,11 @@ import FormikProject from "../constants/formik";
 import ClubElementHook from "../hooks/asignation_club_hook";
 import { actualDate } from "@/constants/date_constants";
 
-
 export default function FormModal({
-  proyect: project,
+  project,
   icon,
 }: {
-  proyect?: Proyecto;
+  project?: Proyecto;
   icon?: JSX.Element;
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -54,9 +53,6 @@ export default function FormModal({
       fechaFinal.month - 1,
       fechaFinal.day
     );
-
-    console.log(fechaAsDate);
-    console.log(fechaFinalAsDate);
 
     formik.setFieldValue("fechaInicio", fechaAsDate);
     formik.setFieldValue("fechaFinal", fechaFinalAsDate);
@@ -126,7 +122,7 @@ export default function FormModal({
                     label="Responsable"
                     placeholder="Buscar Club"
                     name="responsable"
-                    value={formik.values.responsable.toString()} // Convert the value to a string
+                    value={formik.values.responsable} // Convert the value to a string
                     onChange={onChanges}
                     isInvalid={formik.errors.responsable !== undefined}
                     className={`flex 

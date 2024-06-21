@@ -25,12 +25,9 @@ export async function insertTasksAndAssignments(tarea: Task) {
             'responsables':responsables
         });
     if (error) {
-        console.log(error);
-        throw new Error('Error al intentar asignar la tarea. Intente de nuevo.');
+        throw new Error('Error al intentar asignar la tarea. Intente de nuevo. Error: ' + error.message);
     }
-    else {
-        return true
-    }
+    return true
 }
 
 export async function getTaskByProject(proyecto: string) {

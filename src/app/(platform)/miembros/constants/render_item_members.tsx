@@ -1,4 +1,3 @@
-import { renderCellType } from "@/app/types/types";
 import { DeleteIcon, EditIcon, MemberIcon } from "@/components/shared/icons";
 import { Member } from "@/interfaces/Member";
 import { cutString } from "@/utils/utils";
@@ -7,6 +6,8 @@ import { statusColorMap } from "./constants";
 import InfoMembers from "../components/info_member";
 import FormModal from "../components/form_modal";
 import { deleteUser } from "../actions/crud_member";
+import { renderCellType } from "@/types/types";
+import { FaUser } from "react-icons/fa";
 
 export default function renderItems(
   user: Member,
@@ -21,7 +22,7 @@ export default function renderItems(
             radius: "lg",
             showFallback: true,
             src: "https://images.unsplash.com/broken",
-            fallback: <MemberIcon />,
+            fallback: <FaUser size={25} className=" text-primary" />,
           }}
           description={user.correo}
           name={cutString(cellValue + " " + user.apellido, 20)}

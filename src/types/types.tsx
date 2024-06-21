@@ -18,6 +18,33 @@ export type Clubes = {
   presidente: Presidente;
 };
 
+export type PresidenteWithRole = {
+  id: string;
+  nombre: string;
+  apellido: string;
+  categoria: string;
+  correo: string;
+};
+
+export type RespondClubMember = {
+  actualizado_por: any;
+  comentario_asignacion: string;
+  creado_por: any;
+  estado: string;
+  fecha_hora_actualizacion: string;
+  fecha_hora_creacion: string;
+  id: string;
+  miembro_club: ClubMember;
+};
+
+export type ClubMember = {
+  id: string;
+  nombre: string;
+  apellido: string;
+  categoria: string;
+  correo: string;
+};
+
 export type renderCellType = { key: string; reactHelement: React.ReactElement };
 
 export type StatusOptionsType = { name: string; uid: string };

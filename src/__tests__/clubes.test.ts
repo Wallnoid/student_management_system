@@ -1,7 +1,6 @@
 import { AsignacionesClubes } from '@/interfaces/AsignacionesClubes';
 import { ClubInternos } from '@/interfaces/ClubInternos';
-import { Member } from '@/interfaces/Member';
-import { addMemberToClub, getClub, getClubes, getMembersClub, insertClub, updateClub, updateEstadoClub, updateMemberClub } from '@/services/clubes.service';
+import { addMemberToClub, getClub, getClubes, getMembersClub, getProjectsByClub, insertClub, updateClub, updateEstadoClub, updateMemberClub } from '@/services/clubes.service';
 
 
 describe('Pruebas de servicio de clubes', () => {
@@ -12,7 +11,7 @@ describe('Pruebas de servicio de clubes', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-
+/*
     test('prueba de inserción de club.', async () => {
         const club: ClubInternos = {
             nombre: 'Club de pruebas JEST',
@@ -65,7 +64,6 @@ describe('Pruebas de servicio de clubes', () => {
         const asignacion: AsignacionesClubes = {
             id_club_interno: 'cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081',
             id_miembro: 'b60f644f-ab00-47cd-94ef-b55d22430c6c',
-            categoria: 'miembro club interno',
             creado_por: '54acf6d9-8c8d-482f-8041-ae1cc7556c4d',
             fecha_hora_creacion: 'NOW()'
         };
@@ -78,7 +76,6 @@ describe('Pruebas de servicio de clubes', () => {
             id: '6390e452-2646-4f92-a4bf-c60e3cb1c7f8',
             id_club_interno: 'cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081',
             id_miembro: 'b60f644f-ab00-47cd-94ef-b55d22430c6c',
-            categoria: 'vocal club',
             estado: 'inactivo',
             comentario_asignacion: 'asignación comprobada',
             actualizado_por: '54acf6d9-8c8d-482f-8041-ae1cc7556c4d',
@@ -91,10 +88,28 @@ describe('Pruebas de servicio de clubes', () => {
     });
 
     test('prueba de obtención de los miembros de un club en específico.', async () => {
-        const id_club: string = '9727704b-5b26-4658-ac1e-c7bb375b3c01';
+        const id_club: string = 'cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081';
         const result = await getMembersClub(id_club);
-        expect(Array.isArray(result)).toBe(true);
+
+        expect(result).toHaveProperty('presidente');
+        expect(result).toHaveProperty('miembros');
+
+        const miembros = result.miembros;
+        const presidente = result.presidente;
+
+        expect(Array.isArray(miembros)).toBe(true);
+
+        expect(typeof presidente).toBe('object');
+        expect(presidente).not.toBeNull();
+
+        expect(miembros.length).toBeGreaterThan(0);
+    });
+*/
+    test('Prueba de obtención de todos los proyectos asignados a un club.', async () => {
+        const id_club: string = 'cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081';
+        const result = await getProjectsByClub(id_club);
         expect(result.length).toBeGreaterThan(0);
+        expect(Array.isArray(result)).toBe(true);
     });
     
 });

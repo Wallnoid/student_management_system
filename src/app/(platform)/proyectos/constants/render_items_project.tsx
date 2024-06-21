@@ -1,4 +1,3 @@
-import { renderCellType } from "@/app/types/types";
 import {
   DeleteIcon,
   EditIcon,
@@ -17,6 +16,8 @@ import { deleteProject } from "../actions/crud_proyect";
 import { MdChecklistRtl } from "react-icons/md";
 import { goToTasks } from "../actions/tasks";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { renderCellType } from "@/types/types";
+import { RiProjectorFill } from "react-icons/ri";
 
 export default function renderItems(
   project: Proyecto,
@@ -32,7 +33,7 @@ export default function renderItems(
             radius: "lg",
             showFallback: true,
             src: "https://images.unsplash.com/broken",
-            fallback: <ProjectIcon />,
+            fallback: <RiProjectorFill size={25} className=" text-primary" />,
           }}
           //description={proyect.responsable.nombre}
           name={cutString(cellValue as string, 20)}
@@ -81,7 +82,7 @@ export default function renderItems(
           <InfoProject proyect={project}></InfoProject>
 
           <FormModal
-            proyect={project as Proyecto}
+            project={project as Proyecto}
             icon={<EditIcon />}
           ></FormModal>
 

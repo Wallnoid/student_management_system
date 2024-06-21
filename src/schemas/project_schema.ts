@@ -1,11 +1,6 @@
 import { actualDate } from "@/constants/date_constants";
 import * as yup from "yup";
 
-console.log(
-  `${actualDate.getFullYear()}- ${actualDate.getMonth}-${
-    actualDate.getDay
-  } AQIO ESTOY `
-);
 
 export const projectSchema = () => {
   return yup.object().shape({
@@ -43,3 +38,5 @@ export const projectSchema = () => {
       ),
   });
 };
+
+export { actualDate };

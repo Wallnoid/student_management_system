@@ -10,4 +10,13 @@ module.exports = {
     },
     testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    reporters: [
+        "default",
+        ["jest-html-reporter", {
+            pageTitle: "Test Report",
+            outputPath: "./reports/test-report.html",
+            includeFailureMsg: true,
+            includeConsoleLog: true,
+        }]
+    ],
 };

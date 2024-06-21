@@ -1,14 +1,6 @@
 "use client";
 
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@nextui-org/react";
-import {
   columnsTable,
   INITIAL_VISIBLE_COLUMNS,
   MembersStatusOptions,
@@ -25,8 +17,8 @@ import rowsPerPageHook from "@/components/shared/table/hooks/rows_per_page_hook"
 import sortDescriptionHook from "@/components/shared/table/hooks/sort_descrpition_hook";
 import pageHook from "@/components/shared/table/hooks/page_hook";
 import headerColumnHook from "@/components/shared/table/hooks/header_column_hook";
-import { filteredItemsMemberHook } from "@/components/shared/table/hooks/filtered_items_hook";
-import { itemsMemberHook } from "@/components/shared/table/hooks/items_hook";
+import { filteredItemsHook } from "@/components/shared/table/hooks/filtered_items_hook";
+import { itemsHook } from "@/components/shared/table/hooks/items_hook";
 import { sortedItemsMemberHook } from "@/components/shared/table/hooks/sorted_items_hook";
 import { renderCellMemberHook } from "@/components/shared/table/hooks/render_cell_hook";
 import renderItems from "./constants/render_item_members";
@@ -60,7 +52,7 @@ export default function MembersPage() {
 
   const headerColumns = headerColumnHook(visibleColumns, columnsTable);
 
-  const filteredItems = filteredItemsMemberHook(
+  const filteredItems = filteredItemsHook(
     filterValue,
     statusFilter,
     users,
@@ -77,7 +69,7 @@ export default function MembersPage() {
 
   const pages = Math.ceil(filteredItemsLength() / rowsPerPage);
 
-  const items = itemsMemberHook(page, rowsPerPage, filteredItems);
+  const items = itemsHook(page, rowsPerPage, filteredItems);
 
   const sortedItems = sortedItemsMemberHook(items, sortDescriptor);
 
@@ -94,7 +86,6 @@ export default function MembersPage() {
   const onClear = OnClearHook(setFilterValue, setPage);
 
   return (
-   
     <DefaultTable
       selectedKeys={selectedKeys}
       setSelectedKeys={setSelectedKeys}
