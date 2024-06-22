@@ -25,8 +25,8 @@ export default function SelectUsers({
     <Autocomplete
       defaultItems={datas}
       name={name}
-      label="Club asignado"
-      placeholder="Buscar Club"
+      label="Miembro encargado"
+      placeholder="Buscar Miembro"
       className={`${className}`}
       variant="bordered"
       value={value}
@@ -35,11 +35,11 @@ export default function SelectUsers({
       errorMessage={errorMessage}
     >
       {(data) => (
-        <AutocompleteItem key={data.id || `default-${Math.random()}`} textValue={data.nombre} value={data.id}>
+        <AutocompleteItem key={data.id || `default-${Math.random()}`} textValue={data.nombre +" " +data.apellido} value={data.id}>
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{data.nombre}</p>
+            <p className="text-bold text-small capitalize">{data.nombre + data.apellido}</p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {data.nombre + " " + data.apellido}
+              {data.correo.toLowerCase()}
             </p>
           </div>
         </AutocompleteItem>
