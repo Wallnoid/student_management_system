@@ -10,5 +10,8 @@ export interface Payments{
     creado_por?: Member | string,
     fecha_hora_creacion?: string,
     actualizado_por?: Member | string,
-    fecha_hora_actualizacion?: string
+    fecha_hora_actualizacion?: string,
+    tipo: string,
+    detalle?: string,
+    categoria?: string,
 }

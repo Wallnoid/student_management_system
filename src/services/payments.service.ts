@@ -50,7 +50,7 @@ export async function updatePayment(id: string, pago: Payments, type: string) {
     }
     return true;
 }
-//Este metodo retorna todos los pagos de concurso o evento
+//Este metodo retorna todos los pagos de concurso o evento o varios
 export async function getAllDataPaymentByIdCE(id: string, type: string){
     let parametro = (type == "evento") ? "id_evento":"id_participacion";
     let {error , data} = await supabase().rpc(`get_payment_by_${type}_id`, {[parametro]: id});
