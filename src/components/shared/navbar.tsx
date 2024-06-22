@@ -99,6 +99,15 @@ export default function SiteNavBar() {
             Proyectos
           </Link>
         </NavbarItem>
+        <NavbarItem>
+        <Link
+            color={isActiveLink("/finanzas") ? "secondary" : "foreground"}
+            className="font-semibold"
+            href="/finanzas"
+          >
+            Finanzas
+          </Link>
+        </NavbarItem>
       </NavbarContent>
       <NavbarContent as="div" justify="end">
         <Dropdown placement="bottom-end">
