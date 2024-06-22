@@ -17,10 +17,10 @@ export default function BalanceGraphContainer() {
   const { incomePayments, outcomePayments } = usePayments();
 
   // Calculate total income
-  const totalIncome = incomePayments.reduce((acc, payment) => acc + payment.monto, 0);
+  const totalIncome = incomePayments?.reduce((acc, payment) => acc + payment.monto, 0);
 
   // Calculate total outcome
-  const totalOutcome = outcomePayments.reduce((acc, payment) => acc + payment.monto, 0);
+  const totalOutcome = outcomePayments?.reduce((acc, payment) => acc + payment.monto, 0);
 
   // Data for the bar chart
   const data = {
@@ -59,7 +59,7 @@ export default function BalanceGraphContainer() {
     <div className="w-full md:w-1/2 px-1 pt-1">
       <div className="border-2 h-64 rounded-md">
         <div className="flex flex-col justify-between h-full p-4">
-          <div className="content-start text-left font-bold">
+          <div className="content-start text-left font-bold h-full">
           Balance General:
           </div>
           <Bar data={data} options={options} />
