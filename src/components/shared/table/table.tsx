@@ -67,7 +67,7 @@ export default function DefaultTable({
 }) {
   return (
     <Table
-      className="p-10  "
+      className="p-10 "
       aria-label="Example table with custom cells, pagination and sorting"
       isHeaderSticky
       bottomContent={

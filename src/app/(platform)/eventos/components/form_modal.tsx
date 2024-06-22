@@ -7,45 +7,51 @@ import {
   Button,
   useDisclosure,
   Input,
-  DateInput,
-  Textarea,
   Tooltip,
+  Textarea,
+  DateInput,
 } from "@nextui-org/react";
+
 import { PlusIcon } from "../../../../components/shared/icons";
-
-import InputSearch from "@/components/shared/input_search";
-import { Proyecto } from "@/interfaces/Proyecto";
 import { Toaster } from "react-hot-toast";
-import { currentUser } from "@/services/users.service";
 
-import FormikProject from "../constants/formik";
-import ClubElementHook from "../hooks/asignation_club_hook";
+import { currentUser } from "@/services/users.service";
+import InputSearch from "@/components/shared/input_search";
+import { optionsElements, statusColorMap } from "../constants/constants";
+
+import ResponsiblesHook from "../hooks/responsibles_hook";
+import { Event } from "@/interfaces/Event";
+import FormikEvents from "../constants/formik";
 import { actualDate } from "@/constants/date_constants";
 import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
 
 export default function FormModal({
-  project,
-  icon,
+  event,
+  icon: button,
 }: {
-  project?: Proyecto;
+  event?: Event;
   icon?: JSX.Element;
 }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
-  const { fecha, setFecha } = dateInicioHook(project?.fecha_inicio);
+  const { responsibles, setResponsibles } = ResponsiblesHook();
+
+  const { fecha, setFecha } = dateInicioHook(event?.fecha_inicio);
 
   const { fechaFinal, setFechaFinal } = dateFinalHook(
     actualDate,
-    project?.fecha_fin
+    event?.fecha_fin
   );
 
-  const { clubElements, setClubElements } = ClubElementHook();
-
-  const onChanges = (value: string) => {
+  const onChangesResponsable = (value: string) => {
     formik.setFieldValue("responsable", value);
   };
 
-  const formik = FormikProject(project, currentUser);
+  const onChangesEstado = (value: string) => {
+    formik.setFieldValue("estado", value);
+  };
+
+  const formik = FormikEvents(event, currentUser, onClose);
 
   const asignFechas = () => {
     console.log(typeof fecha);
@@ -57,50 +63,71 @@ export default function FormModal({
       fechaFinal.day
     );
 
-    formik.setFieldValue("fechaInicio", fechaAsDate);
-    formik.setFieldValue("fechaFinal", fechaFinalAsDate);
+    formik.setFieldValue("fecha_inicio", fechaAsDate);
+    formik.setFieldValue("fecha_fin", fechaFinalAsDate);
   };
 
   return (
     <>
       <Toaster />
-      {!project ? (
+      {!event ? (
         <Button
           color="primary"
           endContent={<PlusIcon />}
           onPress={onOpen}
           id="AddMemberButton"
         >
-          Agregar proyecto
+          Agregar Evento
         </Button>
       ) : (
-        <Tooltip content="Editar Proyecto">
+        <Tooltip content="Editar Evento">
           <span
             className="text-lg text-default-400 cursor-pointer active:opacity-50"
             onClick={onOpen}
           >
-            {icon}
+            {button}
           </span>
         </Tooltip>
       )}
+
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {project ? "Actualizar Proyecto" : "Agregar Proyecto"}
+                {event ? (
+                  <div className="flex flex-row items-center">
+                    <div className="w-1/2">{"Actualizar club"}</div>
+
+                    <div className="w-1/2 mx-5">
+                      <InputSearch
+                        label=""
+                        placeholder=""
+                        elements={optionsElements}
+                        name="estado"
+                        onChange={onChangesEstado}
+                        value={formik.values.estado}
+                        color={statusColorMap[formik.values.estado]}
+                      ></InputSearch>
+                    </div>
+                  </div>
+                ) : (
+                  "Ingresar Club"
+                )}
               </ModalHeader>
+
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
                   <Input
                     autoFocus
+                    id={`nombre_${event?.id || ""}`}
                     label="Nombre"
                     name="nombre"
                     value={formik.values.nombre}
                     onChange={formik.handleChange}
                     isInvalid={formik.errors.nombre !== undefined}
                     errorMessage={formik.errors.nombre}
-                    placeholder="Ingresa el nombre del proyecto"
+                    placeholder="Ingresa el nombre del evento"
                     variant="bordered"
                     type="text"
                   />
@@ -114,26 +141,25 @@ export default function FormModal({
                     errorMessage={formik.errors.descripcion}
                     placeholder="Escribe una descripcion"
                     className={`flex 
-                    ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
-                    justify-between`}
+                      ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
+                      justify-between`}
                     variant="bordered"
                     maxRows={3}
                   />
 
                   <InputSearch
-                    elements={clubElements}
+                    elements={responsibles}
                     label="Responsable"
-                    placeholder="Buscar Club"
+                    placeholder="Buscar responsable"
                     name="responsable"
-                    value={formik.values.responsable} // Convert the value to a string
-                    onChange={onChanges}
+                    value={formik.values.responsable}
+                    onChange={onChangesResponsable}
                     isInvalid={formik.errors.responsable !== undefined}
                     className={`flex 
-                      ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
-                      justify-between`}
+                        ${formik.errors.nombre !== undefined ? "py-0" : "py-3"} 
+                        justify-between`}
                     errorMessage={formik.errors.responsable}
                   ></InputSearch>
-
                   <div
                     className={`flex 
                   ${
@@ -147,8 +173,8 @@ export default function FormModal({
                       }}
                       label="Fecha Inicio"
                       className="max-w-[284px]"
-                      isInvalid={formik.errors.fechaInicio !== undefined}
-                      errorMessage={formik.errors.fechaInicio}
+                      isInvalid={formik.errors.fecha_inicio !== undefined}
+                      errorMessage={formik.errors.fecha_inicio}
                     />
 
                     <div className=" w-2"></div>
@@ -159,22 +185,28 @@ export default function FormModal({
                       }}
                       label="Fecha Final"
                       className="max-w-[284px]"
-                      isInvalid={formik.errors.fechaFinal !== undefined}
-                      errorMessage={formik.errors.fechaFinal}
+                      isInvalid={formik.errors.fecha_fin !== undefined}
+                      errorMessage={formik.errors.fecha_fin}
                     />
                   </div>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="flat" onPress={onClose}>
+                  <Button
+                    id="CloseButton"
+                    color="danger"
+                    variant="flat"
+                    onPress={onClose}
+                  >
                     Close
                   </Button>
                   <Button
+                    id="SubmitButton"
                     color="primary"
                     type="submit"
                     onPress={asignFechas}
                     isLoading={formik.isSubmitting}
                   >
-                    {project ? "Actualizar" : "Registrar"}
+                    {event ? "Actualizar" : "Registrar"}
                   </Button>
                 </ModalFooter>
               </form>

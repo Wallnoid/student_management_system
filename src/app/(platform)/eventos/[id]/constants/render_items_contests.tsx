@@ -1,19 +1,19 @@
-import { DeleteIcon, EditIcon, MemberIcon } from "@/components/shared/icons";
-import { ClubInternos } from "@/interfaces/ClubInternos";
+import { DeleteIcon, EditIcon } from "@/components/shared/icons";
 import { Member } from "@/interfaces/Member";
-import { Presidente, renderCellType } from "@/types/types";
+import { renderCellType } from "@/types/types";
 import { cutString } from "@/utils/utils";
 import { Chip, Tooltip, User } from "@nextui-org/react";
 import { statusColorMap } from "./constants";
-import FormModal from "../components/form_modal";
-import { deleteClub } from "../actions/crud_clubes";
-import InfoClubes from "../components/info_clubes";
 import { FaPeopleGroup } from "react-icons/fa6";
-import ModalMembers from "../components/modal_members";
+import { Contest } from "@/interfaces/Contest";
+import { deleteContestCrud } from "../actions/crud_contets";
+import InfoContest from "../components/info_contests";
+import FormModal from "../components/form_modal_contest";
 
 export default function renderItems(
-  club: ClubInternos,
-  cellValue: any
+  contest: Contest,
+  cellValue: any,
+  id_event: string
 ): renderCellType[] {
   return [
     {
@@ -31,16 +31,31 @@ export default function renderItems(
       ),
     },
     {
-      key: "presidente",
+      key: "creado_por",
       reactHelement: (
         <div className="flex flex-col">
           <p className="text-bold text-small capitalize">
-            {(club.presidente as Member).nombre +
+            {(contest.creado_por as Member).nombre +
               " " +
-              (club.presidente as Member).apellido}
+              (contest.creado_por as Member).apellido}
           </p>
           <p className="text-bold text-tiny capitalize text-default-400">
-            {(club.presidente as Member).categoria}
+            {(contest.responsable as Member).categoria}
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "responsable",
+      reactHelement: (
+        <div className="flex flex-col">
+          <p className="text-bold text-small capitalize">
+            {(contest.responsable as Member).nombre +
+              " " +
+              (contest.responsable as Member).apellido}
+          </p>
+          <p className="text-bold text-tiny capitalize text-default-400">
+            {(contest.responsable as Member).categoria}
           </p>
         </div>
       ),
@@ -50,7 +65,7 @@ export default function renderItems(
       reactHelement: (
         <Chip
           className="capitalize"
-          color={statusColorMap[club.estado]}
+          color={statusColorMap[contest.estado]}
           size="sm"
           variant="flat"
         >
@@ -62,16 +77,20 @@ export default function renderItems(
       key: "actions",
       reactHelement: (
         <div className="relative flex items-center gap-2">
-          <InfoClubes club={club}></InfoClubes>
+          <InfoContest contest={contest}></InfoContest>
 
-          <ModalMembers club={club}></ModalMembers>
+          {/*<ModalMembers club={event}></ModalMembers> */}
 
-          <FormModal icon={<EditIcon />} club={club}></FormModal>
+          <FormModal
+            icon={<EditIcon />}
+            contest={contest}
+            id_event={id_event}
+          ></FormModal>
 
           <Tooltip color="danger" content="Eliminar Miembro">
             <span
               className="text-lg text-danger cursor-pointer active:opacity-50"
-              onClick={() => deleteClub(club!.id ?? "")}
+              onClick={() => deleteContestCrud(contest!)}
             >
               <DeleteIcon />
             </span>
