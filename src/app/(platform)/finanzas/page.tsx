@@ -19,7 +19,7 @@ export default function Page() {
   const[outcomePayments, setOutcomePayments] = useState<Payments[]>();
 
 
-  useEffect(() => {
+useEffect(() => {
     const fetchPayments = async () => {
       const contestData = await getAllPayments("concursos");
       const eventData = await getAllPayments("eventos");
