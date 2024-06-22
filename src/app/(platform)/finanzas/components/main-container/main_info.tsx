@@ -48,7 +48,8 @@ export default function MainInfoContainer() {
   }
   
   const getBalance = () => {
-    return getIncome() - getOutcome();
+    const total = getIncome() - getOutcome()
+    return total.toFixed(2);
   }
 
   return (
@@ -60,17 +61,17 @@ export default function MainInfoContainer() {
             <div className="flex justify-between mt-4">
               <div>
                 <p className="text-sm text-gray-500">Ingresos</p>
-                <p className="text-lg font-semibold">$ {getIncome() === -1 ? "0" : getIncome().toString()}</p>
+                <p className="text-lg font-semibold">$ {getIncome() === -1 ? "0" : getIncome().toFixed(2).toString()}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">Egresos</p>
-                <p className="text-lg font-semibold">$ {getOutcome() === -1 ? "0" : getOutcome().toString()}</p>
+                <p className="text-lg font-semibold">$ {getOutcome() === -1 ? "0" : getOutcome().toFixed(2).toString()}</p>
               </div>
             </div>
           </div>
           <div className="mt-2">
             <p className="text-sm text-gray-500">Balance</p>
-            <p className="text-lg font-semibold">$ {getBalance() === -1 ? "0" : getBalance().toString()}</p>
+            <p className="text-lg font-semibold">$ {getBalance().toString()}</p>
           </div>
           <div className="mt-4">
             <p className="text-sm text-gray-500 font-bold">Acciones Rapidas:</p>
