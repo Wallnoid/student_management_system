@@ -8,7 +8,7 @@ import MainInfoContainer from "./components/main-container/main_info";
 import OutcomeContainer from "./components/outcome";
 import BalanceGraphContainer from "./components/balance-graph/balance-graph";
 import { Payments } from "@/interfaces/Payments";
-import { getAllPayments } from "@/services/payments.service";
+import { getAllPayments, getAllPaymentsVarious } from "@/services/payments.service";
 import { PaymentsProvider } from "./paymentsContext";
 
 export default function Page() {
@@ -23,7 +23,7 @@ useEffect(() => {
     const fetchPayments = async () => {
       const contestData = await getAllPayments("concursos");
       const eventData = await getAllPayments("eventos");
-      const variousData = await getAllPayments("varios");
+      const variousData = await getAllPaymentsVarious("varios");
 
       // Add category to each payment
       const contestPaymentsWithCategory = contestData.map(payment => ({ ...payment, categoria: "concurso" }));
@@ -44,6 +44,8 @@ useEffect(() => {
 
     fetchPayments();
   }, []);
+
+console.log(contestPayments);
 
   return (
     <PaymentsProvider value={{ contestPayments, eventPayments, variousPayments, incomePayments, outcomePayments }}>

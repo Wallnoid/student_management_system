@@ -13,6 +13,14 @@ supabase().auth.onAuthStateChange((event, session) => {
 //Los tipos es concurso o evento
 
 export async function getAllPayments(type: string) {
+    let {error , data} = await supabase().rpc(`get_payments_${type}`);
+    if (error) {
+        throw new Error('Error al recuperar datos del servidor. Intente más tarde.');
+    }
+    return data as Payments[];
+}
+
+export async function getAllPaymentsVarious(type: string) {
     let { data, error } = await supabase()
         .from("pagos_"+type)
         .select("*")

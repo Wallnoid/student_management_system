@@ -3,7 +3,6 @@ import { usePayments } from "../paymentsContext";
 export default function IncomeContainer() {
   const { incomePayments } = usePayments();
 
-  console.log(incomePayments);
 
 
   const getIncome = () => {
