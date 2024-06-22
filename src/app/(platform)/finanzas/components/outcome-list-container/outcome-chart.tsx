@@ -46,10 +46,10 @@ const OutcomesChart = ({ payments }: { payments: Payments[] }) => {
     responsive: true,
     plugins: {
       legend: {
-        display: false,
-        position: 'bottom',
+        display: true,
+        position: 'right',
         labels: {
-          boxWidth: 20,
+          boxWidth: 10,
           padding: 10,
           usePointStyle: true,
         },
