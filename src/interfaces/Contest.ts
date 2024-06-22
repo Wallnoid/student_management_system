@@ -8,6 +8,12 @@ export interface Contest{
     cantidad_participantes?: number;
     id_evento?: string;
     estado?: string;
+    lugar?: string;
+    fecha_inicio?: string;
+    fecha_fin?: string;
+    hora_inicio?: string;
+    hora_fin?: string;
+    cant_integrantes_por_equipo?: number;
     creado_por?: string;
     fecha_hora_creacion?: string;
     actualizado_por?: string;
