@@ -1,5 +1,6 @@
 import { createClient as supabase } from "@/supabase/client";
 import { Contest } from "@/interfaces/Contest";
+import { Member } from "@/interfaces/Member";
 
 export async function addContest(contest: Contest): Promise<boolean> {
   const {
@@ -99,7 +100,8 @@ export async function getContests(id_evento: string) {
 
 export async function deleteContest(contest: Contest, status: string) {
   console.log(contest.id);
-  const { id, actualizado_por } = contest;
+  const actualizado_por = (contest.actualizado_por as Member).id
+  const { id } = contest;
   let { error } = await supabase()
     .from("concurso")
     .update({
