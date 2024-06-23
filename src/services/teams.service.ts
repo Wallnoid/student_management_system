@@ -6,13 +6,12 @@ import { getTeamsParticipationsByContest } from "./participations.service";
 import { Participation } from "@/interfaces/Participation";
 
 export async function addTeam(team: Team): Promise<boolean> {
-    const {nombre, cant_integrantes, capitan, creado_por} = team;
+    const {nombre, cant_integrantes, creado_por} = team;
     let { error } = await supabase()
         .from('equipos')
         .insert({
             nombre,
             cant_integrantes,
-            capitan,
             creado_por,
             fecha_hora_creacion: 'NOW()'
         })
@@ -78,7 +77,6 @@ export async function deleteTeam(team: Team, estado: string): Promise<boolean> {
     return true;
 }
 
-
 //asignaciones de miembros a equipos
 
 export async function addMemberToTeam(asignacion: AsignacionesEquipos): Promise<boolean> {
@@ -97,3 +95,25 @@ export async function addMemberToTeam(asignacion: AsignacionesEquipos): Promise<
     return true;
 }
 
+// obtener la info de un equipo mediante el ID
+
+export async function getTeamInfoById(id_team: string) {
+    let { data, error } = await supabase()
+        .rpc('get_team_info_by_id', { id_team })
+    if (error) throw new Error('Error al intentar obtener la información del equipo seleccionado. Intente de nuevo. Error: ' + error.message);
+    return data as [];
+}
+
+// designar un capitan de equipo
+
+export async function captainAssignment(id_team: string, id_participant: string): Promise<Boolean>{
+    let { error } = await supabase()
+        .from('equipos')
+        .update({
+            capitan: id_participant
+        })
+        .eq('id', id_team)
+        .select();
+    if (error) throw new Error('Error al intentar designar el capitán del equipo. Intente de nuevo. Error: ' + error.message);
+    return true;
+}
