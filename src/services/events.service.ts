@@ -75,7 +75,6 @@ export async function deleteEvent(
   event: Event,
   status: string
 ): Promise<boolean> {
-  console.log(event);
   const actualizado_por = (event.actualizado_por as Member).id;
   const { id } = event;
   let { error } = await supabase()

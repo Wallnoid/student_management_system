@@ -1,4 +1,5 @@
 import { AsignacionesEquipos } from "@/interfaces/AsignacionesEquipos";
+import { Member } from "@/interfaces/Member";
 import { Team } from "@/interfaces/Team";
 import { createClient as supabase } from "@/supabase/client";
 
@@ -49,7 +50,8 @@ export async function getTeams(){
 }
 
 export async function deleteTeam(team: Team, estado: string): Promise<boolean> {
-    const {id, actualizado_por} = team;
+    const actualizado_por = (team.actualizado_por as Member).id;
+    const {id} = team;
     let { error } = await supabase()
     .from('equipos')
     .update({

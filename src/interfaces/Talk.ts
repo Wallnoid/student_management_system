@@ -12,7 +12,7 @@ export interface Talk {
   hora_fin?: string;
   creado_por?: string | Member;
   fecha_hora_creacion?: string;
-  actualizado_por?: string;
+  actualizado_por?: string | Member;
   fecha_hora_actualizacion?: string;
   //PROPIEDADES DE LA ENTIDAD PARA ASIGNACIONES DE CHARLAS-PONENTES
   ponentes?: string[];

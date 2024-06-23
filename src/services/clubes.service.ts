@@ -119,8 +119,8 @@ export async function updateMemberClub(miembro: AsignacionesClubes) {
     id_miembro,
     comentario_asignacion,
     estado,
-    actualizado_por,
   } = miembro;
+const actualizado_por = (miembro.actualizado_por as Member).id;
   const { error } = await supabase()
     .from("asignacion_miembros_clubes")
     .update({

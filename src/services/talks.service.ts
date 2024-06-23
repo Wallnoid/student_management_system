@@ -1,3 +1,4 @@
+import { Member } from '@/interfaces/Member';
 import { Talk } from '@/interfaces/Talk';
 import { createClient as supabase } from '@/supabase/client';
 
@@ -91,7 +92,8 @@ export async function getTalksByEventId(evento_id: string){
 }
 
 export async function deleteTalk(talk: Talk, estado: string): Promise<boolean> {
-    const {id, actualizado_por} = talk;
+    const actualizado_por = (talk.actualizado_por as Member).id;
+    const {id} = talk;
     let { error } = await supabase()
         .from('charlas')
         .update({
