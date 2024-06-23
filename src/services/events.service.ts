@@ -1,5 +1,6 @@
 import { createClient as supabase } from "@/supabase/client";
 import { Event } from "@/interfaces/Event";
+import { Member } from "@/interfaces/Member";
 
 export async function addEvent(event: Event): Promise<boolean> {
   const {
@@ -75,7 +76,8 @@ export async function deleteEvent(
   status: string
 ): Promise<boolean> {
   console.log(event);
-  const { id, actualizado_por } = event;
+  const actualizado_por = (event.actualizado_por as Member).id;
+  const { id } = event;
   let { error } = await supabase()
     .from("eventos")
     .update({
