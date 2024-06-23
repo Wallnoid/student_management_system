@@ -1,19 +1,20 @@
-// import { getEvents } from "@/services/events.service";
-// import { useEffect, useState } from "react";
+import { getEventInfoById } from "@/services/events.service";
+import { useEffect, useState } from "react";
+import { Event } from "@/interfaces/Event";
 
-// export default function EventHook(loading: boolean) {
-//   const [event, setEvent] = useState<Event[]>([]);
+export default function EventHook(loading: boolean, id: string) {
+  const [event, setEvent] = useState<Event[]>([]);
 
-//   useEffect(() => {
-//     getEventById()
-//       .then((data) => {
-//         setEvent(data);
-//         console.log(data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   }, [loading]);
+  useEffect(() => {
+    getEventInfoById(id)
+      .then((data) => {
+        setEvent(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [loading]);
 
-//   return { events: event, setEvents: setEvent };
-// }
+  return { event, setEvent };
+}

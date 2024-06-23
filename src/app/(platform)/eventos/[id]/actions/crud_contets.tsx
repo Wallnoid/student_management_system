@@ -1,15 +1,5 @@
 import AlertDelete from "@/components/shared/alert_delete";
-import { ClubInternos } from "@/interfaces/ClubInternos";
-import {
-  insertClub,
-  updateClub,
-  updateEstadoClub,
-} from "@/services/clubes.service";
-import { deleteEvent } from "@/services/events.service";
 import toast from "react-hot-toast";
-import { Event } from "@/interfaces/Event";
-import { addTalk, deleteTalk, updateTalk } from "@/services/talks.service";
-import { Talk } from "@/interfaces/Talk";
 import {
   addContest,
   deleteContest,
