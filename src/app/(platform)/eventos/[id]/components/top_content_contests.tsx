@@ -23,6 +23,7 @@ export default function topContent({
   users,
   onRowsPerPageChange,
   onReload,
+  id_event,
 }: {
   filterValue: any;
   onClear: any;
@@ -36,6 +37,7 @@ export default function topContent({
   users: any;
   onRowsPerPageChange: any;
   onReload: Function;
+  id_event: string;
 }) {
   return (
     <div className="flex flex-col gap-4 ">
@@ -98,7 +100,7 @@ export default function topContent({
               ))}
             </DropdownMenu>
           </Dropdown>
-          <FormModal />
+          <FormModal id_event={id_event} />
         </div>
       </div>
       <div className="flex justify-between items-center">

@@ -27,3 +27,7 @@ export function formatDateTime(date: string) {
 export function parseDate(date: string) {
   return format(parseISO(date), "yyyy-MM-dd");
 }
+
+export function getUrl() {
+  return window.location.href;
+}

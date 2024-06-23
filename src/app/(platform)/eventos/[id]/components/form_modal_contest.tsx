@@ -28,15 +28,14 @@ import FormikContest from "../constants/formik_contests";
 import { actualDate } from "@/constants/date_constants";
 import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
 import { timeFinalHook, timeInicioHook } from "@/hooks/time_hook";
+import { getUrl } from "@/utils/utils";
 
 export default function FormModal({
   contest,
   icon: button,
-  id_event,
 }: {
   contest?: Contest;
   icon?: JSX.Element;
-  id_event: string;
 }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -50,12 +49,49 @@ export default function FormModal({
 
   const { timeFinal, setTimeFinal } = timeFinalHook("");
 
-  const onChangesPresidente = (value: string) => {
-    formik.setFieldValue("presidente", value);
+  const url = getUrl();
+
+  const id_event = url.substring(url.lastIndexOf("/") + 1);
+
+  const onChangesReponsable = (value: string) => {
+    formik.setFieldValue("responsable", value);
   };
 
   const onChangesEstado = (value: string) => {
     formik.setFieldValue("estado", value);
+  };
+
+  const asignFechas = () => {
+    console.log(typeof fecha);
+    const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
+
+    const fechaFinalAsDate = new Date(
+      fechaFinal.year,
+      fechaFinal.month - 1,
+      fechaFinal.day
+    );
+
+    formik.setFieldValue("fecha_inicio", fechaAsDate);
+    formik.setFieldValue("fecha_fin", fechaFinalAsDate);
+  };
+
+  const asignarHoras = () => {
+    const timeToString = time.toString().slice(0, 5);
+
+    const timeFinalToString = timeFinal.toString().slice(0, 5);
+
+    console.log(timeToString);
+
+    formik.setFieldValue("hora_inicio", timeToString);
+    formik.setFieldValue("hora_fin", timeFinalToString);
+  };
+
+  const asignarValores = () => {
+    formik.setFieldValue("id_evento", id_event);
+
+    asignFechas();
+
+    asignarHoras();
   };
 
   const formik = FormikContest(contest, currentUser, onClose);
@@ -147,11 +183,11 @@ export default function FormModal({
 
                   <InputSearch
                     elements={members}
-                    label="Presidente"
-                    placeholder="Buscar presidente"
-                    name="presidente"
+                    label="Responsable"
+                    placeholder="Buscar responsable"
+                    name="responsable"
                     value={formik.values.responsable}
-                    onChange={onChangesPresidente}
+                    onChange={onChangesReponsable}
                     isInvalid={formik.errors.responsable !== undefined}
                     className={`flex 
                           ${
@@ -280,6 +316,7 @@ export default function FormModal({
                     id="SubmitButton"
                     color="primary"
                     type="submit"
+                    onPress={asignarValores}
                     isLoading={formik.isSubmitting}
                   >
                     {contest ? "Actualizar" : "Registrar"}

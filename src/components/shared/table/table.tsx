@@ -101,6 +101,7 @@ export default function DefaultTable({
           statusOptions={statusOptions}
           users={entities}
           onRowsPerPageChange={onRowsPerPageChange}
+          
         ></TopContent>
       }
       topContentPlacement="outside"
