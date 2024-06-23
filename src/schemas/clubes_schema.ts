@@ -13,7 +13,11 @@ export const clubSchema = () => {
       .required("La descripción es requerida")
       .min(3, "debe contener al menos 3 caracteres")
       .max(100, "debe contener menos de 100 caracteres"),
-    president: yup.string(),
+    president: yup
+      .string()
+
+      .notOneOf(["null"], "El responsable es requerido")
+      .required("El responsable es requerido"),
 
     //.required("El responsable es requerido"),
     ubicacion: yup
