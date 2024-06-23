@@ -2,7 +2,8 @@ import { AsignacionesEquipos } from "@/interfaces/AsignacionesEquipos";
 import { Member } from "@/interfaces/Member";
 import { Team } from "@/interfaces/Team";
 import { createClient as supabase } from "@/supabase/client";
-
+import { getTeamsParticipationsByContest } from "./participations.service";
+import { Participation } from "@/interfaces/Participation";
 
 export async function addTeam(team: Team): Promise<boolean> {
     const {nombre, cant_integrantes, capitan, creado_por} = team;
@@ -47,6 +48,18 @@ export async function getTeams(){
         .rpc('get_teams')
     if (error) throw new Error('Error al intentar recuperar los equipos. Intente de nuevo. Error: ' + error.message);
     return data as [];
+}
+
+export async function getTeamsByContest(concurso_id: string): Promise<Team[]> {
+    return getTeamsParticipationsByContest(concurso_id).then((participaciones: Participation[]) => {
+        let teams: Team[] = [];
+        for (let i = 0; i < participaciones.length; i++) {
+            teams.push(participaciones[i].id_equipo as Team);
+        }
+        return teams;
+    }).catch((error) => {
+        throw new Error('Error al obtener los equipos. Error: ' + error.message);
+    });
 }
 
 export async function deleteTeam(team: Team, estado: string): Promise<boolean> {

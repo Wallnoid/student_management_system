@@ -84,6 +84,14 @@ export async function getTalks(){
     return data as [];
 }
 
+export async function getTalkById(talk_id: string){
+    let { data, error } = await supabase()
+    .rpc('get_talkByID', { talk_id });
+    if (error) throw new Error('Error al intentar obtener la charla seleccionada. Intente de nuevo. Error: ' + error.message);
+    return data as Talk;
+
+}
+
 export async function getTalksByEventId(evento_id: string){
     let { data, error } = await supabase()
     .rpc('get_talk_by_event_id', { evento_id });

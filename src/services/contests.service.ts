@@ -86,6 +86,29 @@ export async function updateContest(contest: Contest): Promise<boolean> {
   return true;
 }
 
+export async function getAllContest() {
+  let { data, error } = await supabase().rpc("get_contests");
+  if (error)
+    throw new Error(
+      "Error al intentar recuperar todos los clubes disponibles. Rceargue la página e intente de nuevo. Error: " +
+        error.message
+    );
+  return data as Contest[];
+}
+
+export async function getContestsByID(contest_id: string) {
+  let { data, error } = await supabase().rpc("get_contestByID", {
+    contest_id,
+  });
+  if (error)
+    throw new Error(
+      "Error al intentar recuperar todos los clubes disponibles. Rceargue la página e intente de nuevo. Error: " +
+        error.message
+    );
+  return data as Contest;
+  
+}
+
 export async function getContests(id_evento: string) {
   let { data, error } = await supabase().rpc("get_contests", {
     evento_id: id_evento,
@@ -95,7 +118,7 @@ export async function getContests(id_evento: string) {
       "Error al intentar recuperar todos los clubes disponibles. Rceargue la página e intente de nuevo. Error: " +
         error.message
     );
-  return data as [];
+  return data as Contest[];
 }
 
 export async function deleteContest(contest: Contest, status: string) {
