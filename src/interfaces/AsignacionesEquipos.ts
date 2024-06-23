@@ -1,6 +1,8 @@
+import { Participant } from "./Participant";
+
 export interface AsignacionesEquipos {
     id_asignacion?: string;
-    id_miembro?: string;
+    id_miembro?: string | Participant;
     id_equipo?: string;
     observacion?: string;
     creado_por?: string;
