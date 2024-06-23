@@ -17,13 +17,14 @@ export default function FormikContest(
       nombre: contest?.nombre || "",
       descripcion: contest?.descripcion || "",
       responsable: (contest?.responsable as Member)?.id || "",
-      ubicacion: contest?.descripcion || "",
-      cant_participantes: contest?.cantidad_participantes || 0,
+      cant_participantes: contest?.cantidad_participantes || 1,
       estado: contest?.estado || "activo",
-      fecha_inicio: "",
-      fecha_fin: "",
-      hora_inicio: "",
-      hora_fin: "",
+      fecha_inicio: contest?.fecha_inicio || "",
+      fecha_fin: contest?.fecha_fin || "",
+      hora_inicio: contest?.hora_inicio || "",
+      hora_fin: contest?.hora_fin || "",
+      lugar: contest?.lugar || "",
+      cant_integrantes_por_equipo: contest?.cant_integrantes_por_equipo || 1,
     },
     validationSchema: clubSchema(),
     onSubmit: (values) => {
@@ -38,6 +39,12 @@ export default function FormikContest(
         id_evento: contest?.id_evento || "",
         actualizado_por: currentUser!.user.id,
         estado: values.estado,
+        fecha_inicio: values.fecha_inicio,
+        fecha_fin: values.fecha_fin,
+        hora_inicio: values.hora_inicio,
+        hora_fin: values.hora_fin,
+        lugar: values.lugar,
+        cant_integrantes_por_equipo: values.cant_integrantes_por_equipo,
       };
 
       if (contest) {

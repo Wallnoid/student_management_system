@@ -14,6 +14,8 @@ export const INITIAL_VISIBLE_COLUMNS_TALKS = [
 export const INITIAL_VISIBLE_COLUMNS_CONTEST = [
   "nombre",
   "responsable",
+  "fecha_inicio",
+  "fecha_fin",
   "estado",
   "actions",
 ];
@@ -31,9 +33,15 @@ export const columnsTableTalks = [
 export const columnsTableContests = [
   { name: "NOMBRE", uid: "nombre", sortable: true },
   { name: "RESPONSABLE", uid: "responsable" },
-  { name: "CREADO POR", uid: "creado_por" },
   { name: "N° PARTICIPANTES", uid: "cantidad_participantes", sortable: true },
   { name: "ESTADO", uid: "estado", sortable: true },
+  { name: "FECHA INICIO", uid: "fecha_inicio", sortable: true },
+  { name: "FECHA FIN", uid: "fecha_fin", sortable: true },
+  { name: "HORA INICIO", uid: "hora_inicio", sortable: true },
+  { name: "HORA FIN", uid: "hora_fin", sortable: true },
+  { name: "LUGAR", uid: "lugar", sortable: true },
+  { name: "CATEGORIA", uid: "categoria", sortable: true },
+  { name: "MAX INTE. EQUIPO", uid: "cant_integrantes_por_equipo" },
   { name: "ACTIONS", uid: "actions" },
 ];
 

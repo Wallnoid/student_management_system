@@ -31,21 +31,6 @@ export default function renderItems(
       ),
     },
     {
-      key: "creado_por",
-      reactHelement: (
-        <div className="flex flex-col">
-          <p className="text-bold text-small capitalize">
-            {(contest.creado_por as Member).nombre +
-              " " +
-              (contest.creado_por as Member).apellido}
-          </p>
-          <p className="text-bold text-tiny capitalize text-default-400">
-            {(contest.responsable as Member).categoria}
-          </p>
-        </div>
-      ),
-    },
-    {
       key: "responsable",
       reactHelement: (
         <div className="flex flex-col">

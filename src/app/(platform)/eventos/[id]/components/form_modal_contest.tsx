@@ -83,7 +83,12 @@ export default function FormModal({
         </Tooltip>
       )}
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="top-center"
+        size={"3xl"}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -159,25 +164,64 @@ export default function FormModal({
                   ></InputSearch>
 
                   <Input
-                    id={`ubicacion_${contest?.id || ""}`}
-                    label="Ubicacion"
-                    name="ubicacion"
-                    value={formik.values.ubicacion}
+                    id={`lugar_${contest?.id || ""}`}
+                    label="Lugar"
+                    name="lugar"
+                    value={formik.values.lugar}
                     onChange={formik.handleChange}
-                    isInvalid={formik.errors.ubicacion !== undefined}
-                    errorMessage={formik.errors.ubicacion}
-                    placeholder="Ingresa la ubicacion del club"
+                    isInvalid={formik.errors.lugar !== undefined}
+                    errorMessage={formik.errors.lugar}
+                    placeholder="Ingresa el lugar del club"
                     className={
                       formik.errors.responsable !== undefined ? "py-0" : "py-3"
                     }
                     variant="bordered"
                     type="text"
                   />
+
                   <div
                     className={`flex 
                   ${
-                    formik.errors.ubicacion !== undefined ? "py-0" : "py-3"
-                  } justify-between`}
+                    formik.errors.lugar !== undefined ? "py-0" : "py-3"
+                  } justify-between gap-2`}
+                  >
+                    <Input
+                      id={`numero_participantes_${contest?.id || ""}`}
+                      label="N° de participantes"
+                      name="cant_participantes"
+                      value={formik.values.cant_participantes.toString()}
+                      onChange={formik.handleChange}
+                      isInvalid={formik.errors.cant_participantes !== undefined}
+                      errorMessage={formik.errors.cant_participantes}
+                      placeholder="Ingresa el numero de participantes"
+                      variant="bordered"
+                      type="text"
+                    />
+
+                    <Input
+                      id={`cant_participantes_${contest?.id || ""}`}
+                      label="Cantidad de integrantes por equipo"
+                      name="cant_integrantes_por_equipo"
+                      value={formik.values.cant_integrantes_por_equipo.toString()}
+                      onChange={formik.handleChange}
+                      isInvalid={
+                        formik.errors.cant_integrantes_por_equipo !== undefined
+                      }
+                      errorMessage={formik.errors.cant_integrantes_por_equipo}
+                      placeholder="Ingresa la cantidad de integrantes por equipo"
+                      variant="bordered"
+                      type="text"
+                    />
+                  </div>
+
+                  <div
+                    className={`flex 
+                  ${
+                    formik.errors.cant_integrantes_por_equipo !== undefined ||
+                    formik.errors.cant_participantes !== undefined
+                      ? "py-0"
+                      : "py-3"
+                  } justify-between gap-9 md:gap-2 flex-col md:flex-row`}
                   >
                     <DateInput
                       value={fecha}
@@ -185,51 +229,39 @@ export default function FormModal({
                         setFecha(date);
                       }}
                       label="Fecha Inicio"
-                      className="max-w-[284px]"
+                      className="w-full"
                       isInvalid={formik.errors.fecha_inicio !== undefined}
                       errorMessage={formik.errors.fecha_inicio}
                     />
 
-                    <div className=" w-2"></div>
+                    <TimeInput
+                      value={time}
+                      onChange={(time) => {
+                        setTime(time);
+                      }}
+                      label="Hora Inicio"
+                      className="w-full"
+                      isInvalid={formik.errors.hora_inicio !== undefined}
+                      errorMessage={formik.errors.hora_inicio}
+                    />
+
                     <DateInput
                       value={fechaFinal}
                       onChange={(date) => {
                         setFechaFinal(date);
                       }}
                       label="Fecha Final"
-                      className="max-w-[284px]"
+                      className="w-full"
                       isInvalid={formik.errors.fecha_fin !== undefined}
                       errorMessage={formik.errors.fecha_fin}
                     />
-                  </div>
-                  <div
-                    className={`flex 
-                  ${
-                    formik.errors.fecha_inicio !== undefined ||
-                    formik.errors.fecha_fin !== undefined
-                      ? "py-0"
-                      : "py-3"
-                  } justify-between`}
-                  >
-                    <TimeInput
-                      value={time}
-                      onChange={(time) => {
-                        setTime(time);
-                      }}
-                      label="Fecha Inicio"
-                      className="max-w-[284px]"
-                      isInvalid={formik.errors.hora_inicio !== undefined}
-                      errorMessage={formik.errors.hora_inicio}
-                    />
-
-                    <div className=" w-2"></div>
                     <TimeInput
                       value={timeFinal}
                       onChange={(time) => {
                         setTimeFinal(time);
                       }}
-                      label="Fecha Final"
-                      className="max-w-[284px]"
+                      label="Hora Final"
+                      className="w-full"
                       isInvalid={formik.errors.hora_fin !== undefined}
                       errorMessage={formik.errors.hora_fin}
                     />
