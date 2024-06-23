@@ -374,7 +374,7 @@ function VariousModalInfo({ payments }: { payments: Payments[] }) {
         success: () => {
           console.log("Pago registrado correctamente!");
           formik.resetForm();
-          //window.location.reload();
+          window.location.reload();
           return <b>Pago Registrado</b>;
         },
         error: (err) => {
