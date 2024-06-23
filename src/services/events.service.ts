@@ -66,3 +66,12 @@ export async function deleteEvent(event: Event, status: string): Promise<boolean
     }
     return true;
 }
+
+//función para obtener la información de un evento mediante el id
+
+export async function getEventInfoById(id: string){
+    let { data, error } = await supabase()
+    .rpc('get_event_info_by_id', { event_id: id })
+    if (error) throw new Error('Error al intentar recuperar la información del evento seleccionado. Error: ' + error.message);
+    return data as [];
+}
