@@ -71,12 +71,20 @@ export function renderCellEventsHook(
 }
 
 export function renderCellTalksHook(
-  renderItems: (talks: Talk, cellValue: any) => renderCellType[]
+  id_event: string,
+
+  router: AppRouterInstance,
+  renderItems: (
+    talks: Talk,
+    cellValue: any,
+    router: AppRouterInstance,
+    id_event: string
+  ) => renderCellType[]
 ): (talks: Talk, columnKey: React.Key) => any {
   return useCallback((talks: Talk, columnKey: React.Key) => {
     const cellValue = talks[columnKey as keyof Talk];
 
-    const renderCellValues = renderItems(talks, cellValue);
+    const renderCellValues = renderItems(talks, cellValue, router, id_event);
 
     const renderCell = renderCellValues.find((cell) => cell.key === columnKey);
     return renderCell ? renderCell.reactHelement : cellValue;
@@ -85,16 +93,19 @@ export function renderCellTalksHook(
 
 export function renderCellContestHook(
   id_event: string,
+
+  router: AppRouterInstance,
   renderItems: (
     contest: Contest,
     cellValue: any,
+    router: AppRouterInstance,
     id_event: string
   ) => renderCellType[]
 ): (contest: Contest, columnKey: React.Key) => any {
   return useCallback((contest: Contest, columnKey: React.Key) => {
     const cellValue = contest[columnKey as keyof Contest];
 
-    const renderCellValues = renderItems(contest, cellValue, id_event);
+    const renderCellValues = renderItems(contest, cellValue, router, id_event);
 
     const renderCell = renderCellValues.find((cell) => cell.key === columnKey);
     return renderCell ? renderCell.reactHelement : cellValue;

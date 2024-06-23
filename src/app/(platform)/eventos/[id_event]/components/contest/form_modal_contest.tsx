@@ -18,13 +18,13 @@ import { Toaster } from "react-hot-toast";
 
 import { currentUser } from "@/services/users.service";
 import InputSearch from "@/components/shared/input_search";
-import { optionsElements, statusColorMap } from "../constants/constants";
+import { optionsElements, statusColorMap } from "../../constants/constants";
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { PlusIcon } from "@/components/shared/icons";
 import FormikClubes from "@/app/(platform)/clubes/constants/formik";
 import MemberElementHook from "@/app/(platform)/clubes/hooks/members_hook";
 import { Contest } from "@/interfaces/Contest";
-import FormikContest from "../constants/formik_contests";
+import FormikContest from "../../constants/formik_contests";
 import { actualDate } from "@/constants/date_constants";
 import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
 import { timeFinalHook, timeInicioHook } from "@/hooks/time_hook";
@@ -41,9 +41,12 @@ export default function FormModal({
 
   const { members, setMembers } = MemberElementHook();
 
-  const { fecha, setFecha } = dateInicioHook("2023-09-12");
+  const { fecha, setFecha } = dateInicioHook(contest?.fecha_inicio || "");
 
-  const { fechaFinal, setFechaFinal } = dateFinalHook(actualDate, "2023-12-12");
+  const { fechaFinal, setFechaFinal } = dateFinalHook(
+    actualDate,
+    contest?.fecha_fin || ""
+  );
 
   const { time, setTime } = timeInicioHook("");
 

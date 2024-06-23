@@ -26,6 +26,7 @@ export const columnsTableTalks = [
   { name: "HORA INICIO", uid: "hora_inicio", sortable: true },
   { name: "HORA FIN", uid: "hora_fin", sortable: true },
   { name: "LUGAR", uid: "lugar", sortable: true },
+  { name: "FECHA", uid: "fecha", sortable: true },
   { name: "ESTADO", uid: "estado", sortable: true },
   { name: "ACTIONS", uid: "actions" },
 ];

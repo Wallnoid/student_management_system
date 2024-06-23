@@ -6,6 +6,7 @@ import { clubSchema } from "@/schemas/clubes_schema";
 import { Member } from "@/interfaces/Member";
 import { Event } from "@/interfaces/Event";
 import { Talk } from "@/interfaces/Talk";
+import { talksSchema } from "@/schemas/talksSchema";
 
 export default function FormikTalks(
   talk: Talk | null,
@@ -16,34 +17,39 @@ export default function FormikTalks(
     initialValues: {
       nombre: talk?.nombre || "",
       descripcion: talk?.descripcion || "",
-      presidente: talk?.lugar || "",
-      ubicacion: talk?.lugar || "",
+      lugar: talk?.lugar || "",
+      fecha: talk?.fecha || "",
+      hora_inicio: talk?.hora_inicio || "",
+      hora_fin: talk?.hora_fin || "",
       estado: talk?.estado || "activo",
+      id_evento: talk?.id_evento || "",
     },
-    validationSchema: clubSchema(),
+    validationSchema: talksSchema(),
     onSubmit: (values) => {
-      //AQUI HAY UN ERROR
       console.log(values);
-      const clubLocal: ClubInternos = {
+      const talksLocal: Talk = {
         nombre: values.nombre,
         descripcion: values.descripcion,
-        presidente: values.presidente,
         creado_por: currentUser!.user.id,
-        ubicacion: values.ubicacion,
+        fecha: values.fecha,
+        hora_inicio: values.hora_inicio,
+        hora_fin: values.hora_fin,
+        lugar: values.lugar,
+        id_evento: values.id_evento,
         actualizado_por: currentUser!.user.id,
         estado: values.estado,
       };
 
       if (talk) {
-        clubLocal.id = talk.id;
+        talksLocal.id = talk.id;
 
-        updateTalkCrud(clubLocal, formik);
+        updateTalkCrud(talksLocal, formik);
 
         return;
       } else {
-        clubLocal.actualizado_por = null;
+        talksLocal.actualizado_por = null;
 
-        registerTalk(clubLocal, formik, onClose);
+        registerTalk(talksLocal, formik, onClose);
       }
     },
   });

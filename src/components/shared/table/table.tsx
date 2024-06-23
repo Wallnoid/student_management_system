@@ -101,7 +101,6 @@ export default function DefaultTable({
           statusOptions={statusOptions}
           users={entities}
           onRowsPerPageChange={onRowsPerPageChange}
-          
         ></TopContent>
       }
       topContentPlacement="outside"
@@ -119,7 +118,7 @@ export default function DefaultTable({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"Cargando..."} items={sortedItems}>
+      <TableBody emptyContent={"No elements..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

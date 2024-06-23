@@ -4,16 +4,23 @@ import { renderCellType } from "@/types/types";
 import { cutString } from "@/utils/utils";
 import { Chip, Tooltip, User } from "@nextui-org/react";
 import { statusColorMap } from "./constants";
-import { deleteTalkCrud } from "../actions/crud_talks";
-import InfoTalks from "../components/info_talks";
 import { FaPeopleGroup } from "react-icons/fa6";
-import FormModal from "../components/form_modal_talks";
-import { Talk } from "@/interfaces/Talk";
-import { BiMapPin } from "react-icons/bi";
+import { Contest } from "@/interfaces/Contest";
+import FormModal from "../components/contest/form_modal_contest";
+import InfoContest from "../components/contest/info_contests";
+import { deleteContestCrud } from "../actions/crud_contets";
+import { IoIosInformationCircleOutline } from "react-icons/io";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { goToGroups } from "../actions/go_to_groups";
+
 export default function renderItems(
-  talk: Talk,
-  cellValue: any
+  contest: Contest,
+  cellValue: any,
+  router: AppRouterInstance,
+  id_event: string
 ): renderCellType[] {
+  console.log(id_event);
+
   return [
     {
       key: "nombre",
@@ -30,26 +37,17 @@ export default function renderItems(
       ),
     },
     {
-      key: "creado_por",
+      key: "responsable",
       reactHelement: (
         <div className="flex flex-col">
           <p className="text-bold text-small capitalize">
-            {(talk.creado_por as Member).nombre +
+            {(contest.responsable as Member).nombre +
               " " +
-              (talk.creado_por as Member).apellido}
+              (contest.responsable as Member).apellido}
           </p>
           <p className="text-bold text-tiny capitalize text-default-400">
-            {(talk.creado_por as Member).categoria}
+            {(contest.responsable as Member).categoria}
           </p>
-        </div>
-      ),
-    },
-    {
-      key: "lugar",
-      reactHelement: (
-        <div className="flex flex-row gap-1 items-center">
-          <BiMapPin className="w-5 h-5 text-primary-500"></BiMapPin>
-          <p className="">{cellValue}</p>
         </div>
       ),
     },
@@ -58,7 +56,7 @@ export default function renderItems(
       reactHelement: (
         <Chip
           className="capitalize"
-          color={statusColorMap[talk.estado]}
+          color={statusColorMap[contest.estado]}
           size="sm"
           variant="flat"
         >
@@ -70,18 +68,27 @@ export default function renderItems(
       key: "actions",
       reactHelement: (
         <div className="relative flex items-center gap-2">
-          <InfoTalks talks={talk}></InfoTalks>
+          <InfoContest contest={contest}></InfoContest>
 
           {/*<ModalMembers club={event}></ModalMembers> */}
 
-          <FormModal icon={<EditIcon />} talk={talk}></FormModal>
+          <FormModal icon={<EditIcon />} contest={contest}></FormModal>
 
-          <Tooltip color="danger" content="Eliminar Miembro">
+          <Tooltip content="Eliminar Concurso">
             <span
               className="text-lg text-danger cursor-pointer active:opacity-50"
-              onClick={() => deleteTalkCrud(talk!)}
+              onClick={() => deleteContestCrud(contest!)}
             >
               <DeleteIcon />
+            </span>
+          </Tooltip>
+
+          <Tooltip content="informacion">
+            <span
+              className="text-lg text-default-500 cursor-pointer active:opacity-50"
+              onClick={() => goToGroups(id_event, contest.id, router)}
+            >
+              <IoIosInformationCircleOutline />
             </span>
           </Tooltip>
         </div>

@@ -20,9 +20,9 @@ import {
 } from "@nextui-org/react";
 
 import { FaPeopleGroup } from "react-icons/fa6";
-import { statusColorMap } from "../constants/constants";
 import { Event } from "@/interfaces/Event";
 import { Contest } from "@/interfaces/Contest";
+import { statusColorMap } from "../../constants/constants";
 
 export default function InfoContest({ contest }: { contest: Contest }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

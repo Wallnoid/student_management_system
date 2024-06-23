@@ -27,17 +27,20 @@ import OnSearchChangeHook from "@/components/shared/table/hooks/on_search_change
 import OnClearHook from "@/components/shared/table/hooks/on_clear_hook";
 import DefaultTable from "@/components/shared/table/table";
 
-import renderItems from "../constants/render_items_contests";
-import BottomContent from "../../components/bottom_content";
-import ContestHook from "../hooks/contests_hook";
+import renderItems from "../../constants/render_items_contests";
+import BottomContent from "../../../components/bottom_content";
+import ContestHook from "../../hooks/contests_hook";
 import {
   columnsTableContests,
   EventsStatusOptions,
   INITIAL_VISIBLE_COLUMNS_CONTEST,
-} from "../constants/constants";
+} from "../../constants/constants";
 import topContent from "./top_content_contests";
+import { useRouter } from "next/navigation";
 
 export default function ContestTable({ id }: { id: string }) {
+
+  const router = useRouter();
   const { loading, setLoading } = loadingHook();
 
   const { contests, setContest } = ContestHook(id, loading);
@@ -81,7 +84,7 @@ export default function ContestTable({ id }: { id: string }) {
 
   const sortedItems = sortedItemsEventsHook(items, sortDescriptor);
 
-  const renderCell = renderCellContestHook(id, renderItems);
+  const renderCell = renderCellContestHook(id, router, renderItems);
 
   const onNextPage = OnNextPageHook(page, pages, setPage);
 

@@ -21,17 +21,19 @@ import OnSearchChangeHook from "@/components/shared/table/hooks/on_search_change
 import OnClearHook from "@/components/shared/table/hooks/on_clear_hook";
 import DefaultTable from "@/components/shared/table/table";
 
-import EventSHook from "../../hooks/events_hook";
-import renderItems from "../constants/render_items_talks";
-import BottomContent from "../../components/bottom_content";
-import topContent from "../../components/top_content";
-import TalksHook from "../hooks/talks_hook";
+import TalksHook from "../../hooks/talks_hook";
 import {
   columnsTableTalks,
   EventsStatusOptions,
   INITIAL_VISIBLE_COLUMNS_TALKS,
-} from "../constants/constants";
+} from "../../constants/constants";
+import renderItems from "../../constants/render_items_talks";
+import BottomContent from "../../../components/bottom_content";
+import topContent from "./top_content_talks";
+import { useRouter } from "next/navigation";
 export default function TalksTable({ id }: { id: string }) {
+  const router = useRouter();
+
   const { loading, setLoading } = loadingHook();
 
   const { talks, setTalks } = TalksHook(id, loading);
@@ -75,7 +77,7 @@ export default function TalksTable({ id }: { id: string }) {
 
   const sortedItems = sortedItemsClubesHook(items, sortDescriptor);
 
-  const renderCell = renderCellTalksHook(renderItems);
+  const renderCell = renderCellTalksHook(id, router, renderItems);
 
   const onNextPage = OnNextPageHook(page, pages, setPage);
 

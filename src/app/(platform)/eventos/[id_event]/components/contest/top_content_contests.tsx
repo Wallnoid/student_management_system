@@ -23,7 +23,6 @@ export default function topContent({
   users,
   onRowsPerPageChange,
   onReload,
-  id_event,
 }: {
   filterValue: any;
   onClear: any;
@@ -100,7 +99,7 @@ export default function topContent({
               ))}
             </DropdownMenu>
           </Dropdown>
-          <FormModal id_event={id_event} />
+          <FormModal />
         </div>
       </div>
       <div className="flex justify-between items-center">
