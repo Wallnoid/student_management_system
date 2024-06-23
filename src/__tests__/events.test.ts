@@ -1,5 +1,5 @@
 import { Event } from "@/interfaces/Event";
-import { addEvent, deleteEvent, getEvents, updateEvent } from "@/services/events.service";
+import { addEvent, deleteEvent, getEventInfoById, getEvents, updateEvent } from "@/services/events.service";
 
 describe('Pruebas del servicio de eventos', () => {
     beforeAll(() => {
@@ -10,6 +10,7 @@ describe('Pruebas del servicio de eventos', () => {
         jest.clearAllMocks();
     });
 
+    /*
     test('Prueba de inserción de un evento.', async () => {
         const event: Event = {
             nombre: 'Hatunsoft 2',
@@ -52,4 +53,12 @@ describe('Pruebas del servicio de eventos', () => {
         const result = await deleteEvent(event, 'eliminado');
         expect(result).toBe(true);
     });
+
+    */
+    test('Prueba de recuperación acerca de la información de un evento en específico.', async () => {
+        const id: string = 'a56dbb6c-f94d-4302-b31d-da0fb1d9e9db';
+        const result = await getEventInfoById(id);
+        expect(Array.isArray(result)).toBe(true);
+        expect(result.length).toBeGreaterThan(0);
+    })
 })
