@@ -14,8 +14,8 @@ export interface Contest {
   hora_inicio?: string;
   hora_fin?: string;
   cant_integrantes_por_equipo?: number;
-  creado_por?: string;
+  creado_por?: string ;
   fecha_hora_creacion?: string;
-  actualizado_por?: string;
+  actualizado_por?: string | Member;
   fecha_hora_actualizacion?: string;
 }
