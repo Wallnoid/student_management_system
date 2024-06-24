@@ -54,9 +54,9 @@ describe('Pruebas del servicio de eventos', () => {
     });
 
     test('Prueba de recuperación acerca de la información de un evento en específico.', async () => {
-        const id: string = 'a56dbb6c-f94d-4302-b31d-da0fb1d9e9db';
+        const id: string = 'd24aef2b-8ba5-4456-ac0e-ce13b5426bfc';
         const result = await getEventInfoById(id);
         expect(Array.isArray(result)).toBe(true);
         expect(result.length).toBeGreaterThan(0);
-    })
+    });
 })

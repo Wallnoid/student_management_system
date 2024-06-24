@@ -20,6 +20,7 @@ import { Team } from "@/interfaces/Team";
 import FormikTeam from "../constants/formik";
 import { FiEdit2 } from "react-icons/fi";
 import { optionsElements, statusColorMap } from "@/constants/constants";
+import { TeamAuxiliar } from "@/interfaces/TeamAuxiliar";
 
 export default function FormModal({
   team,
@@ -29,7 +30,7 @@ export default function FormModal({
   max_equipos,
   id_contest,
 }: {
-  team?: Team;
+  team?: TeamAuxiliar;
   icon?: JSX.Element;
   cant_integrantes?: number;
   num_equipos?: number;
@@ -103,7 +104,7 @@ export default function FormModal({
                 <ModalBody>
                   <Input
                     autoFocus
-                    id={`nombre_${team?.id || ""}`}
+                    id={`nombre_${team?.team.id || ""}`}
                     label="Nombre"
                     name="nombre"
                     value={formik.values.nombre}
@@ -117,7 +118,7 @@ export default function FormModal({
 
                   <Input
                     autoFocus
-                    id={`costo_${team?.id || ""}`}
+                    id={`costo_${team?.team.id || ""}`}
                     label="Costo de inscripción"
                     name="costo"
                     value={formik.values.costo.toString()}
@@ -130,7 +131,7 @@ export default function FormModal({
                   />
 
                   <Input
-                    id={`cant_integrantes_${team?.id || ""}`}
+                    id={`cant_integrantes_${team?.team.id || ""}`}
                     label="Cantidad de integrantes"
                     name="cant_integrantes"
                     value={`${

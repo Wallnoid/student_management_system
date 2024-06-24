@@ -2,6 +2,7 @@ import { Member } from "./Member";
 import { Ponente } from "./Ponente";
 import { Talk } from "./Talk";
 
+
 export interface AsignacionesCharlasPonente {
     id: string;
     id_ponente: string | Ponente;

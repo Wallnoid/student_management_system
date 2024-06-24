@@ -3,23 +3,27 @@ import { Participant } from "@/interfaces/Participant";
 import { registerTalker, updateTalkerCrud } from "../actions/talkerCrud";
 import { talkerSchema } from "@/schemas/talkers_schema";
 import { Speaker } from "@/interfaces/Speaker";
+import { SpeakerAuxiliar } from "@/interfaces/SpeakerAuxiliar";
 
-export default function FormikTalker(talker: Speaker | null, currentUser: any) {
+export default function FormikTalker(
+  talker: SpeakerAuxiliar | null,
+  currentUser: any
+) {
   const formik = useFormik({
     initialValues: {
-      cedula: talker?.nro_identificacion || "",
-      nombre: talker?.nombre || "",
-      apellido: talker?.apellido || "",
-      telefono: talker?.telefono || "",
-      correo: talker?.correo || "",
-      titulo: talker?.titulo || "",
-      estado: talker?.estado || "activo",
+      cedula: talker?.speaker.nro_identificacion || "",
+      nombre: talker?.speaker.nombre || "",
+      apellido: talker?.speaker.apellido || "",
+      telefono: talker?.speaker.telefono || "",
+      correo: talker?.speaker.correo || "",
+      titulo: talker?.speaker.titulo || "",
+      estado: talker?.speaker.estado || "activo",
       id_talk: "",
-      costo: 0 || 0,
+      costo: talker?.costo || 0,
+      id_event: "",
     },
     validateOnChange: true,
     validateOnBlur: true,
-    validateOnMount: false,
     validationSchema: talkerSchema,
     onSubmit: (values) => {
       const talkerLocal: Speaker = {
@@ -37,17 +41,30 @@ export default function FormikTalker(talker: Speaker | null, currentUser: any) {
       console.log(talkerLocal);
 
       if (talker) {
-        talkerLocal.id = talker.id;
+        talkerLocal.id = talker.speaker.id;
         console.log(talkerLocal.id);
 
-        updateTalkerCrud(talkerLocal, formik);
+        updateTalkerCrud(
+          talkerLocal,
+          values.id_talk,
+          values.costo.toString(),
+          formik
+        );
 
         return;
       } else {
         talkerLocal.actualizado_por = null;
         talkerLocal.estado = null;
 
-        registerTalker(talkerLocal, values.id_talk, values.costo, formik);
+        registerTalker(
+          talkerLocal,
+          values.id_talk,
+
+          Number(values.costo),
+
+          formik,
+          values.id_event
+        );
       }
     },
   });

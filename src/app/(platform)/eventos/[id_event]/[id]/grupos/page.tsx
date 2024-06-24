@@ -10,7 +10,6 @@ import EventHook from "../../hooks/event_hook";
 import TeamHook from "./hooks/teams_hook";
 import loadingHook from "@/components/shared/table/hooks/loading_hook";
 import TeamCard from "./components/team_card";
-import { IoMdAdd } from "react-icons/io";
 import FormModal from "./components/form_modal_teams";
 import ContestHook from "./hooks/contest_hook";
 
@@ -70,7 +69,7 @@ export default function GroupsPage({
 
         <div className="flex flex-wrap gap-4 items-center justify-center  ">
           {team.map((team) => (
-            <TeamCard team={team} id_contest={params.id} key={team.id} />
+            <TeamCard team={team} id_contest={params.id} key={team.team.id} />
           ))}
         </div>
       </section>
