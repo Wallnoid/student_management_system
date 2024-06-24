@@ -82,7 +82,7 @@ export async function getSpeakerByID(speaker_id: string): Promise<Speaker> {
 export async function getAssignmentsByTalkID(
   charla_id: string
 ): Promise<AsignacionesCharlasPonente[]> {
-  let { data, error } = await supabase().rpc("get_asignaciones_charlaByID", {
+  let { data, error } = await supabase().rpc("get_asignaciones_charlabyid", {
     charla_id,
   });
   if (error)
@@ -93,16 +93,18 @@ export async function getAssignmentsByTalkID(
   return data as AsignacionesCharlasPonente[];
 }
 
-export async function getSpeakersByTalkID(charla_id: string): Promise<Speaker[]> {
+export async function getSpeakersByTalkID(
+  charla_id: string
+): Promise<SpeakerAuxiliar[]> {
   return getAssignmentsByTalkID(charla_id)
     .then((AsignacionesCharlasPonente: AsignacionesCharlasPonente[]) => {
-      let speakers: Speaker[] = [];
+      let speakers: SpeakerAuxiliar[] = [];
       for (let i = 0; i < AsignacionesCharlasPonente.length; i++) {
         let team: SpeakerAuxiliar = {
           costo: AsignacionesCharlasPonente[i].precio,
-          speaker: AsignacionesCharlasPonente[i].id_ponente as Speaker
-        }
-        speakers.push(AsignacionesCharlasPonente[i].id_ponente as Speaker);
+          speaker: AsignacionesCharlasPonente[i].id_ponente as Speaker,
+        };
+        speakers.push(team);
       }
       return speakers;
     })
@@ -136,21 +138,37 @@ export async function deleteSpeaker(speaker: Speaker): Promise<boolean> {
   return true;
 }
 
-export async function addSpeakerToTalk(speaker: Speaker, id_charla:string, observacion: string, precio: number){
-  const {nombre, apellido, correo, nro_identificacion, telefono, titulo, creado_por} = speaker;
-  let { data, error } = await supabase()
-  .rpc('agregar_ponente_a_charla', {
-    apellido, 
-    correo, 
-    creado_por, 
-    id_charla, 
-    nombre, 
-    nro_identificacion, 
-    observacion, 
-    precio, 
-    telefono, 
-    titulo
-  })
-  if (error) throw new Error('Error al intentar asignar el miembro a la charla. Intente de nuevo. Error: ' + error.message);
+export async function addSpeakerToTalk(
+  speaker: Speaker,
+  id_charla: string,
+  observacion: string,
+  precio: number
+) {
+  const {
+    nombre,
+    apellido,
+    correo,
+    nro_identificacion,
+    telefono,
+    titulo,
+    creado_por,
+  } = speaker;
+  let { data, error } = await supabase().rpc("agregar_ponente_a_charla", {
+    apellido,
+    correo,
+    creado_por,
+    id_charla,
+    nombre,
+    nro_identificacion,
+    observacion,
+    precio,
+    telefono,
+    titulo,
+  });
+  if (error)
+    throw new Error(
+      "Error al intentar asignar el miembro a la charla. Intente de nuevo. Error: " +
+        error.message
+    );
   return true;
 }

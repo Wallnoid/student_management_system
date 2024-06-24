@@ -5,8 +5,6 @@ import { createClient as supabase } from "@/supabase/client";
 import { getTeamsParticipationsByContest } from "./participations.service";
 import { Participation } from "@/interfaces/Participation";
 import { Participante } from "@/interfaces/participante";
-import { As } from "@nextui-org/react";
-import { Participant } from "@/interfaces/Participant";
 import { TeamAuxiliar } from "@/interfaces/TeamAuxiliar";
 import { TeamResponse } from "@/types/types";
 
@@ -106,15 +104,17 @@ export async function getTeams() {
   return data as [];
 }
 
-export async function getTeamsByContest(concurso_id: string): Promise< TeamAuxiliar[]> {
+export async function getTeamsByContest(
+  concurso_id: string
+): Promise<TeamAuxiliar[]> {
   return getTeamsParticipationsByContest(concurso_id)
     .then((participaciones: Participation[]) => {
-      let teams : TeamAuxiliar[] = [];
+      let teams: TeamAuxiliar[] = [];
       for (let i = 0; i < participaciones.length; i++) {
         let team: TeamAuxiliar = {
           costo: participaciones[i].valor_participacion,
-          team: participaciones[i].id_equipo as Team
-        }
+          team: participaciones[i].id_equipo as Team,
+        };
         teams.push(team);
       }
       return teams;
@@ -195,8 +195,6 @@ export async function getAssignmentInfoByTeamId(id_team: string) {
     );
   return data as TeamResponse;
 }
-
-
 
 // designar un capitan de equipo
 

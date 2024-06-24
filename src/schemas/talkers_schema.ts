@@ -39,7 +39,7 @@ export const talkerSchema = yup.object().shape({
     .string()
     .trim("No se permiten espacios al inicio o al final")
     .required("El titulo es requerido")
-    .matches(/^[a-zA-Z]*$/, "Solo puede contener letras")
+    .matches(/^[a-zA-Z .]*$/, "Solo puede contener letras, espacios y puntos")
     .min(3, "debe contener al menos 3 caracteres")
     .max(30, "debe contener menos de 30 caracteres"),
   costo: yup
