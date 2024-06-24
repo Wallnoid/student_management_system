@@ -7,6 +7,7 @@ import { Participation } from "@/interfaces/Participation";
 import { Participante } from "@/interfaces/participante";
 import { As } from "@nextui-org/react";
 import { Participant } from "@/interfaces/Participant";
+import { TeamResponse } from "@/types/types";
 
 export async function addTeam(team: Team): Promise<boolean> {
   const { nombre, cant_integrantes, creado_por } = team;
@@ -54,7 +55,7 @@ export async function addTeamParticipation(
   };
   let { error: error2 } = await supabase()
     .from("participaciones")
-    .insert( participacion )
+    .insert(participacion)
     .select();
   if (error2)
     throw new Error(
@@ -187,24 +188,24 @@ export async function getAssignmentInfoByTeamId(id_team: string) {
       "Error al intentar obtener la información del equipo seleccionado. Intente de nuevo. Error: " +
         error.message
     );
-  return data as AsignacionesEquipos;
+  return data as TeamResponse;
 }
 
-export async function getParticipantByTeamId(
-  id_team: string
-): Promise<Participant[]> {
-  return getAssignmentInfoByTeamId(id_team)
-    .then((asignaciones: AsignacionesEquipos) => {
-      let participantes = (asignaciones.participantes as Participant[])
-      console.log(participantes)
-      return participantes;
-    })
-    .catch((error) => {
-      throw new Error(
-        "Error al obtener los participantes del equipo. Error: " + error.message
-      );
-    });
-}
+// export async function getParticipantByTeamId(
+//   id_team: string
+// ): Promise<Participant[]> {
+//   return getAssignmentInfoByTeamId(id_team)
+//     .then((asignaciones: AsignacionesEquipos) => {
+//       let participantes = (asignaciones.participante as Participant)
+//       console.log(participantes)
+//       return participantes;
+//     })
+//     .catch((error) => {
+//       throw new Error(
+//         "Error al obtener los participantes del equipo. Error: " + error.message
+//       );
+//     });
+// }
 
 // designar un capitan de equipo
 
