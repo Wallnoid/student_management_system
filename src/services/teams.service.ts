@@ -55,7 +55,7 @@ export async function addTeamParticipation(
   };
   let { error: error2 } = await supabase()
     .from("participaciones")
-    .insert( participacion )
+    .insert(participacion)
     .select();
   if (error2)
     throw new Error(
@@ -71,7 +71,11 @@ export async function addTeamParticipation(
   return true;
 }
 
-export async function updateTeam(team: Team): Promise<boolean> {
+export async function updateTeam(
+  team: Team,
+  valor_participacion: number,
+  id_concurso: string
+): Promise<boolean> {
   const { id, nombre, cant_integrantes, capitan, estado, actualizado_por } =
     team;
   let { error } = await supabase()
@@ -86,6 +90,17 @@ export async function updateTeam(team: Team): Promise<boolean> {
     })
     .eq("id", id)
     .select();
+  let { error: error2 } = await supabase()
+    .from("asignaciones_miembros_equipos")
+    .update({ valor_participacion })
+    .eq("id_equipo", id)
+    .eq("id_concurso", id_concurso)
+    .select();
+  if (error2)
+    throw new Error(
+      "Error al intentar actualizar la información el costo del equipo. Intente de nuevo. Error: " +
+        error.message
+    );
   if (error) {
     throw new Error(
       "Error al intentar actualizar la información el equipo. Intente de nuevo. Error: " +
@@ -105,15 +120,17 @@ export async function getTeams() {
   return data as [];
 }
 
-export async function getTeamsByContest(concurso_id: string): Promise< TeamAuxiliar[]> {
+export async function getTeamsByContest(
+  concurso_id: string
+): Promise<TeamAuxiliar[]> {
   return getTeamsParticipationsByContest(concurso_id)
     .then((participaciones: Participation[]) => {
-      let teams : TeamAuxiliar[] = [];
+      let teams: TeamAuxiliar[] = [];
       for (let i = 0; i < participaciones.length; i++) {
         let team: TeamAuxiliar = {
           costo: participaciones[i].valor_participacion,
-          team: participaciones[i].id_equipo as Team
-        }
+          team: participaciones[i].id_equipo as Team,
+        };
         teams.push(team);
       }
       return teams;
@@ -195,11 +212,13 @@ export async function getAssignmentInfoByTeamId(id_team: string) {
   return data as AsignacionesEquipos;
 }
 
-export async function getParticipantByTeamId(id_team: string): Promise<Participant[]> {
+export async function getParticipantByTeamId(
+  id_team: string
+): Promise<Participant[]> {
   try {
     let asignaciones = await getAssignmentInfoByTeamId(id_team);
     let participantes: Participant[] = asignaciones.participantes;
-    console.log('Participantes obtenidos:', participantes)
+    console.log("Participantes obtenidos:", participantes);
     return participantes;
   } catch (error) {
     throw new Error(
@@ -207,7 +226,6 @@ export async function getParticipantByTeamId(id_team: string): Promise<Participa
     );
   }
 }
-
 
 // designar un capitan de equipo
 
