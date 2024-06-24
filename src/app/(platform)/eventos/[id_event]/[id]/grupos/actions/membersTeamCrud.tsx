@@ -11,33 +11,19 @@ import {
 } from "@/services/participants.service";
 import { Participant } from "@/interfaces/Participant";
 
-export const deleteParticipantCrud = async (participant: Participant) => {
-  toast.custom(
-    (t) => (
-      <AlertDelete
-        onCancel={() => {
-          toast.dismiss(t.id);
-        }}
-        onSubmit={() => {
-          toast.promise(deleteParticipant("eliminado", participant.id), {
-            loading: "Saving...",
-            success: () => {
-              window.location.reload();
-
-              return <b>Integrante Eliminado!</b>;
-            },
-            error: (err) => {
-              return `${err.message.toString()}`;
-            },
-          });
-
-          toast.dismiss(t.id);
-        }}
-        visible={t.visible}
-      ></AlertDelete>
-    ),
-    { duration: Infinity }
-  );
+export const deleteParticipantCrud = async (
+  participant: string,
+  callback: Function
+) => {
+  console.log(participant);
+  deleteParticipant("eliminado", participant)
+    .then((data) => {
+      console.log(data);
+      callback();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const updateParticipantCrud = async (

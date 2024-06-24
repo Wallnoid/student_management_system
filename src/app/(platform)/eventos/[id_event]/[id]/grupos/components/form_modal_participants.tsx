@@ -37,10 +37,13 @@ export default function FormModal({
   participant,
   icon: button,
   id_team,
+  callback
 }: {
   participant?: Participant;
   icon?: JSX.Element;
   id_team: string;
+  callback: Function
+
 }) {
   const { fecha, setFecha } = dateInicioHook(participant?.fecha_nacimiento);
 
@@ -56,7 +59,7 @@ export default function FormModal({
     asignFechaNacimiento();
   };
 
-  const formik = FormikParticipant(participant, currentUser);
+  const formik = FormikParticipant(participant, currentUser, callback);
 
   const asignFechaNacimiento = () => {
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);

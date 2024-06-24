@@ -15,6 +15,8 @@ import MembersTeamHook from "../hooks/team_members_hook";
 import BooleanHook from "@/hooks/boolean_hook";
 import { cutString } from "@/utils/utils";
 import { FaUser } from "react-icons/fa6";
+import { deleteParticipantCrud } from "../actions/membersTeamCrud";
+import { FiEdit2 } from "react-icons/fi";
 
 export default function ModalCrudMember({ id_team }: { id_team: string }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -41,40 +43,79 @@ export default function ModalCrudMember({ id_team }: { id_team: string }) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-row gap-1 text-2xl font-semibold text-default-500 items-center justify-center ">
-                Modal Title
+                Miembros
               </ModalHeader>
               <ModalBody>
                 <div className=" my-5 ">
                   <div className="flex flex-row items-center justify-between ">
                     <h2 className=" text-default-500 text-lg">Integrantes</h2>
 
-                    <FormModal id_team={id_team}></FormModal>
+                    <FormModal
+                      id_team={id_team}
+                      callback={() => setBoolean(true)}
+                    ></FormModal>
                   </div>
 
                   <div className="flex flex-col gap-5 justify-start items-start  h-72  my-3 rounded-lg overflow-auto p-5 py-3  border border-gray-300">
                     <h4>Miembros</h4>
-                    {teamMembers.participantes.map((participante) => (
-                      <User
-                        key={participante.id}
-                        avatarProps={{
-                          radius: "lg",
-                          showFallback: true,
-                          src: "https://images.unsplash.com/broken",
-                          fallback: (
-                            <FaUser size={25} className=" text-primary" />
-                          ),
-                        }}
-                        description={participante.participante.correo}
-                        name={cutString(
-                          participante.participante.nombre +
-                            " " +
-                            participante.participante.apellido,
-                          20
-                        )}
-                      >
-                        {participante.participante.correo}
-                      </User>
-                    ))}
+
+                    {!teamMembers.participantes ? (
+                      <div className="flex flex-row w-full">
+                        <p className="text-default-500">
+                          No hay miembros en este equipo
+                        </p>
+                      </div>
+                    ) : (
+                      teamMembers?.participantes?.map((participante) => (
+                        <div
+                          key={participante.id}
+                          className=" flex flex-row w-full justify-between items-center rounded-lg shadow-md p-2 bg-gray-100"
+                        >
+                          <User
+                            avatarProps={{
+                              radius: "lg",
+                              showFallback: true,
+                              src: "https://images.unsplash.com/broken",
+                              fallback: (
+                                <FaUser size={25} className=" text-primary" />
+                              ),
+                            }}
+                            description={participante.participante.correo}
+                            name={cutString(
+                              participante.participante.nombre +
+                                " " +
+                                participante.participante.apellido,
+                              20
+                            )}
+                          >
+                            {participante.participante.correo}
+                          </User>
+
+                          <div className="flex flex-row items-center gap-2">
+                            <FormModal
+                              participant={participante.participante}
+                              id_team={id_team}
+                              callback={() => setBoolean(true)}
+                            ></FormModal>
+
+                            <MdDelete
+                              id={`deleteButton_${participante.participante.id}__$`}
+                              className="mx-5 text-danger-500"
+                              size={20}
+                              onClick={() => {
+                                deleteParticipantCrud(
+                                  participante.participante.id,
+                                  () => {
+                                    setBoolean(true);
+                                    console.log("deleted");
+                                  }
+                                );
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               </ModalBody>

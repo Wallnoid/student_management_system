@@ -17,6 +17,7 @@ import { statusColorMap } from "@/constants/constants";
 import { deleteTeamCrud } from "../actions/teamCrud";
 import ModalCrudMember from "./modal_crud_participant";
 import { TeamAuxiliar } from "@/interfaces/TeamAuxiliar";
+import InfoGroup from "./info_team";
 export default function TeamCard({
   team,
   id_contest,
@@ -47,13 +48,8 @@ export default function TeamCard({
       <Divider />
       <CardFooter>
         <div className="flex flex-row w-full">
-          <Chip
-            className="capitalize"
-            color={statusColorMap[team.team.estado]}
-            size="sm"
-            variant="flat"
-          >
-            {team.team.estado}
+          <Chip className="capitalize" size="sm" variant="flat">
+            <InfoGroup team={team.team}></InfoGroup>
           </Chip>
 
           <div className="w-full flex justify-end items-center gap-2">

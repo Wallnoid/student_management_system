@@ -10,7 +10,8 @@ import { participantSchema } from "@/schemas/participant_schema";
 
 export default function FormikParticipant(
   participant: Participant | null,
-  currentUser: any
+  currentUser: any,
+  callback: Function
 ) {
   const formik = useFormik({
     initialValues: {
@@ -48,6 +49,7 @@ export default function FormikParticipant(
         console.log(participantLocal.id);
 
         updateParticipantCrud(participantLocal, formik);
+        callback();
 
         return;
       } else {
@@ -55,6 +57,7 @@ export default function FormikParticipant(
 
         console.log("Registrando miembro");
         registerParticipant(participantLocal, values.id_team, formik);
+        callback();
       }
     },
   });
