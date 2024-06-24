@@ -1,0 +1,19 @@
+{
+  "id": "cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081",
+  "estado": "eliminado",
+  "nombre": "Code Club",
+  "ubicacion": "Cuenca",
+  "presidente": {
+      "id": "ca01c8eb-e54e-41b5-88e0-e6475967ebd2",
+      "correo": "wulli.mu28@gmail.com",
+      "estado": "eliminado",
+      "nombre": "william",
+      "carrera": "telecomunicaciones",
+      "apellido": "PERR",
+      "semestre": "6",
+      "telefono": "0983201121",
+      "fecha_nacimiento": "2002-03-19",
+      "nro_identificacion": "1825364978"
+  },
+  "descripcion": "Club orientado a desarrollo neto de código."
+}
