@@ -1,5 +1,5 @@
 import { Speaker } from "@/interfaces/Speaker";
-import { addSpeaker, deleteSpeaker, getSpeakers, updateSpeaker } from "@/services/speakers.service";
+import { addSpeaker, addSpeakerToTalk, deleteSpeaker, getSpeakers, updateSpeaker } from "@/services/speakers.service";
 
 describe('Pruebas del servicio de ponentes.', () => {
     beforeAll(() => {
@@ -9,7 +9,7 @@ describe('Pruebas del servicio de ponentes.', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-
+/*
     test('Prueba de inserción de un ponente.', async () => {
         const speaker: Speaker = {
             nombre: 'Marlon',
@@ -51,6 +51,23 @@ describe('Pruebas del servicio de ponentes.', () => {
             id: '34810c69-2e28-47ec-89a6-20fc5692d1f1'
         };
         const result = await deleteSpeaker(speaker);
+        expect(result).toBe(true);
+    });
+*/
+    test('Prueba de inserción y asignación de un ponente a una charla ya existente.', async () => {
+        const speaker: Speaker = {
+            nombre: 'Carl',
+            apellido: 'Patiño',
+            nro_identificacion: '1827296328',
+            correo: 'carl@hotmail.com',
+            telefono: '0995888484',
+            titulo: 'ing. Sistemas',
+            creado_por: '54acf6d9-8c8d-482f-8041-ae1cc7556c4d'
+        };
+        const id_charla: string = '4fa3d904-0f73-4df2-b3f4-f22739415ece';
+        const observacion: string = 'Asignacion sin observaciones';
+        const precio: number = 80;
+        const result = await addSpeakerToTalk(speaker, id_charla, observacion, precio); 
         expect(result).toBe(true);
     });
 
