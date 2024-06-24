@@ -1,4 +1,5 @@
 import { EyeIcon, ProjectIcon } from "@/components/shared/icons";
+import { statusColorMap } from "@/constants/constants";
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Member } from "@/interfaces/Member";
 import { Proyecto } from "@/interfaces/Proyecto";
@@ -20,7 +21,6 @@ import {
 } from "@nextui-org/react";
 
 import { FaPeopleGroup } from "react-icons/fa6";
-import { statusColorMap } from "../constants/constants";
 
 export default function InfoClubes({ club }: { club: ClubInternos }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

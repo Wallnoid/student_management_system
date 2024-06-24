@@ -20,7 +20,8 @@ export default function FormikParticipant(
       telefono: participant?.telefono || "",
       correo: participant?.correo || "",
       fechaNacimiento: participant?.fecha_nacimiento || "",
-      estado: participant?.estado || "",
+      estado: participant?.estado || "activo",
+      id_team: "",
     },
     validateOnChange: true,
     validateOnBlur: true,
@@ -34,12 +35,13 @@ export default function FormikParticipant(
         cedula: values.cedula,
         correo: values.correo,
         telefono: values.telefono,
-        estado: values.estado == "null" ? "activo" : values.estado,
+        estado: values.estado,
         creado_por: currentUser!.user.id,
         actualizado_por: currentUser!.user.id,
       };
 
       console.log(participantLocal);
+      console.log(values.id_team);
 
       if (participant) {
         participantLocal.id = participant.id;
@@ -50,10 +52,9 @@ export default function FormikParticipant(
         return;
       } else {
         participantLocal.actualizado_por = null;
-        participantLocal.estado = null;
 
         console.log("Registrando miembro");
-        registerParticipant(participantLocal, formik);
+        registerParticipant(participantLocal, values.id_team, formik);
       }
     },
   });

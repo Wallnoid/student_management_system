@@ -3,7 +3,12 @@ import { addEvent, deleteEvent, updateEvent } from "@/services/events.service";
 import toast from "react-hot-toast";
 import { Event } from "@/interfaces/Event";
 import { Team } from "@/interfaces/Team";
-import { addTeam, deleteTeam, updateTeam } from "@/services/teams.service";
+import {
+  addTeam,
+  addTeamParticipation,
+  deleteTeam,
+  updateTeam,
+} from "@/services/teams.service";
 
 export const deleteTeamCrud = async (team: Team) => {
   toast.custom(
@@ -52,12 +57,18 @@ export const updateTeamCrud = async (team: Team, formik: any) => {
   });
 };
 
-export const registerTeam = async (team: Team, formik: any, onClose: any) => {
-  toast.promise(addTeam(team), {
+export const registerTeam = async (
+  team: Team,
+  id_contest: string,
+  costo: number,
+  formik: any,
+  onClose: any
+) => {
+  toast.promise(addTeamParticipation(team, id_contest, costo), {
     loading: "Saving...",
     success: () => {
-      formik.resetForm();
-      onClose();
+      // formik.resetForm();
+      // onClose();
       window.location.reload();
 
       return <b>Equipo guardado!</b>;

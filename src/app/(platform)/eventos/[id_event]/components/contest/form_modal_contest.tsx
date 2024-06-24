@@ -17,7 +17,6 @@ import { Toaster } from "react-hot-toast";
 
 import { currentUser } from "@/services/users.service";
 import InputSearch from "@/components/shared/input_search";
-import { optionsElements } from "../../constants/constants";
 import { PlusIcon } from "@/components/shared/icons";
 import MemberElementHook from "@/app/(platform)/clubes/hooks/members_hook";
 import { Contest } from "@/interfaces/Contest";
@@ -26,7 +25,7 @@ import { actualDate } from "@/constants/date_constants";
 import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
 import { timeFinalHook, timeInicioHook } from "@/hooks/time_hook";
 import { getUrl } from "@/utils/utils";
-import { statusColorMap } from "@/constants/constants";
+import { optionsElements, statusColorMap } from "@/constants/constants";
 
 export default function FormModal({
   contest,

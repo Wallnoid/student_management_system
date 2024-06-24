@@ -52,12 +52,12 @@ const onUpdate = (id: string, status: string) => {
 }
 
 const taskStatus = (task: Task) => {
-  if(task.estado === 'Activa'){
-    return 'En Progreso';
-  }else if(task.estado === 'En Progreso'){
-    return 'Completada';
+  if(task.estado === 'activa'){
+    return 'en progreso';
+  }else if(task.estado === 'en progreso'){
+    return 'completada';
   }
-  return 'Activa';
+  return 'activa';
 }
 
 
@@ -100,6 +100,7 @@ const TaskContainer: React.FC<TaskContainerProps> = ({ title, tasks }) => (
 export default function TasksList({ id }: { id: string }) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
+
   useEffect(() => {
     getTaskByProject(id).then((tasks) => {
       setTasks(tasks);
@@ -109,10 +110,14 @@ export default function TasksList({ id }: { id: string }) {
       });
   }, []);
 
+  console.log(tasks);
 
-  const pendingTasks = tasks.filter(task => task.estado === 'Activa');
-  const inProgressTasks = tasks.filter(task => task.estado === 'En Progreso');
-  const completedTasks = tasks.filter(task => task.estado === 'Completada');
+
+
+  const pendingTasks = tasks.filter(task => task.estado === 'activa');
+  console.log(pendingTasks);
+  const inProgressTasks = tasks.filter(task => task.estado === 'en progreso');
+  const completedTasks = tasks.filter(task => task.estado === 'completada');
 
   return (
     <>

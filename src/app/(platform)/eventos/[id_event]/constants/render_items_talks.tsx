@@ -3,7 +3,6 @@ import { Member } from "@/interfaces/Member";
 import { renderCellType } from "@/types/types";
 import { cutString } from "@/utils/utils";
 import { Chip, Tooltip, User } from "@nextui-org/react";
-import { statusColorMap } from "./constants";
 import { deleteTalkCrud } from "../actions/crud_talks";
 import { FaPeopleGroup } from "react-icons/fa6";
 import FormModal from "../components/talk/form_modal_talks";
@@ -13,6 +12,7 @@ import InfoTalks from "../components/talk/info_talks";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { goToSpeakers } from "../actions/go_to_speakers";
+import { statusColorMap } from "@/constants/constants";
 export default function renderItems(
   talk: Talk,
   cellValue: any,

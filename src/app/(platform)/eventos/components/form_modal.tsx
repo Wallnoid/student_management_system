@@ -17,13 +17,13 @@ import { Toaster } from "react-hot-toast";
 
 import { currentUser } from "@/services/users.service";
 import InputSearch from "@/components/shared/input_search";
-import { optionsElements, statusColorMap } from "../constants/constants";
 
 import ResponsiblesHook from "../hooks/responsibles_hook";
 import { Event } from "@/interfaces/Event";
 import FormikEvents from "../constants/formik";
 import { actualDate } from "@/constants/date_constants";
 import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
+import { optionsElements, statusColorMap } from "@/constants/constants";
 
 export default function FormModal({
   event,

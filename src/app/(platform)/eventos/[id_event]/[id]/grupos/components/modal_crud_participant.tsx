@@ -8,11 +8,21 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { MdOutlineGroupAdd } from "react-icons/md";
+import { MdDelete, MdOutlineGroupAdd } from "react-icons/md";
 import FormModal from "./form_modal_participants";
+import MembersTeamHook from "../hooks/team_members_hook";
+import BooleanHook from "@/hooks/boolean_hook";
 
-export default function ModalCrudMember() {
+export default function ModalCrudMember({ id_team }: { id_team: string }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const { boolean, setBoolean } = BooleanHook();
+
+  const { teamMembers, setTeam } = MembersTeamHook(
+    boolean,
+    id_team,
+    setBoolean
+  );
 
   return (
     <>
@@ -35,7 +45,7 @@ export default function ModalCrudMember() {
                   <div className="flex flex-row items-center justify-between ">
                     <h2 className=" text-default-500 text-lg">Integrantes</h2>
 
-                    <FormModal></FormModal>
+                    <FormModal id_team={id_team}></FormModal>
                   </div>
 
                   <div className="flex flex-col gap-5 justify-start items-start  h-72  my-3 rounded-lg overflow-auto p-5  border border-gray-300">
@@ -43,24 +53,20 @@ export default function ModalCrudMember() {
                     president
                     <div className="my-1"></div>
                     <h4>Miembros</h4>
-                    {/* {clubMembers.map((member) => (
+                    {teamMembers.map((member) => (
                       <div
-                        key={member.key}
+                        key={member.id}
                         className=" flex flex-row  w-full justify-between items-center"
                       >
-                        {member}
+                        <h1>{member.nombre}</h1>
 
                         <MdDelete
                           className="mx-5 text-danger-500"
                           size={20}
-                          onClick={() => {
-                            deleteMemberSelected(member.key, () => {
-                              setBoolean(true);
-                            });
-                          }}
+                          onClick={() => {}}
                         />
                       </div>
-                    ))} */}
+                    ))}
                   </div>
                 </div>
               </ModalBody>
