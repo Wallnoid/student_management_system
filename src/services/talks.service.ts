@@ -41,7 +41,7 @@ export async function addTalkWithSpeakers(talk: Talk): Promise<boolean>{
     if (error) throw new Error('Error al intentar registrar la charla. Intente de nuevo. Error: ' + error.message);
     if (data === 'ok') return true;
 }
-
+/*
 export async function addSpeakersToTalk(ponentes: string[], precios: number[],  creado_por: string, id_charla: string, observaciones: string[], id_evento:string): Promise<boolean> {
     let { data, error } = await supabase()
     .rpc('agregar_ponentes_a_charla', {
@@ -54,7 +54,7 @@ export async function addSpeakersToTalk(ponentes: string[], precios: number[],  
     })
     if (error) throw new Error('Error al intentar asignar ponente/s a la charla. Intente de nuevo. Error: ' + error.message);
     if (data === 'ok') return true;
-}
+}*/
 
 export async function updateTalk(talk: Talk): Promise<boolean> {
     const {id, nombre, descripcion, id_evento, estado, fecha, lugar, hora_inicio, hora_fin, actualizado_por} = talk;

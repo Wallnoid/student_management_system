@@ -17,11 +17,10 @@ describe('Pruebas del servicio de tareas', () => {
             descripcion: 'implementación completa y funcional del módulo de productos',
             fecha_inicio: '2024-05-22',
             fecha_fin: '2024-05-31',
-            id_proyecto: '614c76e2-54c7-4342-be87-602c65eea82b',
+            id_proyecto: '0624cd9c-0780-452f-b6a6-5efc5da16e36',
             responsables: 
             [
-                '1d4deb3f-4d11-46f6-8c30-406a8c262ceb',
-                '64da9cfe-0ab2-43ec-b6ad-597a7ff8cf7f'
+                '5a5eac26-d93b-4e33-a199-05175977907c'
             ],
             creado_por: '43948e9b-c4d1-473a-a952-c9d0dd1413a2',
         };
@@ -60,8 +59,8 @@ describe('Pruebas del servicio de tareas', () => {
 
     test('prueba de asignación de una tarea ya existente a un miembro del club', async () => {
         const asignacion_miembro: AsignacionesTareas = {
-            id_tarea: '647b1c75-79b4-4737-9f14-20c4173f9230',
-            id_miembro: '1d4deb3f-4d11-46f6-8c30-406a8c262ceb',
+            id_tarea: '7990b4af-85af-4c69-988d-9ca53bf223f7',
+            id_miembro: 'eee0f410-3ba3-43a1-99a1-07993344a0d7',
             comentario: 'tarea asignada despues de la creacion. prueba',
             creado_por: 'b60f644f-ab00-47cd-94ef-b55d22430c6c',
         };
