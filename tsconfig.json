@@ -27,6 +27,6 @@
     "preset": "ts-jest",
     "testEnvironment": "node"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/login/page.tsx", "src/app/login/components/login_input.tsx", "src/__tests__/clubes.test.ts", "report.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/login/page.tsx", "src/app/login/components/login_input.tsx", "src/**/*", "tests/**/*"],
   "exclude": ["node_modules"]
 }

@@ -12,6 +12,10 @@ supabase().auth.onAuthStateChange((event, session) => {
   }
 });
 
+export function getCurrentUser() {
+  return currentUser;
+}
+
 export async function registerUser(member: Member) {
   const {
     nombre,

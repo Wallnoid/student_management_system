@@ -1,6 +1,7 @@
 import { PresidenteWithRole } from "@/types/types";
 import { AutocompleteItem, ChipProps } from "@nextui-org/react";
 import { ReactElement } from "react";
+import React from 'react';
 
 export const INITIAL_VISIBLE_COLUMNS = [
   "nombre",

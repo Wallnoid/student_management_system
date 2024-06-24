@@ -39,6 +39,7 @@ export default function ModalMembers({ club }: { club: ClubInternos }) {
         <span
           className="text-lg text-default-500 cursor-pointer active:opacity-50"
           onClick={onOpen}
+          data-testid="add-members-icon"
         >
           <IoPersonAddOutline />
         </span>
