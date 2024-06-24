@@ -14,10 +14,10 @@ export const clubSchema = () => {
       .min(3, "debe contener al menos 3 caracteres")
       .max(100, "debe contener menos de 100 caracteres"),
     president: yup
-      .string()
+      .string(),
 
-      .notOneOf(["null"], "El responsable es requerido")
-      .required("El responsable es requerido"),
+      // .notOneOf(["null"], "El responsable es requerido")
+      // .required("El responsable es requerido"),
 
     //.required("El responsable es requerido"),
     ubicacion: yup
