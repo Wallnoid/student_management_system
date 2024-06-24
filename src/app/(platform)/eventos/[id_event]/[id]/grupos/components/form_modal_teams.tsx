@@ -48,7 +48,7 @@ export default function FormModal({
           onPress={onOpen}
           id="AddMemberButton"
         >
-          Agregar Equipo
+          <p className="hidden md:block">Agregar Equipo</p>
         </Button>
       ) : (
         <Tooltip content="Editar Equipo">

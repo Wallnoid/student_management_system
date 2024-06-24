@@ -22,6 +22,7 @@ import FormikProject from "../constants/formik";
 import ClubElementHook from "../hooks/asignation_club_hook";
 import { actualDate } from "@/constants/date_constants";
 import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
+import { optionsElements, statusColorMap } from "../constants/constants";
 
 export default function FormModal({
   project,
@@ -38,6 +39,10 @@ export default function FormModal({
     actualDate,
     project?.fecha_fin
   );
+
+  const onChangesEstado = (value: string) => {
+    formik.setFieldValue("estado", value);
+  };
 
   const { clubElements, setClubElements } = ClubElementHook();
 
@@ -88,7 +93,25 @@ export default function FormModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {project ? "Actualizar Proyecto" : "Agregar Proyecto"}
+                {project ? (
+                  <div className="flex flex-row items-center">
+                    <div className="w-1/2">{"Actualizar Evento"}</div>
+
+                    <div className="w-1/2 mx-5">
+                      <InputSearch
+                        label=""
+                        placeholder=""
+                        elements={optionsElements}
+                        name="estado"
+                        onChange={onChangesEstado}
+                        value={formik.values.estado}
+                        color={statusColorMap[formik.values.estado]}
+                      ></InputSearch>
+                    </div>
+                  </div>
+                ) : (
+                  "Agregar Proyecto"
+                )}
               </ModalHeader>
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>

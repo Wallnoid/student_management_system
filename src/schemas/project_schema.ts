@@ -1,3 +1,4 @@
+
 import { actualDate } from "@/constants/date_constants";
 import * as yup from "yup";
 
@@ -38,5 +39,3 @@ export const projectSchema = () => {
       ),
   });
 };
-
-export { actualDate };

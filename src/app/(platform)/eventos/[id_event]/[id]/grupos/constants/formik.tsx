@@ -4,6 +4,7 @@ import { Event } from "@/interfaces/Event";
 import { eventsSchema } from "@/schemas/events_schema";
 import { Team } from "@/interfaces/Team";
 import { registerTeam, updateTeamCrud } from "../actions/teamCrud";
+import { teamSchema } from "@/schemas/team_schema";
 
 export default function FormikTeam(
   team: Team | null,
@@ -16,7 +17,7 @@ export default function FormikTeam(
       cant_integrantes: team?.cant_integrantes || 1,
       estado: team?.estado || "activo",
     },
-    validationSchema: eventsSchema(),
+    validationSchema: teamSchema(),
     onSubmit: (values) => {
       console.log(values);
       const teamLocal: Team = {
