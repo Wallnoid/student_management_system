@@ -1,4 +1,5 @@
 import { ClubInternos } from "@/interfaces/ClubInternos";
+import { Event } from "@/interfaces/Event";
 import { Member } from "@/interfaces/Member";
 import { Proyecto } from "@/interfaces/Proyecto";
 import { SortDescriptor } from "@nextui-org/react";
@@ -60,3 +61,23 @@ export function sortedItemsClubesHook(
     }
   }, [sortDescriptor, items]);
 }
+
+export function sortedItemsEventsHook(
+  items: Event[],
+  sortDescriptor: SortDescriptor
+) {
+  return useMemo(() => {
+    try {
+      return [...items!].sort((a: Event, b: Event) => {
+        const first = a[sortDescriptor.column as keyof Event] as string;
+        const second = b[sortDescriptor.column as keyof Event] as string;
+        const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+        return sortDescriptor.direction === "descending" ? -cmp : cmp;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }, [sortDescriptor, items]);
+}
+

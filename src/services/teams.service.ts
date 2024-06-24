@@ -1,16 +1,17 @@
 import { AsignacionesEquipos } from "@/interfaces/AsignacionesEquipos";
+import { Member } from "@/interfaces/Member";
 import { Team } from "@/interfaces/Team";
 import { createClient as supabase } from "@/supabase/client";
-
+import { getTeamsParticipationsByContest } from "./participations.service";
+import { Participation } from "@/interfaces/Participation";
 
 export async function addTeam(team: Team): Promise<boolean> {
-    const {nombre, cant_integrantes, capitan, creado_por} = team;
+    const {nombre, cant_integrantes, creado_por} = team;
     let { error } = await supabase()
         .from('equipos')
         .insert({
             nombre,
             cant_integrantes,
-            capitan,
             creado_por,
             fecha_hora_creacion: 'NOW()'
         })
@@ -48,8 +49,21 @@ export async function getTeams(){
     return data as [];
 }
 
+export async function getTeamsByContest(concurso_id: string): Promise<Team[]> {
+    return getTeamsParticipationsByContest(concurso_id).then((participaciones: Participation[]) => {
+        let teams: Team[] = [];
+        for (let i = 0; i < participaciones.length; i++) {
+            teams.push(participaciones[i].id_equipo as Team);
+        }
+        return teams;
+    }).catch((error) => {
+        throw new Error('Error al obtener los equipos. Error: ' + error.message);
+    });
+}
+
 export async function deleteTeam(team: Team, estado: string): Promise<boolean> {
-    const {id, actualizado_por} = team;
+    const actualizado_por = (team.actualizado_por as Member).id;
+    const {id} = team;
     let { error } = await supabase()
     .from('equipos')
     .update({
@@ -62,7 +76,6 @@ export async function deleteTeam(team: Team, estado: string): Promise<boolean> {
     if(error) throw new Error('Error al intentar eliminar el equipo seleccionado. Intente de nuevo. Error: ' + error.message);
     return true;
 }
-
 
 //asignaciones de miembros a equipos
 
@@ -82,3 +95,25 @@ export async function addMemberToTeam(asignacion: AsignacionesEquipos): Promise<
     return true;
 }
 
+// obtener la info de un equipo mediante el ID
+
+export async function getTeamInfoById(id_team: string) {
+    let { data, error } = await supabase()
+        .rpc('get_team_info_by_id', { id_team })
+    if (error) throw new Error('Error al intentar obtener la información del equipo seleccionado. Intente de nuevo. Error: ' + error.message);
+    return data as [];
+}
+
+// designar un capitan de equipo
+
+export async function captainAssignment(id_team: string, id_participant: string): Promise<Boolean>{
+    let { error } = await supabase()
+        .from('equipos')
+        .update({
+            capitan: id_participant
+        })
+        .eq('id', id_team)
+        .select();
+    if (error) throw new Error('Error al intentar designar el capitán del equipo. Intente de nuevo. Error: ' + error.message);
+    return true;
+}

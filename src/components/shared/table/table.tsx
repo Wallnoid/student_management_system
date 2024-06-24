@@ -67,7 +67,7 @@ export default function DefaultTable({
 }) {
   return (
     <Table
-      className="p-10  "
+      className="p-10 "
       aria-label="Example table with custom cells, pagination and sorting"
       isHeaderSticky
       bottomContent={
@@ -118,7 +118,7 @@ export default function DefaultTable({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"Cargando..."} items={sortedItems}>
+      <TableBody emptyContent={"No elements..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

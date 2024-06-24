@@ -18,10 +18,10 @@ import { Proyecto } from "@/interfaces/Proyecto";
 import { Toaster } from "react-hot-toast";
 import { currentUser } from "@/services/users.service";
 
-import { dateFinalHook, dateInicioHook } from "../hooks/date_hook";
 import FormikProject from "../constants/formik";
 import ClubElementHook from "../hooks/asignation_club_hook";
 import { actualDate } from "@/constants/date_constants";
+import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
 
 export default function FormModal({
   project,
@@ -32,9 +32,12 @@ export default function FormModal({
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const { fecha, setFecha } = dateInicioHook(actualDate, project);
+  const { fecha, setFecha } = dateInicioHook(project?.fecha_inicio);
 
-  const { fechaFinal, setFechaFinal } = dateFinalHook(actualDate, project);
+  const { fechaFinal, setFechaFinal } = dateFinalHook(
+    actualDate,
+    project?.fecha_fin
+  );
 
   const { clubElements, setClubElements } = ClubElementHook();
 

@@ -1,6 +1,6 @@
 import { AsignacionesEquipos } from "@/interfaces/AsignacionesEquipos";
 import { Team } from "@/interfaces/Team";
-import { addMemberToTeam, addTeam, deleteTeam, getTeams, updateTeam } from "@/services/teams.service";
+import { addMemberToTeam, addTeam, captainAssignment, deleteTeam, getTeamInfoById, getTeams, updateTeam } from "@/services/teams.service";
 
 describe('Pruebas del servicio de equipos', () => {
     beforeAll(() => {
@@ -14,19 +14,19 @@ describe('Pruebas del servicio de equipos', () => {
     test('Prueba de inserción de un equipo.', async () =>{
         const team: Team = {
             nombre: 'TS Crew',
-            capitan: '64e102c4-f132-406e-ad06-3f29827a95f5',
             cant_integrantes: 6,
             creado_por: 'b60f644f-ab00-47cd-94ef-b55d22430c6c'
         }
         const result = await addTeam(team);
         expect(result).toBe(true);
     });
-/*
+    
+
     test('Prueba de actualización de la información de un equipo.', async () => {
         const team: Team = {
-            id: '9daf46f1-f833-4ff0-9bf0-ea8c13d36581',
-            nombre: 'Code Crew Updated',
-            capitan: '43948e9b-c4d1-473a-a952-c9d0dd1413a2',
+            id: '31961a0a-0515-4403-a50e-9bd761cd50bd',
+            nombre: 'TS Code Crew Updated',
+            capitan: 'ce06fb77-0774-490f-a3fe-77bfced0ed70',
             cant_integrantes: 3,
             estado: 'activo',
             actualizado_por: 'b60f644f-ab00-47cd-94ef-b55d22430c6c'
@@ -34,6 +34,7 @@ describe('Pruebas del servicio de equipos', () => {
         const result = await updateTeam(team);
         expect(result).toBe(true);
     });
+    
 
     test('Prueba de obtención de todos los equipos participantes en los concursos.', async () => {
         const result = await getTeams();
@@ -43,7 +44,7 @@ describe('Pruebas del servicio de equipos', () => {
 
     test('Prueba de eliminación de un equipo específico.', async () => {
         const team: Team = {
-            id: '9daf46f1-f833-4ff0-9bf0-ea8c13d36581',
+            id: '8e44cce7-f669-422a-a872-0e7c44c963e2',
             actualizado_por: 'b60f644f-ab00-47cd-94ef-b55d22430c6c'
         };
         const estado: string = 'eliminado';
@@ -51,16 +52,32 @@ describe('Pruebas del servicio de equipos', () => {
         expect(result).toBe(true);
     });
 
-
+    
     test('Prueba de asignación de un equipo a un miembro específico.', async () => {
         const asignacion: AsignacionesEquipos = {
-            id_miembro: '54acf6d9-8c8d-482f-8041-ae1cc7556c4d',
-            id_equipo: '9daf46f1-f833-4ff0-9bf0-ea8c13d36581',
-            observacion: '',
+            id_miembro: 'a8fdbdce-2777-40cd-817c-416a5d715fea',
+            id_equipo: '31961a0a-0515-4403-a50e-9bd761cd50bd',
+            observacion: 'comprobar identificación',
             creado_por: 'b60f644f-ab00-47cd-94ef-b55d22430c6c'
         };
         const result = await addMemberToTeam(asignacion);
         expect(result).toBe(true);
     });
-*/
+
+    test('Prueba de recuperación de la informarción de un equipo, info e integrantes.', async () => {
+        const id_team: string = '31961a0a-0515-4403-a50e-9bd761cd50bd';
+        const result = await getTeamInfoById(id_team);
+        expect(typeof result).toBe('object');
+        // Verifica que la propiedad 'capitan' es un objeto
+        expect(result).toHaveProperty('capitan');
+        // Verifica que la propiedad 'participantes' es un objeto
+        expect(result).toHaveProperty('participantes');
+    });
+    
+    test('Prueba de asignar capitán a un participante, para un equipo. ', async () => {
+        const id_team: string = '8ab0ed31-2dc1-44e8-90de-8e2a907d288a';
+        const id_participant: string = 'ce06fb77-0774-490f-a3fe-77bfced0ed70';
+        const result = await captainAssignment(id_team, id_participant);
+        expect(result).toBe(true);
+    });
 });

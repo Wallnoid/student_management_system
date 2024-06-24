@@ -9,7 +9,6 @@ import FormModal from "../components/form_modal";
 import { deleteClub } from "../actions/crud_clubes";
 import InfoClubes from "../components/info_clubes";
 import { FaPeopleGroup } from "react-icons/fa6";
-import { IoPersonAddOutline } from "react-icons/io5";
 import ModalMembers from "../components/modal_members";
 
 export default function renderItems(

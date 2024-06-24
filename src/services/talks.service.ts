@@ -1,3 +1,4 @@
+import { Member } from '@/interfaces/Member';
 import { Talk } from '@/interfaces/Talk';
 import { createClient as supabase } from '@/supabase/client';
 
@@ -41,14 +42,15 @@ export async function addTalkWithSpeakers(talk: Talk): Promise<boolean>{
     if (data === 'ok') return true;
 }
 
-export async function addSpeakersToTalk(ponentes: string[], precios: number[],  creado_por: string, id_charla: string, observaciones: string[]): Promise<boolean> {
+export async function addSpeakersToTalk(ponentes: string[], precios: number[],  creado_por: string, id_charla: string, observaciones: string[], id_evento:string): Promise<boolean> {
     let { data, error } = await supabase()
     .rpc('agregar_ponentes_a_charla', {
         creado_por, 
         id_charla, 
         observaciones, 
         ponentes, 
-        precios
+        precios,
+        id_evento
     })
     if (error) throw new Error('Error al intentar asignar ponente/s a la charla. Intente de nuevo. Error: ' + error.message);
     if (data === 'ok') return true;
@@ -83,6 +85,14 @@ export async function getTalks(){
     return data as [];
 }
 
+export async function getTalkById(talk_id: string){
+    let { data, error } = await supabase()
+    .rpc('get_talkByID', { talk_id });
+    if (error) throw new Error('Error al intentar obtener la charla seleccionada. Intente de nuevo. Error: ' + error.message);
+    return data as Talk;
+
+}
+
 export async function getTalksByEventId(evento_id: string){
     let { data, error } = await supabase()
     .rpc('get_talk_by_event_id', { evento_id });
@@ -91,7 +101,8 @@ export async function getTalksByEventId(evento_id: string){
 }
 
 export async function deleteTalk(talk: Talk, estado: string): Promise<boolean> {
-    const {id, actualizado_por} = talk;
+    const actualizado_por = (talk.actualizado_por as Member).id;
+    const {id} = talk;
     let { error } = await supabase()
         .from('charlas')
         .update({

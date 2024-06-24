@@ -8,14 +8,14 @@ import { ClubInternos } from "@/interfaces/ClubInternos";
 export function filteredItemsHook(
   filterValue: string,
   statusFilter: Selection,
-  clubs: any[],
-  projectsStatusOptions: StatusOptionsType[]
+  values: any[],
+  statusOptions: StatusOptionsType[]
 ) {
   const hasSearchFilter = Boolean(filterValue);
 
   return useMemo(() => {
     try {
-      let filteredUsers = [...clubs];
+      let filteredUsers = [...values];
 
       if (hasSearchFilter) {
         filteredUsers = filteredUsers.filter((user) =>
@@ -24,7 +24,7 @@ export function filteredItemsHook(
       }
       if (
         statusFilter !== "all" &&
-        Array.from(statusFilter).length !== projectsStatusOptions.length
+        Array.from(statusFilter).length !== statusOptions.length
       ) {
         filteredUsers = filteredUsers.filter((user) =>
           Array.from(statusFilter).includes(user.estado)
@@ -35,5 +35,5 @@ export function filteredItemsHook(
     } catch (e) {
       console.log(e);
     }
-  }, [clubs, filterValue, statusFilter]);
+  }, [values, filterValue, statusFilter]);
 }
