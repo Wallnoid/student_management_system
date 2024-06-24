@@ -1,6 +1,7 @@
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Member } from "@/interfaces/Member";
 import { Proyecto } from "@/interfaces/Proyecto";
+import { Speaker } from "@/interfaces/Speaker";
 import { Team } from "@/interfaces/Team";
 import { SVGProps } from "react";
 
@@ -21,6 +22,11 @@ export type Clubes = {
 
 export type TeamsContestResponse = {
   team: Team;
+  costo: number;
+};
+
+export type TalksSpeakersResponse = {
+  speaker: Speaker;
   costo: number;
 };
 
