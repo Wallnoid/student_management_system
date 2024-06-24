@@ -9,7 +9,7 @@ describe('Pruebas del servicio de ponentes.', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-/*
+
     test('Prueba de inserción de un ponente.', async () => {
         const speaker: Speaker = {
             nombre: 'Marlon',
@@ -53,7 +53,7 @@ describe('Pruebas del servicio de ponentes.', () => {
         const result = await deleteSpeaker(speaker);
         expect(result).toBe(true);
     });
-*/
+
     test('Prueba de inserción y asignación de un ponente a una charla ya existente.', async () => {
         const speaker: Speaker = {
             nombre: 'Carl',
