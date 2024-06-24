@@ -1,4 +1,4 @@
-import { createClient as supabase } from "@/supabase/client";
+    import { createClient as supabase } from "@/supabase/client";
 import { Payments } from "@/interfaces/Payments";
 let currentUser = null;
 

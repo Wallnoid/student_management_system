@@ -109,6 +109,7 @@ export default function FormModal({
 
                   <Textarea
                     label="Descripcion"
+                    id="descripcion_"
                     name="descripcion"
                     value={formik.values.descripcion}
                     onChange={formik.handleChange}
