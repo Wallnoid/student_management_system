@@ -96,6 +96,7 @@ export default function ModalMembers({ club }: { club: ClubInternos }) {
                         {member}
 
                         <MdDelete
+                          id={`deleteButton_${member.key}__$`}
                           className="mx-5 text-danger-500"
                           size={20}
                           onClick={() => {
