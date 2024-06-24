@@ -97,7 +97,7 @@ export async function getAllContest() {
 }
 
 export async function getContestsByID(concurso_id: string) {
-  let { data, error } = await supabase().rpc("get_contestByID", {
+  let { data, error } = await supabase().rpc("get_contestbyid", {
    concurso_id,
   });
   if (error)
