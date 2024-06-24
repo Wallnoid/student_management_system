@@ -66,8 +66,6 @@ export default function ModalMembers({ club }: { club: ClubInternos }) {
                   <Button
                     color="primary"
                     onPress={() => {
-                      setBoolean(true);
-
                       registerMemberOnClub(club, selectedMember).then(
                         (data) => {
                           setBoolean(true);

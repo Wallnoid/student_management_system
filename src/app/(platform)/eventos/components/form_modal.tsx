@@ -97,7 +97,7 @@ export default function FormModal({
               <ModalHeader className="flex flex-col gap-1">
                 {event ? (
                   <div className="flex flex-row items-center">
-                    <div className="w-1/2">{"Actualizar club"}</div>
+                    <div className="w-1/2">{"Actualizar Evento"}</div>
 
                     <div className="w-1/2 mx-5">
                       <InputSearch
@@ -112,7 +112,7 @@ export default function FormModal({
                     </div>
                   </div>
                 ) : (
-                  "Ingresar Club"
+                  "Ingresar Evento"
                 )}
               </ModalHeader>
 

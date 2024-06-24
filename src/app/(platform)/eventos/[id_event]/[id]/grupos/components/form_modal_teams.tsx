@@ -16,19 +16,23 @@ import { currentUser } from "@/services/users.service";
 import InputSearch from "@/components/shared/input_search";
 import { PlusIcon } from "@/components/shared/icons";
 
-import { optionsElements, statusColorMap } from "../../../constants/constants";
-import FormikContest from "../../../constants/formik_contests";
 import { Team } from "@/interfaces/Team";
 import FormikTeam from "../constants/formik";
+import { FiEdit2 } from "react-icons/fi";
+import { optionsElements, statusColorMap } from "@/constants/constants";
 
 export default function FormModal({
-  teams,
+  team,
   icon: button,
   cant_integrantes,
+  num_equipos,
+  max_equipos,
 }: {
-  teams?: Team;
+  team?: Team;
   icon?: JSX.Element;
-  cant_integrantes: number;
+  cant_integrantes?: number;
+  num_equipos?: number;
+  max_equipos?: number;
 }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -36,29 +40,29 @@ export default function FormModal({
     formik.setFieldValue("estado", value);
   };
 
-  const formik = FormikTeam(teams, currentUser, onClose);
+  const send = () => {
+    formik.setFieldValue("cant_integrantes", cant_integrantes);
+  };
+
+  const formik = FormikTeam(team, currentUser, onClose);
 
   return (
     <>
       <Toaster />
-      {!teams ? (
+      {!team ? (
         <Button
           color="primary"
           endContent={<PlusIcon />}
           onPress={onOpen}
-          id="AddMemberButton"
+          id="AddEquipoButton"
+          isDisabled={num_equipos >= max_equipos}
         >
-          Agregar Equipo
+          <p className="hidden md:block ">Agregar Equipo</p>
         </Button>
       ) : (
-        <Tooltip content="Editar Equipo">
-          <span
-            className="text-lg text-default-400 cursor-pointer active:opacity-50"
-            onClick={onOpen}
-          >
-            {button}
-          </span>
-        </Tooltip>
+        <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
+          <FiEdit2 className="w-5 h-4 text-warning " onClick={onOpen}></FiEdit2>
+        </div>
       )}
 
       <Modal
@@ -71,7 +75,7 @@ export default function FormModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {teams ? (
+                {team ? (
                   <div className="flex flex-row items-center">
                     <div className="w-1/2">{"Actualizar equipo"}</div>
 
@@ -96,7 +100,7 @@ export default function FormModal({
                 <ModalBody>
                   <Input
                     autoFocus
-                    id={`nombre_${teams?.id || ""}`}
+                    id={`nombre_${team?.id || ""}`}
                     label="Nombre"
                     name="nombre"
                     value={formik.values.nombre}
@@ -109,10 +113,12 @@ export default function FormModal({
                   />
 
                   <Input
-                    id={`cant_integrantes_${teams?.id || ""}`}
+                    id={`cant_integrantes_${team?.id || ""}`}
                     label="Cantidad de integrantes"
                     name="cant_integrantes"
-                    value={cant_integrantes.toString()}
+                    value={`${
+                      cant_integrantes || formik.values.cant_integrantes
+                    }`}
                     className={
                       formik.errors.nombre !== undefined ? "py-0" : "py-3"
                     }
@@ -134,9 +140,10 @@ export default function FormModal({
                     id="SubmitButton"
                     color="primary"
                     type="submit"
+                    onPress={() => send()}
                     isLoading={formik.isSubmitting}
                   >
-                    {teams ? "Actualizar" : "Registrar"}
+                    {team ? "Actualizar" : "Registrar"}
                   </Button>
                 </ModalFooter>
               </form>

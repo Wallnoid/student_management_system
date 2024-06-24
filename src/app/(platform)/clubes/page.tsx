@@ -5,11 +5,7 @@ import ClubHook from "./hooks/club_hook";
 import filterValueHook from "@/components/shared/table/hooks/filter_value_hook";
 import selectKeysHook from "@/components/shared/table/hooks/select_keys_hook";
 import visibleColumnsHook from "@/components/shared/table/hooks/visible_colums_hook";
-import {
-  ClubesStatusOptions,
-  columnsTable,
-  INITIAL_VISIBLE_COLUMNS,
-} from "./constants/constants";
+import { columnsTable, INITIAL_VISIBLE_COLUMNS } from "./constants/constants";
 import statusFilterHook from "@/components/shared/table/hooks/status_filter_hook";
 import rowsPerPageHook from "@/components/shared/table/hooks/rows_per_page_hook";
 import sortDescriptionHook from "@/components/shared/table/hooks/sort_descrpition_hook";
@@ -28,6 +24,7 @@ import DefaultTable from "@/components/shared/table/table";
 import BottomContent from "./components/bottom_content";
 import topContent from "./components/top_content";
 import renderItems from "./constants/render_item_clubes";
+import { statusOptions } from "@/constants/constants";
 
 export default function ClubsPage() {
   const { loading, setLoading } = loadingHook();
@@ -56,7 +53,7 @@ export default function ClubsPage() {
     filterValue,
     statusFilter,
     clubs,
-    ClubesStatusOptions
+    statusOptions
   );
 
   const filteredItemsLength = function () {
@@ -99,7 +96,7 @@ export default function ClubsPage() {
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
       columnsTable={columnsTable}
-      statusOptions={ClubesStatusOptions}
+      statusOptions={statusOptions}
       entities={clubs}
       onRowsPerPageChange={onRowsPerPageChange}
       page={page}

@@ -96,21 +96,20 @@ export async function getAllContest() {
   return data as Contest[];
 }
 
-export async function getContestsByID(contest_id: string) {
-  let { data, error } = await supabase().rpc("get_contestByID", {
-    contest_id,
+export async function getContestsByID(concurso_id: string) {
+  let { data, error } = await supabase().rpc("get_contestbyid", {
+    concurso_id,
   });
   if (error)
     throw new Error(
       "Error al intentar recuperar todos los clubes disponibles. Rceargue la página e intente de nuevo. Error: " +
         error.message
     );
-  return data as Contest;
-  
+  return data as Contest[];
 }
 
 export async function getContests(id_evento: string) {
-  let { data, error } = await supabase().rpc("get_contests", {
+  let { data, error } = await supabase().rpc("get_contestsByEventID", {
     evento_id: id_evento,
   });
   if (error)
@@ -123,7 +122,7 @@ export async function getContests(id_evento: string) {
 
 export async function deleteContest(contest: Contest, status: string) {
   console.log(contest.id);
-  const actualizado_por = (contest.actualizado_por as Member).id
+  const actualizado_por = (contest.actualizado_por as Member).id;
   const { id } = contest;
   let { error } = await supabase()
     .from("concurso")

@@ -20,6 +20,10 @@ export default function MemberClubHook(
   const [president, setPresident] = useState<ReactElement>(null);
 
   useEffect(() => {
+    if (!boolean) {
+      return;
+    }
+
     getMembersClub(idClub)
       .then((data: any) => {
         if (!data.presidente) {
@@ -52,7 +56,7 @@ export default function MemberClubHook(
     return () => {
       setBoolean(false);
     };
-  }, [boolean]);
+  });
 
   return { clubMembers, setClubMembers, president, setPresident };
 }

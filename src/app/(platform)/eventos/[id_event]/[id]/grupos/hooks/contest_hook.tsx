@@ -5,7 +5,7 @@ import { getTalks } from "@/services/talks.service";
 import { useEffect, useState } from "react";
 
 export default function ContestHook(id: string) {
-  const [contest, setContest] = useState<Contest>();
+  const [contest, setContest] = useState<Contest[]>([]);
 
   useEffect(() => {
     getContestsByID(id)
@@ -18,5 +18,9 @@ export default function ContestHook(id: string) {
       });
   }, []);
 
-  return { contest, setContest };
+  function getContests() {
+    console.log(contest[0].nombre);
+  }
+
+  return { contest, setContest, getContests };
 }

@@ -2,12 +2,12 @@ import { DeleteIcon, EditIcon, MemberIcon } from "@/components/shared/icons";
 import { Member } from "@/interfaces/Member";
 import { cutString } from "@/utils/utils";
 import { Chip, Tooltip, User } from "@nextui-org/react";
-import { statusColorMap } from "./constants";
 import InfoMembers from "../components/info_member";
 import FormModal from "../components/form_modal";
 import { deleteUser } from "../actions/crud_member";
 import { renderCellType } from "@/types/types";
 import { FaUser } from "react-icons/fa";
+import { statusColorMap } from "@/constants/constants";
 
 export default function renderItems(
   user: Member,

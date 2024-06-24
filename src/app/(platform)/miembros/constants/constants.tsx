@@ -1,3 +1,4 @@
+import { statusColorMap, statusOptions } from "@/constants/constants";
 import { AutocompleteItem, ChipProps } from "@nextui-org/react";
 
 export const INITIAL_VISIBLE_COLUMNS = [
@@ -17,26 +18,3 @@ export const columnsTable = [
   { name: "ESTADO", uid: "estado", sortable: true },
   { name: "ACTIONS", uid: "actions" },
 ];
-
-export const MembersStatusOptions = [
-  { name: "Activo", uid: "activo" },
-  { name: "Inactivo", uid: "inactivo" },
-  { name: "Suspendido", uid: "suspendido" },
-];
-
-export const statusColorMap: Record<string, ChipProps["color"]> = {
-  activo: "success",
-  inactivo: "danger",
-  suspendido: "warning",
-};
-
-export const optionsElements = MembersStatusOptions.map((option) => (
-  <AutocompleteItem
-    key={option.uid}
-    textValue={option.name}
-    color={statusColorMap[option.uid]}
-    className={`text-primary-800 `}
-  >
-    {option.name}
-  </AutocompleteItem>
-));
