@@ -1,15 +1,12 @@
 import { Team } from "@/interfaces/Team";
-import { getContests } from "@/services/contests.service";
-import { getEvents } from "@/services/events.service";
-import { getTalks } from "@/services/talks.service";
-import { getTeams } from "@/services/teams.service";
+import { getTeams, getTeamsByContest } from "@/services/teams.service";
 import { useEffect, useState } from "react";
 
-export default function TeamHook(loading: boolean) {
+export default function TeamHook(loading: boolean, contest_id: string) {
   const [team, setTeam] = useState<Team[]>([]);
 
   useEffect(() => {
-    getTeams()
+    getTeamsByContest(contest_id)
       .then((data) => {
         setTeam(data);
         console.log(data);

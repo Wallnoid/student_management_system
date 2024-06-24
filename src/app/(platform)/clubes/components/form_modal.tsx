@@ -16,10 +16,10 @@ import { Toaster } from "react-hot-toast";
 
 import { currentUser } from "@/services/users.service";
 import InputSearch from "@/components/shared/input_search";
-import { optionsElements, statusColorMap } from "../constants/constants";
 import FormikClubes from "../constants/formik";
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import MemberElementHook from "../hooks/members_hook";
+import { optionsElements, statusColorMap } from "@/constants/constants";
 
 export default function FormModal({
   club,

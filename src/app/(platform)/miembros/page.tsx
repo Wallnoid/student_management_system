@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  columnsTable,
-  INITIAL_VISIBLE_COLUMNS,
-  MembersStatusOptions,
-} from "./constants/constants";
+import { columnsTable, INITIAL_VISIBLE_COLUMNS } from "./constants/constants";
 import BottomContent from "./components/bottom_content";
 import TopContent from "./components/top_content";
 import userHook from "./hooks/member_hook";
@@ -28,6 +24,7 @@ import OnRowPerPageChangeHook from "@/components/shared/table/hooks/on_row_per_p
 import OnSearchChangeHook from "@/components/shared/table/hooks/on_search_change_hook";
 import OnClearHook from "@/components/shared/table/hooks/on_clear_hook";
 import DefaultTable from "@/components/shared/table/table";
+import { statusOptions } from "@/constants/constants";
 
 export default function MembersPage() {
   const { loading, setLoading } = loadingHook();
@@ -56,7 +53,7 @@ export default function MembersPage() {
     filterValue,
     statusFilter,
     users,
-    MembersStatusOptions
+    statusOptions
   );
 
   const filteredItemsLength = function () {
@@ -99,7 +96,7 @@ export default function MembersPage() {
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
       columnsTable={columnsTable}
-      statusOptions={MembersStatusOptions}
+      statusOptions={statusOptions}
       entities={users}
       onRowsPerPageChange={onRowsPerPageChange}
       page={page}

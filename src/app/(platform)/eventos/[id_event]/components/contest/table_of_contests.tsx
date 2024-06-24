@@ -32,14 +32,13 @@ import BottomContent from "../../../components/bottom_content";
 import ContestHook from "../../hooks/contests_hook";
 import {
   columnsTableContests,
-  EventsStatusOptions,
   INITIAL_VISIBLE_COLUMNS_CONTEST,
 } from "../../constants/constants";
 import topContent from "./top_content_contests";
 import { useRouter } from "next/navigation";
+import { statusOptions } from "@/constants/constants";
 
 export default function ContestTable({ id }: { id: string }) {
-
   const router = useRouter();
   const { loading, setLoading } = loadingHook();
 
@@ -67,7 +66,7 @@ export default function ContestTable({ id }: { id: string }) {
     filterValue,
     statusFilter,
     contests,
-    EventsStatusOptions
+    statusOptions
   );
 
   const filteredItemsLength = function () {
@@ -110,7 +109,7 @@ export default function ContestTable({ id }: { id: string }) {
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
       columnsTable={columnsTableContests}
-      statusOptions={EventsStatusOptions}
+      statusOptions={statusOptions}
       entities={contests}
       onRowsPerPageChange={onRowsPerPageChange}
       page={page}

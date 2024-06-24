@@ -17,7 +17,7 @@ export default function UnicEventPage({
         <BreadcrumbItem href="/eventos">Eventos</BreadcrumbItem>
         <BreadcrumbItem>{event[0]?.nombre}</BreadcrumbItem>
       </Breadcrumbs>
-      <section className="flex flex-col w-full items-center  ">
+      <section className="flex flex-col w-full items-center my-5 lg:my-0">
         <Tabs aria-label="Options" size="lg">
           <Tab key={"concursos"} title={"Concursos"} className="w-full">
             <ContestTable id={params.id_event}></ContestTable>

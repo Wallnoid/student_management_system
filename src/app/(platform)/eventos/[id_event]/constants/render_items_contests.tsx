@@ -3,7 +3,6 @@ import { Member } from "@/interfaces/Member";
 import { renderCellType } from "@/types/types";
 import { cutString } from "@/utils/utils";
 import { Chip, Tooltip, User } from "@nextui-org/react";
-import { statusColorMap } from "./constants";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { Contest } from "@/interfaces/Contest";
 import FormModal from "../components/contest/form_modal_contest";
@@ -12,6 +11,7 @@ import { deleteContestCrud } from "../actions/crud_contets";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { goToGroups } from "../actions/go_to_groups";
+import { statusColorMap } from "@/constants/constants";
 
 export default function renderItems(
   contest: Contest,
@@ -19,8 +19,6 @@ export default function renderItems(
   router: AppRouterInstance,
   id_event: string
 ): renderCellType[] {
-  console.log(id_event);
-
   return [
     {
       key: "nombre",
