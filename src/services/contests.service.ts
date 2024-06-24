@@ -98,14 +98,14 @@ export async function getAllContest() {
 
 export async function getContestsByID(concurso_id: string) {
   let { data, error } = await supabase().rpc("get_contestbyid", {
-   concurso_id,
+    concurso_id,
   });
   if (error)
     throw new Error(
       "Error al intentar recuperar todos los clubes disponibles. Rceargue la página e intente de nuevo. Error: " +
         error.message
     );
-  return data as Contest;
+  return data as Contest[];
 }
 
 export async function getContests(id_evento: string) {

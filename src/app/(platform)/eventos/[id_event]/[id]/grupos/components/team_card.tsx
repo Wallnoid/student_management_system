@@ -6,6 +6,7 @@ import {
   CardFooter,
   Divider,
   Link,
+  Chip,
 } from "@nextui-org/react";
 import { Team } from "@/interfaces/Team";
 import { MdOutlineGroups } from "react-icons/md";
@@ -14,6 +15,10 @@ import { FiEdit2 } from "react-icons/fi";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { Participant } from "@/interfaces/Participant";
 import { cutString } from "@/utils/utils";
+import FormModal from "./form_modal_teams";
+import { statusColorMap } from "@/constants/constants";
+import { deleteTeamCrud } from "../actions/teamCrud";
+import ModalCrudMember from "./modal_crud_participant";
 export default function TeamCard({ team }: { team: Team }) {
   return (
     <Card className="md:w-96 w-80  hover:bg-gray-50 active:bg-gray-200 cursor-pointer">
@@ -38,16 +43,24 @@ export default function TeamCard({ team }: { team: Team }) {
       <Divider />
       <CardFooter>
         <div className="flex flex-row w-full">
-          <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
-            <MdOutlineGroupAdd className="w-5 h-5 text-primary "></MdOutlineGroupAdd>
-          </div>
+          <Chip
+            className="capitalize"
+            color={statusColorMap[team.estado]}
+            size="sm"
+            variant="flat"
+          >
+            {team.estado}
+          </Chip>
 
           <div className="w-full flex justify-end items-center gap-2">
+            <ModalCrudMember></ModalCrudMember>
+
+            <FormModal team={team}></FormModal>
             <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
-              <FiEdit2 className="w-5 h-4 text-warning "></FiEdit2>
-            </div>
-            <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
-              <MdDeleteOutline className="w-5 h-5 text-danger "></MdDeleteOutline>
+              <MdDeleteOutline
+                className="w-5 h-5 text-danger "
+                onClick={() => deleteTeamCrud(team)}
+              ></MdDeleteOutline>
             </div>
           </div>
         </div>

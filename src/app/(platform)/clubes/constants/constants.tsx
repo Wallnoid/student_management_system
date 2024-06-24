@@ -1,3 +1,4 @@
+import { statusColorMap, statusOptions } from "@/constants/constants";
 import { PresidenteWithRole } from "@/types/types";
 import { AutocompleteItem, ChipProps } from "@nextui-org/react";
 import { ReactElement } from "react";
@@ -17,18 +18,6 @@ export const columnsTable = [
   { name: "ACTIONS", uid: "actions" },
 ];
 
-export const ClubesStatusOptions = [
-  { name: "Activo", uid: "activo" },
-  { name: "Inactivo", uid: "inactivo" },
-  { name: "Suspendido", uid: "suspendido" },
-];
-
-export const statusColorMap: Record<string, ChipProps["color"]> = {
-  activo: "success",
-  inactivo: "danger",
-  suspendido: "warning",
-};
-
 export const createObject = (data: PresidenteWithRole): ReactElement => {
   return (
     <AutocompleteItem
@@ -47,13 +36,3 @@ export const createObject = (data: PresidenteWithRole): ReactElement => {
   );
 };
 
-export const optionsElements = ClubesStatusOptions.map((option) => (
-  <AutocompleteItem
-    key={option.uid}
-    textValue={option.name}
-    color={statusColorMap[option.uid]}
-    className={`text-primary-800 `}
-  >
-    {option.name}
-  </AutocompleteItem>
-));

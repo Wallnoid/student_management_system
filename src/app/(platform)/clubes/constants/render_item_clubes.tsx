@@ -1,15 +1,15 @@
-import { DeleteIcon, EditIcon, MemberIcon } from "@/components/shared/icons";
+import { DeleteIcon, EditIcon } from "@/components/shared/icons";
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Member } from "@/interfaces/Member";
-import { Presidente, renderCellType } from "@/types/types";
+import { renderCellType } from "@/types/types";
 import { cutString } from "@/utils/utils";
 import { Chip, Tooltip, User } from "@nextui-org/react";
-import { statusColorMap } from "./constants";
 import FormModal from "../components/form_modal";
 import { deleteClub } from "../actions/crud_clubes";
 import InfoClubes from "../components/info_clubes";
 import { FaPeopleGroup } from "react-icons/fa6";
 import ModalMembers from "../components/modal_members";
+import { statusColorMap } from "@/constants/constants";
 
 export default function renderItems(
   club: ClubInternos,

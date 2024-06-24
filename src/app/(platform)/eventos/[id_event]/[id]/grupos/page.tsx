@@ -20,10 +20,16 @@ export default function GroupsPage({
   params: { id_event: string; id: string };
 }) {
   const { loading, setLoading } = loadingHook();
-  const { event, setEvent } = EventHook(true, params.id_event);
   const { contest, setContest } = ContestHook(params.id);
+  const { event, setEvent } = EventHook(true, params.id_event);
 
-  const { team, setTeam } = TeamHook(loading);
+  const { team, setTeam } = TeamHook(loading, params.id);
+
+  const cantidad_integrantes = contest[0]?.cant_integrantes_por_equipo;
+
+  const maxEquipos = contest[0]?.cantidad_participantes;
+
+  const cantidadEquipos = team.length;
 
   return (
     <>
@@ -32,8 +38,8 @@ export default function GroupsPage({
         <BreadcrumbItem href={`/eventos/${params.id_event}`}>
           {event[0]?.nombre}
         </BreadcrumbItem>
-        <BreadcrumbItem href={`/eventos/${params.id}`}>
-          {contest?.nombre}
+        <BreadcrumbItem href={`/eventos/${params.id_event}/${params.id}`}>
+          {contest[0]?.nombre}
         </BreadcrumbItem>
       </Breadcrumbs>
       <section className="flex flex-col w-full  items-center p-9  ">
@@ -45,14 +51,20 @@ export default function GroupsPage({
           </div>
 
           <div className=" w-full flex flex-row justify-end items-center">
-            <FormModal cant_integrantes={10}></FormModal>
+            <FormModal
+              cant_integrantes={cantidad_integrantes}
+              max_equipos={maxEquipos}
+              num_equipos={cantidadEquipos}
+            ></FormModal>
           </div>
         </div>
 
         <Divider className="mb-1 mt-3" />
 
-        <div className="w-full text-default-400 text-sm mb-10">
-          Maximo de participante por equipo: {10}
+        <div className="w-full text-default-400 text-sm mb-10 flex flex-col md:flex-row justify-between">
+          <p>Maximo de participante por equipo: {cantidad_integrantes}</p>
+          <p>Equipos registrados: {cantidadEquipos}</p>
+          <p>Maximo de equipos / participantes: {maxEquipos}</p>
         </div>
 
         <div className="flex flex-wrap gap-4 items-center justify-center  ">

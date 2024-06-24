@@ -22,7 +22,8 @@ import FormikProject from "../constants/formik";
 import ClubElementHook from "../hooks/asignation_club_hook";
 import { actualDate } from "@/constants/date_constants";
 import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
-import { optionsElements, statusColorMap } from "../constants/constants";
+import { statusColorMap } from "../constants/constants";
+import { optionsElements } from "@/constants/constants";
 
 export default function FormModal({
   project,
