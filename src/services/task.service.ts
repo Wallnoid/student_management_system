@@ -45,7 +45,11 @@ export async function getTasks() {
         .from('tareas')
         .select('*')
         .neq('estado', 'eliminado')
-    return true
+    if (error) {
+        console.error("Error fetching tasks:", error);
+        return [];
+    }
+    return data as Task[];
 }
 
 export async function getTaskById(id: string) {

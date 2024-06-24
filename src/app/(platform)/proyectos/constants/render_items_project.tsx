@@ -82,7 +82,7 @@ export default function renderItems(
           <InfoProject proyect={project}></InfoProject>
 
           <FormModal
-            proyect={project as Proyecto}
+            project={project as Proyecto}
             icon={<EditIcon />}
           ></FormModal>
 

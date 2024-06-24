@@ -33,7 +33,7 @@ export async function getTeamsParticipations(equipo_id: string){
         equipo_id
     });
     if (error) throw new Error('Error al intentar recuperar las participaciones del club seleccionado. Error: ' + error.message);
-    return data as [];
+    return data as Participation[];
 }
 
 // función que recupera las participaciones de los equipos en un concurso específico.

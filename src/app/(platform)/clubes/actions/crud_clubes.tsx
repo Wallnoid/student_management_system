@@ -55,14 +55,17 @@ export const updateClubs = async (clubLocal: ClubInternos, formik: any) => {
   });
 };
 
-export const registerClub = async (clubLocal: ClubInternos, formik: any) => {
+export const registerClub = async (
+  clubLocal: ClubInternos,
+  formik: any,
+  onClose: any
+) => {
   toast.promise(insertClub(clubLocal), {
     loading: "Saving...",
     success: () => {
       console.log("Miembro guardado!");
       formik.resetForm();
-      //onClose();
-      //onReload!(true);
+      onClose();
       window.location.reload();
 
       return <b>Miembro guardado!</b>;

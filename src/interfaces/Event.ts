@@ -8,8 +8,8 @@ export interface Event {
     fecha_fin?: string;
     estado?: string;
     responsable?: string|Member;
-    creado_por?: string;
+    creado_por?: string|Member;
     fecha_hora_creacion?: string;
-    actualizado_por?: string;
+    actualizado_por?: string|Member;
     fecha_hora_actualizacion?: string;
 }

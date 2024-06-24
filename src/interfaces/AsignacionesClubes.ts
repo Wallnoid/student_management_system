@@ -1,3 +1,5 @@
+import { Member } from "./Member";
+
 export interface AsignacionesClubes {
   id?: string;
   id_club_interno: string;
@@ -6,6 +8,6 @@ export interface AsignacionesClubes {
   estado?: string;
   creado_por?: string;
   fecha_hora_creacion?: string;
-  actualizado_por?: string;
+  actualizado_por?: string | Member;
   fecha_hora_actualizacion?: string;
 }

@@ -1,4 +1,4 @@
-import { createClient as supabase } from "@/supabase/client";
+    import { createClient as supabase } from "@/supabase/client";
 import { Payments } from "@/interfaces/Payments";
 let currentUser = null;
 
@@ -13,6 +13,14 @@ supabase().auth.onAuthStateChange((event, session) => {
 //Los tipos es concurso o evento
 
 export async function getAllPayments(type: string) {
+    let {error , data} = await supabase().rpc(`get_payments_${type}`);
+    if (error) {
+        throw new Error('Error al recuperar datos del servidor. Intente más tarde.');
+    }
+    return data as Payments[];
+}
+
+export async function getAllPaymentsVarious(type: string) {
     let { data, error } = await supabase()
         .from("pagos_"+type)
         .select("*")
@@ -31,13 +39,17 @@ export async function getPaymentById(id: string, type: string) {
 }
 
 export async function addPyment(pago: Payments, type: string) {
+    try{
     let { error } = await supabase()
         .from("pagos_"+type)
         .insert(pago);
     if (error) {
-        throw new Error('Error al agregar el pago. Recargue la página e intente de nuevo.');
+        throw new Error(`Error al agregar el pago: ${error.message} Recargue la página e intente de nuevo.`);
     }
     return true;
+    }catch(e){
+        console.log(e)
+    }
 }
 
 export async function updatePayment(id: string, pago: Payments, type: string) {
@@ -50,7 +62,7 @@ export async function updatePayment(id: string, pago: Payments, type: string) {
     }
     return true;
 }
-//Este metodo retorna todos los pagos de concurso o evento
+//Este metodo retorna todos los pagos de concurso o evento o varios
 export async function getAllDataPaymentByIdCE(id: string, type: string){
     let parametro = (type == "evento") ? "id_evento":"id_participacion";
     let {error , data} = await supabase().rpc(`get_payment_by_${type}_id`, {[parametro]: id});

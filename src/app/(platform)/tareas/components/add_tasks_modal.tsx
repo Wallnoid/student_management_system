@@ -122,18 +122,33 @@ export default function AddTaskModal({
 
   const handleUserSelection = (user: Member) => {
     setSelectedUser(user);
-    console.log("Este ususario jeje:", user);
   };
 
+
   useEffect(() => {
-    getMembersClub("cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081")
+    let club = proyect?.responsable as ClubInternos | undefined;
+    if (club) {
+      getMembersClub(club.id)
       .then((members) => {
-        setUsers(members);
+        setUsers(members.miembros.map(member => {
+          const memberInfo = member.miembro_club;
+          console.log("Miembro", member.id);
+          return {
+            id: member.id,
+            nombre: memberInfo['nombre'],
+            apellido: memberInfo['apellido'],
+            correo: memberInfo['correo'],
+          } as Member
+        }
+        ));
         console.log("Miembros del club", users);
       })
       .catch((error) => {
         console.error("Error al obtener los miembros del club:", error);
       });
+    } else {
+      console.log("No se encuentra el Club");
+    }
   }, [proyect]);
 
   const onChanges = (value: string) => {
@@ -193,19 +208,17 @@ export default function AddTaskModal({
                     onChange={onChanges}
                     isInvalid={formik.errors.user !== undefined}
                     className={`flex 
-                                        ${
-                                          formik.errors.nombre !== undefined
-                                            ? "py-0"
-                                            : "py-3"
-                                        } 
+                                        ${formik.errors.nombre !== undefined
+                        ? "py-0"
+                        : "py-3"
+                      } 
                                         justify-between`}
                     errorMessage={formik.errors.user}
                   ></SelectUsers>
                   <div
                     className={`flex 
-                  ${
-                    formik.errors.descripcion !== undefined ? "py-0" : "py-3"
-                  } justify-between`}
+                  ${formik.errors.descripcion !== undefined ? "py-0" : "py-3"
+                      } justify-between`}
                   >
                     <DatePicker
                       value={fecha}

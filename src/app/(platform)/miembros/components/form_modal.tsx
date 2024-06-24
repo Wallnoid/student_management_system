@@ -27,10 +27,10 @@ import {
 import { currentUser } from "@/services/users.service";
 import { Member } from "@/interfaces/Member";
 import InputSearch from "@/components/shared/input_search";
-import dateHook from "../hooks/date_hook";
-import { optionsElements, statusColorMap } from "../constants/constants";
 import FormikMember from "../constants/formik";
 import { actualDate } from "@/constants/date_constants";
+import { optionsElements, statusColorMap } from "@/constants/constants";
+import { dateInicioHook } from "@/hooks/date_hook";
 
 export default function FormModal({
   member,
@@ -39,7 +39,7 @@ export default function FormModal({
   member?: Member;
   icon?: JSX.Element;
 }) {
-  const { fecha, setFecha } = dateHook(actualDate, member);
+  const { fecha, setFecha } = dateInicioHook(member?.fecha_nacimiento);
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 

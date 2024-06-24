@@ -18,24 +18,32 @@ import { Proyecto } from "@/interfaces/Proyecto";
 import { Toaster } from "react-hot-toast";
 import { currentUser } from "@/services/users.service";
 
-import { dateFinalHook, dateInicioHook } from "../hooks/date_hook";
 import FormikProject from "../constants/formik";
 import ClubElementHook from "../hooks/asignation_club_hook";
 import { actualDate } from "@/constants/date_constants";
-
+import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
+import { statusColorMap } from "../constants/constants";
+import { optionsElements } from "@/constants/constants";
 
 export default function FormModal({
-  proyect: project,
+  project,
   icon,
 }: {
-  proyect?: Proyecto;
+  project?: Proyecto;
   icon?: JSX.Element;
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const { fecha, setFecha } = dateInicioHook(actualDate, project);
+  const { fecha, setFecha } = dateInicioHook(project?.fecha_inicio);
 
-  const { fechaFinal, setFechaFinal } = dateFinalHook(actualDate, project);
+  const { fechaFinal, setFechaFinal } = dateFinalHook(
+    actualDate,
+    project?.fecha_fin
+  );
+
+  const onChangesEstado = (value: string) => {
+    formik.setFieldValue("estado", value);
+  };
 
   const { clubElements, setClubElements } = ClubElementHook();
 
@@ -54,9 +62,6 @@ export default function FormModal({
       fechaFinal.month - 1,
       fechaFinal.day
     );
-
-    console.log(fechaAsDate);
-    console.log(fechaFinalAsDate);
 
     formik.setFieldValue("fechaInicio", fechaAsDate);
     formik.setFieldValue("fechaFinal", fechaFinalAsDate);
@@ -89,7 +94,25 @@ export default function FormModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {project ? "Actualizar Proyecto" : "Agregar Proyecto"}
+                {project ? (
+                  <div className="flex flex-row items-center">
+                    <div className="w-1/2">{"Actualizar Evento"}</div>
+
+                    <div className="w-1/2 mx-5">
+                      <InputSearch
+                        label=""
+                        placeholder=""
+                        elements={optionsElements}
+                        name="estado"
+                        onChange={onChangesEstado}
+                        value={formik.values.estado}
+                        color={statusColorMap[formik.values.estado]}
+                      ></InputSearch>
+                    </div>
+                  </div>
+                ) : (
+                  "Agregar Proyecto"
+                )}
               </ModalHeader>
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
@@ -126,7 +149,7 @@ export default function FormModal({
                     label="Responsable"
                     placeholder="Buscar Club"
                     name="responsable"
-                    value={formik.values.responsable.toString()} // Convert the value to a string
+                    value={formik.values.responsable} // Convert the value to a string
                     onChange={onChanges}
                     isInvalid={formik.errors.responsable !== undefined}
                     className={`flex 

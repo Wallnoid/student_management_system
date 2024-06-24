@@ -1,6 +1,8 @@
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Member } from "@/interfaces/Member";
 import { Proyecto } from "@/interfaces/Proyecto";
+import { Speaker } from "@/interfaces/Speaker";
+import { Team } from "@/interfaces/Team";
 import { SVGProps } from "react";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
@@ -18,11 +20,41 @@ export type Clubes = {
   presidente: Presidente;
 };
 
+export type TeamsContestResponse = {
+  team: Team;
+  costo: number;
+};
+
+export type TalksSpeakersResponse = {
+  speaker: Speaker;
+  costo: number;
+};
+
 export type PresidenteWithRole = {
   id: string;
   nombre: string;
   apellido: string;
   categoria: string;
+  correo: string;
+};
+
+export type RespondClubMember = {
+  actualizado_por: any;
+  comentario_asignacion: string;
+  creado_por: any;
+  estado: string;
+  fecha_hora_actualizacion: string;
+  fecha_hora_creacion: string;
+  id: string;
+  miembro_club: ClubMember;
+};
+
+export type ClubMember = {
+  id: string;
+  nombre: string;
+  apellido: string;
+  categoria: string;
+  correo: string;
 };
 
 export type renderCellType = { key: string; reactHelement: React.ReactElement };
