@@ -36,7 +36,7 @@ export default function SpeakersPage({
           </div>
 
           <div className=" w-full flex flex-row justify-end items-center">
-            <FormModal></FormModal>
+            <FormModal id_talk={params.id}></FormModal>
           </div>
         </div>
 
@@ -48,7 +48,7 @@ export default function SpeakersPage({
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 grid-cols-1 gap-4 ">
           {talkers.map((talker) => (
-            <TalkerCard talker={talker} />
+            <TalkerCard id_talk={params.id} talker={talker} />
           ))}
         </div>
       </section>

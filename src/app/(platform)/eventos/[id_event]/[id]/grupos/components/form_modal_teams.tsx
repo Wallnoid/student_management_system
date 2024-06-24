@@ -116,6 +116,20 @@ export default function FormModal({
                   />
 
                   <Input
+                    autoFocus
+                    id={`costo_${team?.id || ""}`}
+                    label="Costo de inscripción"
+                    name="costo"
+                    value={formik.values.costo.toString()}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.errors.costo !== undefined}
+                    errorMessage={formik.errors.costo}
+                    placeholder="Ingresa el costo de inscripción"
+                    variant="bordered"
+                    type="text"
+                  />
+
+                  <Input
                     id={`cant_integrantes_${team?.id || ""}`}
                     label="Cantidad de integrantes"
                     name="cant_integrantes"

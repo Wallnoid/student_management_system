@@ -14,6 +14,8 @@ export default function FormikTalker(talker: Speaker | null, currentUser: any) {
       correo: talker?.correo || "",
       titulo: talker?.titulo || "",
       estado: talker?.estado || "activo",
+      id_talk: "",
+      costo: 0 || 0,
     },
     validateOnChange: true,
     validateOnBlur: true,
@@ -45,8 +47,7 @@ export default function FormikTalker(talker: Speaker | null, currentUser: any) {
         talkerLocal.actualizado_por = null;
         talkerLocal.estado = null;
 
-        console.log("Registrando miembro");
-        registerTalker(talkerLocal, formik);
+        registerTalker(talkerLocal, values.id_talk, values.costo, formik);
       }
     },
   });

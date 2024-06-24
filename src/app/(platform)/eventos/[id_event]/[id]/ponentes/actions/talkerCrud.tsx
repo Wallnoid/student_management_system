@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 
 import { addTalk, deleteTalk, updateTalk } from "@/services/talks.service";
 import { Speaker } from "@/interfaces/Speaker";
+import { addSpeakerToTalk } from "@/services/speakers.service";
 
 export const deleteTalkerCrud = async (talker: Speaker) => {
   toast.custom(
@@ -51,8 +52,13 @@ export const updateTalkerCrud = async (talker: Speaker, formik: any) => {
   });
 };
 
-export const registerTalker = async (talker: Speaker, formik: any) => {
-  toast.promise(addTalk(talker), {
+export const registerTalker = async (
+  talker: Speaker,
+  id_talk: string,
+  costo: number,
+  formik: any
+) => {
+  toast.promise(addSpeakerToTalk(talker, id_talk, "", costo), {
     loading: "Saving...",
     success: () => {
       // formik.resetForm();

@@ -19,7 +19,13 @@ import { statusColorMap } from "@/constants/constants";
 import { Speaker } from "@/interfaces/Speaker";
 import FormModal from "./form_modal_talker";
 import { deleteTalkerCrud } from "../actions/talkerCrud";
-export default function TalkerCard({ talker }: { talker: Speaker }) {
+export default function TalkerCard({
+  talker,
+  id_talk,
+}: {
+  talker: Speaker;
+  id_talk: string;
+}) {
   return (
     <Card className="md:w-96 w-80  hover:bg-gray-50 active:bg-gray-200 cursor-pointer">
       <CardHeader className="flex gap-3">
@@ -51,8 +57,7 @@ export default function TalkerCard({ talker }: { talker: Speaker }) {
           </Chip>
 
           <div className="w-full flex justify-end items-center gap-2">
-
-            <FormModal talker={talker}></FormModal>
+            <FormModal talker={talker} id_talk={id_talk}></FormModal>
             <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
               <MdDeleteOutline
                 className="w-5 h-5 text-danger "

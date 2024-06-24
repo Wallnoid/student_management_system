@@ -13,7 +13,7 @@ export default function FormikTeam(
       nombre: team?.nombre || "",
       cant_integrantes: team?.cant_integrantes || 1,
       estado: team?.estado || "activo",
-      //costo: team?.costo || 0,
+      costo: 0 || 0,
       id_contest: "",
     },
     validationSchema: teamSchema(),

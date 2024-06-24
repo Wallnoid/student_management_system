@@ -7,43 +7,33 @@ import {
   Button,
   useDisclosure,
   Input,
-  DatePicker,
-  Tooltip,
 } from "@nextui-org/react";
 
 import { Toaster } from "react-hot-toast";
 
-import {
-  mappeoCarreras,
-  mappeoSemestres,
-  mappeoRoles,
-  Carreras,
-  Semestres,
-  Roles,
-} from "@/schemas/member_schema";
 import { currentUser } from "@/services/users.service";
-import { Member } from "@/interfaces/Member";
-import InputSearch from "@/components/shared/input_search";
-import { actualDate } from "@/constants/date_constants";
-import { optionsElements, statusColorMap } from "@/constants/constants";
 import { FiEdit2 } from "react-icons/fi";
-import { Participant } from "@/interfaces/Participant";
 import { PlusIcon } from "@/components/shared/icons";
-import { dateInicioHook } from "@/hooks/date_hook";
 import FormikTalker from "../constants/formik_talker";
 import { Speaker } from "@/interfaces/Speaker";
 
 export default function FormModal({
   talker,
   icon: button,
+  id_talk,
 }: {
   talker?: Speaker;
   icon?: JSX.Element;
+  id_talk: string;
 }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const onChanges = (value: string) => {
     formik.setFieldValue("estado", value);
+  };
+
+  const send = () => {
+    formik.setFieldValue("id_talk", id_talk);
   };
 
   const formik = FormikTalker(talker, currentUser);
@@ -182,7 +172,23 @@ export default function FormModal({
                     errorMessage={formik.errors.titulo}
                     placeholder="Ingresa el titulo del ponente"
                     className={
-                      formik.errors.telefono !== undefined ? "py-0" : "py-3"
+                      formik.errors.correo !== undefined ? "py-0" : "py-3"
+                    }
+                    variant="bordered"
+                    type="email"
+                  />
+
+                  <Input
+                    id={`precio_${talker?.id || ""}`}
+                    label="Costo participacion"
+                    name="costo"
+                    value={formik.values.costo.toString()}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.errors.costo !== undefined}
+                    errorMessage={formik.errors.costo}
+                    placeholder="Ingresa el costo de participacion"
+                    className={
+                      formik.errors.titulo !== undefined ? "py-0" : "py-3"
                     }
                     variant="bordered"
                     type="email"
