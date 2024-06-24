@@ -122,9 +122,6 @@ export default function SiteNavBar() {
             </Button>
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions">
-            <DropdownSection title="Usuario" showDivider>
-              <DropdownItem key="profile">cambiardespues@mail.com</DropdownItem>
-            </DropdownSection>
             <DropdownSection title="Accciones" showDivider>
               <DropdownItem key="settings">Configuración Personal</DropdownItem>
               <DropdownItem key="configurations">Configuraciones</DropdownItem>
