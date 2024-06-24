@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   Divider,
-  Link,
   Chip,
 } from "@nextui-org/react";
 import { Team } from "@/interfaces/Team";
 import { MdOutlineGroups } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
-import { FiEdit2 } from "react-icons/fi";
-import { MdOutlineGroupAdd } from "react-icons/md";
 import { Participant } from "@/interfaces/Participant";
 import { cutString } from "@/utils/utils";
 import FormModal from "./form_modal_teams";
@@ -59,7 +56,7 @@ export default function TeamCard({
           </Chip>
 
           <div className="w-full flex justify-end items-center gap-2">
-            <ModalCrudMember></ModalCrudMember>
+            <ModalCrudMember id_team={team.id}></ModalCrudMember>
 
             <FormModal team={team} id_contest={id_contest}></FormModal>
             <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">

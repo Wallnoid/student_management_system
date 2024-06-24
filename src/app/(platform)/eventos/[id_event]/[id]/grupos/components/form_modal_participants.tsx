@@ -36,9 +36,11 @@ import { dateInicioHook } from "@/hooks/date_hook";
 export default function FormModal({
   participant,
   icon: button,
+  id_team,
 }: {
   participant?: Participant;
   icon?: JSX.Element;
+  id_team: string;
 }) {
   const { fecha, setFecha } = dateInicioHook(participant?.fecha_nacimiento);
 
@@ -46,6 +48,12 @@ export default function FormModal({
 
   const onChanges = (value: string) => {
     formik.setFieldValue("estado", value);
+  };
+
+  const send = () => {
+    console.log("id_team", id_team);
+    formik.setFieldValue("id_team", id_team);
+    asignFechaNacimiento();
   };
 
   const formik = FormikParticipant(participant, currentUser);
@@ -222,7 +230,7 @@ export default function FormModal({
                     id="SubmitButton"
                     color="primary"
                     type="submit"
-                    onPress={asignFechaNacimiento}
+                    onPress={send}
                     isLoading={formik.isSubmitting}
                   >
                     {participant ? "Actualizar" : "Registrar"}
