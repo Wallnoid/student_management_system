@@ -8,6 +8,7 @@ import { Participante } from "@/interfaces/participante";
 import { As } from "@nextui-org/react";
 import { Participant } from "@/interfaces/Participant";
 import { TeamAuxiliar } from "@/interfaces/TeamAuxiliar";
+import { TeamResponse } from "@/types/types";
 
 export async function addTeam(team: Team): Promise<boolean> {
   const { nombre, cant_integrantes, creado_por } = team;
@@ -209,22 +210,7 @@ export async function getAssignmentInfoByTeamId(id_team: string) {
       "Error al intentar obtener la información del equipo seleccionado. Intente de nuevo. Error: " +
         error.message
     );
-  return data as AsignacionesEquipos;
-}
-
-export async function getParticipantByTeamId(
-  id_team: string
-): Promise<Participant[]> {
-  try {
-    let asignaciones = await getAssignmentInfoByTeamId(id_team);
-    let participantes: Participant[] = asignaciones.participantes;
-    console.log("Participantes obtenidos:", participantes);
-    return participantes;
-  } catch (error) {
-    throw new Error(
-      "Error al obtener los participantes del equipo. Error: " + error.message
-    );
-  }
+  return data as TeamResponse;
 }
 
 // designar un capitan de equipo

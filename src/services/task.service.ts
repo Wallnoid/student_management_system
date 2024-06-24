@@ -103,8 +103,7 @@ export async function agregarResponsable(miembro: AsignacionesTareas) {
         )
         .select();
     if (error) {
-        console.error("Error adding responsible:", error);
-        throw new Error('Error al intentar agregar responsable a la tarea seleccionada. Intente de nuevo.');
+        throw new Error('Error al intentar agregar responsable a la tarea seleccionada. Intente de nuevo. Error: ' + error.message);
     }
     return true;
 }
