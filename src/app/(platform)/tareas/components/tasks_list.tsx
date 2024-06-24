@@ -71,17 +71,18 @@ const TaskContainer: React.FC<TaskContainerProps> = ({ title, tasks }) => (
             {task.nombre}
           </Chip>
           <div className="relative flex items-center gap-2">
-            <span
+            {/* <span
               className="text-lg cursor-pointer active:opacity-50"
               onClick={() => { }}
             >
               <FaRegEdit />
-            </span>
+            </span> */}
             <span
+              id={`delete_${task.id}`}
               className="text-lg text-danger cursor-pointer active:opacity-50"
               onClick={() => {onDelete(task.id)}}
             >
-              <DeleteIcon />
+              <DeleteIcon  />
             </span>
             <span
               className="text-lg cursor-pointer active:opacity-50"

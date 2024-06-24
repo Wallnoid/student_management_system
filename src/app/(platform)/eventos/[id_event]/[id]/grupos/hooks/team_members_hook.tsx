@@ -1,21 +1,39 @@
+import { AsignacionesEquipos } from "@/interfaces/AsignacionesEquipos";
+import { Participant } from "@/interfaces/Participant";
 import { Team } from "@/interfaces/Team";
 import { getParticipants } from "@/services/participants.service";
-import { getTeams } from "@/services/teams.service";
+import { getAssignmentInfoByTeamId, getTeams } from "@/services/teams.service";
+import { TeamResponse } from "@/types/types";
 import { useEffect, useState } from "react";
 
-export default function TeamHook(loading: boolean) {
-  const [teamMembers, setTeam] = useState<Team[]>([]);
+export default function MembersTeamHook(
+  loading: Boolean,
+  team_id: string,
+  setBoolean: Function
+) {
+  const [teamMembers, setMembersTeam] = useState<TeamResponse>(null);
 
   useEffect(() => {
-    getParticipants()
+    if (!loading) return;
+
+    getAssignmentInfoByTeamId(team_id)
       .then((data) => {
-        setTeam(data);
+        setMembersTeam(data);
         console.log(data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [loading]);
 
-  return { teamMembers, setTeam };
+    return () => {
+      setBoolean(false);
+    };
+  });
+
+  function getMember() {
+    console.log();
+    console.log(teamMembers.participantes);
+  }
+
+  return { teamMembers, setMembersTeam, getMember };
 }

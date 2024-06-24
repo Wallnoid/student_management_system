@@ -27,12 +27,14 @@ export default function FormModal({
   cant_integrantes,
   num_equipos,
   max_equipos,
+  id_contest,
 }: {
   team?: Team;
   icon?: JSX.Element;
   cant_integrantes?: number;
   num_equipos?: number;
   max_equipos?: number;
+  id_contest: string;
 }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -42,6 +44,7 @@ export default function FormModal({
 
   const send = () => {
     formik.setFieldValue("cant_integrantes", cant_integrantes);
+    formik.setFieldValue("id_contest", id_contest);
   };
 
   const formik = FormikTeam(team, currentUser, onClose);
@@ -108,6 +111,20 @@ export default function FormModal({
                     isInvalid={formik.errors.nombre !== undefined}
                     errorMessage={formik.errors.nombre}
                     placeholder="Ingresa el nombre del club"
+                    variant="bordered"
+                    type="text"
+                  />
+
+                  <Input
+                    autoFocus
+                    id={`costo_${team?.id || ""}`}
+                    label="Costo de inscripción"
+                    name="costo"
+                    value={formik.values.costo.toString()}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.errors.costo !== undefined}
+                    errorMessage={formik.errors.costo}
+                    placeholder="Ingresa el costo de inscripción"
                     variant="bordered"
                     type="text"
                   />

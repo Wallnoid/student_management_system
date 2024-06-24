@@ -5,8 +5,7 @@ import TopContent from "./components/top_content";
 import { useRouter } from "next/navigation";
 import {
   columnsTable,
-  INITIAL_VISIBLE_COLUMNS,
-  statusOptions,
+  INITIAL_VISIBLE_COLUMNS
 } from "./constants/constants";
 import ProjectHook from "./hooks/project_hook";
 import filterValueHook from "@/components/shared/table/hooks/filter_value_hook";
@@ -30,6 +29,7 @@ import OnSearchChangeHook from "@/components/shared/table/hooks/on_search_change
 import OnClearHook from "@/components/shared/table/hooks/on_clear_hook";
 import DefaultTable from "@/components/shared/table/table";
 import loadingHook from "@/components/shared/table/hooks/loading_hook";
+import { statusOptions } from "@/constants/constants";
 
 export default function ProjectsPage() {
   const { loading, setLoading } = loadingHook();

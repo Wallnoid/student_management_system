@@ -55,6 +55,7 @@ export default function GroupsPage({
               cant_integrantes={cantidad_integrantes}
               max_equipos={maxEquipos}
               num_equipos={cantidadEquipos}
+              id_contest={params.id}
             ></FormModal>
           </div>
         </div>
@@ -69,7 +70,7 @@ export default function GroupsPage({
 
         <div className="flex flex-wrap gap-4 items-center justify-center  ">
           {team.map((team) => (
-            <TeamCard team={team} key={team.id} />
+            <TeamCard team={team} id_contest={params.id} key={team.id} />
           ))}
         </div>
       </section>

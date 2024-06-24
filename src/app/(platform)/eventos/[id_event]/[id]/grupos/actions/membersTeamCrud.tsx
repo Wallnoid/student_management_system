@@ -63,9 +63,10 @@ export const updateParticipantCrud = async (
 
 export const registerParticipant = async (
   participant: Participant,
+  id_team: string,
   formik: any
 ) => {
-  toast.promise(addParticipant(participant), {
+  toast.promise(addParticipant(participant, id_team), {
     loading: "Saving...",
     success: () => {
       //   formik.resetForm();

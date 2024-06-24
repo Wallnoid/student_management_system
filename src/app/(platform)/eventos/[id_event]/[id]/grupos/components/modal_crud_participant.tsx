@@ -7,12 +7,25 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  User,
 } from "@nextui-org/react";
-import { MdOutlineGroupAdd } from "react-icons/md";
+import { MdDelete, MdOutlineGroupAdd } from "react-icons/md";
 import FormModal from "./form_modal_participants";
+import MembersTeamHook from "../hooks/team_members_hook";
+import BooleanHook from "@/hooks/boolean_hook";
+import { cutString } from "@/utils/utils";
+import { FaUser } from "react-icons/fa6";
 
-export default function ModalCrudMember() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+export default function ModalCrudMember({ id_team }: { id_team: string }) {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+
+  const { boolean, setBoolean } = BooleanHook();
+
+  const { teamMembers, setMembersTeam, getMember } = MembersTeamHook(
+    boolean,
+    id_team,
+    setBoolean
+  );
 
   return (
     <>
@@ -35,7 +48,7 @@ export default function ModalCrudMember() {
                   <div className="flex flex-row items-center justify-between ">
                     <h2 className=" text-default-500 text-lg">Integrantes</h2>
 
-                    <FormModal></FormModal>
+                    <FormModal id_team={id_team}></FormModal>
                   </div>
 
                   <div className="flex flex-col gap-5 justify-start items-start  h-72  my-3 rounded-lg overflow-auto p-5  border border-gray-300">
@@ -43,24 +56,28 @@ export default function ModalCrudMember() {
                     president
                     <div className="my-1"></div>
                     <h4>Miembros</h4>
-                    {/* {clubMembers.map((member) => (
-                      <div
-                        key={member.key}
-                        className=" flex flex-row  w-full justify-between items-center"
+                    {teamMembers.participantes.map((participante) => (
+                      <User
+                        key={participante.id}
+                        avatarProps={{
+                          radius: "lg",
+                          showFallback: true,
+                          src: "https://images.unsplash.com/broken",
+                          fallback: (
+                            <FaUser size={25} className=" text-primary" />
+                          ),
+                        }}
+                        description={participante.participante.correo}
+                        name={cutString(
+                          participante.participante.nombre +
+                            " " +
+                            participante.participante.apellido,
+                          20
+                        )}
                       >
-                        {member}
-
-                        <MdDelete
-                          className="mx-5 text-danger-500"
-                          size={20}
-                          onClick={() => {
-                            deleteMemberSelected(member.key, () => {
-                              setBoolean(true);
-                            });
-                          }}
-                        />
-                      </div>
-                    ))} */}
+                        {participante.participante.correo}
+                      </User>
+                    ))}
                   </div>
                 </div>
               </ModalBody>
