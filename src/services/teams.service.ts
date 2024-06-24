@@ -7,6 +7,7 @@ import { Participation } from "@/interfaces/Participation";
 import { Participante } from "@/interfaces/participante";
 import { As } from "@nextui-org/react";
 import { Participant } from "@/interfaces/Participant";
+import { TeamAuxiliar } from "@/interfaces/TeamAuxiliar";
 import { TeamResponse } from "@/types/types";
 
 export async function addTeam(team: Team): Promise<boolean> {
@@ -105,12 +106,16 @@ export async function getTeams() {
   return data as [];
 }
 
-export async function getTeamsByContest(concurso_id: string): Promise<Team[]> {
+export async function getTeamsByContest(concurso_id: string): Promise< TeamAuxiliar[]> {
   return getTeamsParticipationsByContest(concurso_id)
     .then((participaciones: Participation[]) => {
-      let teams: Team[] = [];
+      let teams : TeamAuxiliar[] = [];
       for (let i = 0; i < participaciones.length; i++) {
-        teams.push(participaciones[i].id_equipo as Team);
+        let team: TeamAuxiliar = {
+          costo: participaciones[i].valor_participacion,
+          team: participaciones[i].id_equipo as Team
+        }
+        teams.push(team);
       }
       return teams;
     })
@@ -191,21 +196,7 @@ export async function getAssignmentInfoByTeamId(id_team: string) {
   return data as TeamResponse;
 }
 
-// export async function getParticipantByTeamId(
-//   id_team: string
-// ): Promise<Participant[]> {
-//   return getAssignmentInfoByTeamId(id_team)
-//     .then((asignaciones: AsignacionesEquipos) => {
-//       let participantes = (asignaciones.participante as Participant)
-//       console.log(participantes)
-//       return participantes;
-//     })
-//     .catch((error) => {
-//       throw new Error(
-//         "Error al obtener los participantes del equipo. Error: " + error.message
-//       );
-//     });
-// }
+
 
 // designar un capitan de equipo
 

@@ -1,5 +1,6 @@
 import { AsignacionesCharlasPonente } from "@/interfaces/AsignacionesCharlas";
 import { Speaker } from "@/interfaces/Speaker";
+import { SpeakerAuxiliar } from "@/interfaces/SpeakerAuxiliar";
 import { createClient as supabase } from "@/supabase/client";
 
 export async function addSpeaker(speaker: Speaker): Promise<boolean> {
@@ -97,6 +98,10 @@ export async function getSpeakersByTalkID(charla_id: string): Promise<Speaker[]>
     .then((AsignacionesCharlasPonente: AsignacionesCharlasPonente[]) => {
       let speakers: Speaker[] = [];
       for (let i = 0; i < AsignacionesCharlasPonente.length; i++) {
+        let team: SpeakerAuxiliar = {
+          costo: AsignacionesCharlasPonente[i].precio,
+          speaker: AsignacionesCharlasPonente[i].id_ponente as Speaker
+        }
         speakers.push(AsignacionesCharlasPonente[i].id_ponente as Speaker);
       }
       return speakers;
