@@ -11,9 +11,6 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 
-import { PlusIcon } from "../../../../components/shared/icons";
-import DefaultSelect from "../../../../components/shared/select";
-import SelectIcon from "../../../../components/shared/selectIcon";
 import { Toaster } from "react-hot-toast";
 
 import {
@@ -30,16 +27,20 @@ import InputSearch from "@/components/shared/input_search";
 import FormikMember from "../constants/formik";
 import { actualDate } from "@/constants/date_constants";
 import { optionsElements, statusColorMap } from "@/constants/constants";
+import { FiEdit2 } from "react-icons/fi";
+import FormikParticipant from "../constants/formik_participant_team";
+import { Participant } from "@/interfaces/Participant";
+import { PlusIcon } from "@/components/shared/icons";
 import { dateInicioHook } from "@/hooks/date_hook";
 
 export default function FormModal({
-  member,
+  participant,
   icon: button,
 }: {
-  member?: Member;
+  participant?: Participant;
   icon?: JSX.Element;
 }) {
-  const { fecha, setFecha } = dateInicioHook(member?.fecha_nacimiento);
+  const { fecha, setFecha } = dateInicioHook(participant?.fecha_nacimiento);
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -47,7 +48,7 @@ export default function FormModal({
     formik.setFieldValue("estado", value);
   };
 
-  const formik = FormikMember(member, currentUser);
+  const formik = FormikParticipant(participant, currentUser);
 
   const asignFechaNacimiento = () => {
     const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
@@ -58,24 +59,19 @@ export default function FormModal({
   return (
     <>
       <Toaster />
-      {!member ? (
+      {!participant ? (
         <Button
           color="primary"
           endContent={<PlusIcon />}
           onPress={onOpen}
-          id="AddMemberButton"
+          id="AddParticipanteButton"
         >
-          Agregar miembro
+          Agregar participante
         </Button>
       ) : (
-        <Tooltip content="Editar Miembro">
-          <span
-            className="text-lg text-default-400 cursor-pointer active:opacity-50"
-            onClick={onOpen}
-          >
-            {button}
-          </span>
-        </Tooltip>
+        <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
+          <FiEdit2 className="w-5 h-4 text-warning " onClick={onOpen}></FiEdit2>
+        </div>
       )}
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
@@ -83,9 +79,9 @@ export default function FormModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {member ? (
+                {participant ? (
                   <div className="flex flex-row items-center">
-                    <div className="w-1/2">{"Actualizar miembro"}</div>
+                    <div className="w-1/2">{"Actualizar Participante"}</div>
 
                     <div className="w-1/2 mx-5">
                       <InputSearch
@@ -100,16 +96,16 @@ export default function FormModal({
                     </div>
                   </div>
                 ) : (
-                  "Ingresar Miembro"
+                  "Ingresar Participante"
                 )}
               </ModalHeader>
 
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
-                  {member ? (
+                  {participant ? (
                     <Input
                       isDisabled
-                      id={`correo_disable_${member?.id || ""}`}
+                      id={`correo_disable_${participant?.id || ""}`}
                       label="Correo"
                       name="correo"
                       value={formik.values.correo}
@@ -120,7 +116,7 @@ export default function FormModal({
                   ) : null}
                   <Input
                     autoFocus
-                    id={`cedula_${member?.id || ""}`}
+                    id={`cedula_${participant?.id || ""}`}
                     label="Cedula"
                     name="cedula"
                     value={formik.values.cedula}
@@ -138,7 +134,7 @@ export default function FormModal({
                     }  justify-between`}
                   >
                     <Input
-                      id={`nombre_${member?.id || ""}`}
+                      id={`nombre_${participant?.id || ""}`}
                       label="Nombre"
                       name="nombre"
                       value={formik.values.nombre}
@@ -151,7 +147,7 @@ export default function FormModal({
                       type="text"
                     />
                     <Input
-                      id={`apellido_${member?.id || ""}`}
+                      id={`apellido_${participant?.id || ""}`}
                       label="Apellido"
                       name="apellido"
                       value={formik.values.apellido}
@@ -166,7 +162,7 @@ export default function FormModal({
                   </div>
 
                   <Input
-                    id={`telefono_${member?.id || ""}`}
+                    id={`telefono_${participant?.id || ""}`}
                     label="Telefono"
                     name="telefono"
                     value={formik.values.telefono}
@@ -184,9 +180,9 @@ export default function FormModal({
                     type="text"
                   />
 
-                  {!member ? (
+                  {!participant ? (
                     <Input
-                      id={`correo_${member?.id || ""}`}
+                      id={`correo_${participant?.id || ""}`}
                       label="Correo"
                       name="correo"
                       value={formik.values.correo}
@@ -204,41 +200,9 @@ export default function FormModal({
 
                   <div
                     className={`flex 
-                  ${
-                    formik.errors.correo !== undefined ? "py-0" : "py-3"
-                  } justify-between`}
-                  >
-                    <DefaultSelect<{ [key in Carreras]: string }>
-                      id={`carrera_${member?.id || ""}`}
-                      datas={mappeoCarreras}
-                      name="carrera"
-                      value={formik.values.carrera}
-                      onChange={formik.handleChange}
-                      errorMessage={formik.errors.carrera}
-                      isInvalid={formik.errors.carrera !== undefined}
-                      label="Carrera"
-                    ></DefaultSelect>
-                    <div className=" w-2"></div>
-                    <DefaultSelect<{ [key in Semestres]: string }>
-                      id={`semestre_${member?.id || ""}`}
-                      datas={mappeoSemestres}
-                      name="semestre"
-                      value={formik.values.semestre}
-                      onChange={formik.handleChange}
-                      errorMessage={formik.errors.semestre}
-                      isInvalid={formik.errors.semestre !== undefined}
-                      label="Semestre"
-                    ></DefaultSelect>
-                  </div>
-
-                  <div
-                    className={`flex 
-                  ${
-                    formik.errors.carrera !== undefined ||
-                    formik.errors.semestre !== undefined
-                      ? "py-0"
-                      : "py-3"
-                  } justify-between`}
+                    ${
+                      formik.errors.correo !== undefined ? "py-0" : "py-3"
+                    } justify-between`}
                   >
                     <DatePicker
                       id="fechaNacimiento"
@@ -250,18 +214,6 @@ export default function FormModal({
                       showMonthAndYearPickers
                       className="max-w-[284px]"
                     />
-
-                    <div className=" w-2"></div>
-                    <SelectIcon<{ [key in Roles]: string }>
-                      id={`rol_${member?.id || ""}`}
-                      label="Rol"
-                      datas={mappeoRoles}
-                      name="rol"
-                      value={formik.values.rol}
-                      onChange={formik.handleChange}
-                      errorMessage={formik.errors.rol}
-                      isInvalid={formik.errors.rol !== undefined}
-                    ></SelectIcon>
                   </div>
                 </ModalBody>
                 <ModalFooter>
@@ -280,7 +232,7 @@ export default function FormModal({
                     onPress={asignFechaNacimiento}
                     isLoading={formik.isSubmitting}
                   >
-                    {member ? "Actualizar" : "Registrar"}
+                    {participant ? "Actualizar" : "Registrar"}
                   </Button>
                 </ModalFooter>
               </form>

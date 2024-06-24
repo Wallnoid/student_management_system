@@ -1,7 +1,4 @@
 import { useFormik } from "formik";
-import { Member } from "@/interfaces/Member";
-import { Event } from "@/interfaces/Event";
-import { eventsSchema } from "@/schemas/events_schema";
 import { Team } from "@/interfaces/Team";
 import { registerTeam, updateTeamCrud } from "../actions/teamCrud";
 import { teamSchema } from "@/schemas/team_schema";

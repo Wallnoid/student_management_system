@@ -4,11 +4,7 @@ import loadingHook from "@/components/shared/table/hooks/loading_hook";
 import filterValueHook from "@/components/shared/table/hooks/filter_value_hook";
 import selectKeysHook from "@/components/shared/table/hooks/select_keys_hook";
 import visibleColumnsHook from "@/components/shared/table/hooks/visible_colums_hook";
-import {
-  EventsStatusOptions,
-  columnsTable,
-  INITIAL_VISIBLE_COLUMNS,
-} from "./constants/constants";
+import { columnsTable, INITIAL_VISIBLE_COLUMNS } from "./constants/constants";
 import statusFilterHook from "@/components/shared/table/hooks/status_filter_hook";
 import rowsPerPageHook from "@/components/shared/table/hooks/rows_per_page_hook";
 import sortDescriptionHook from "@/components/shared/table/hooks/sort_descrpition_hook";
@@ -16,7 +12,7 @@ import pageHook from "@/components/shared/table/hooks/page_hook";
 import headerColumnHook from "@/components/shared/table/hooks/header_column_hook";
 import { filteredItemsHook } from "@/components/shared/table/hooks/filtered_items_hook";
 import { itemsHook } from "@/components/shared/table/hooks/items_hook";
-import { sortedItemsEventsHook,  } from "@/components/shared/table/hooks/sorted_items_hook";
+import { sortedItemsEventsHook } from "@/components/shared/table/hooks/sorted_items_hook";
 import { renderCellEventsHook } from "@/components/shared/table/hooks/render_cell_hook";
 import OnNextPageHook from "@/components/shared/table/hooks/on_next_page_hook";
 import OnPreviousPageHook from "@/components/shared/table/hooks/on_previous_page.hook";
@@ -29,6 +25,7 @@ import renderItems from "./constants/render_items_events";
 import { useRouter } from "next/navigation";
 import BottomContent from "./components/bottom_content";
 import topContent from "./components/top_content";
+import { statusOptions } from "@/constants/constants";
 
 export default function EventsPage() {
   const router = useRouter();
@@ -59,7 +56,7 @@ export default function EventsPage() {
     filterValue,
     statusFilter,
     events,
-    EventsStatusOptions
+    statusOptions
   );
 
   const filteredItemsLength = function () {
@@ -103,7 +100,7 @@ export default function EventsPage() {
         visibleColumns={visibleColumns}
         setVisibleColumns={setVisibleColumns}
         columnsTable={columnsTable}
-        statusOptions={EventsStatusOptions}
+        statusOptions={statusOptions}
         entities={events}
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}

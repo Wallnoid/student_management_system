@@ -1,3 +1,4 @@
+import { statusColorMap, statusOptions } from "@/constants/constants";
 import { Clubes } from "@/types/types";
 import { formatDate } from "@/utils/utils";
 import { AutocompleteItem, ChipProps } from "@nextui-org/react";
@@ -19,12 +20,6 @@ const columnsTable = [
   { name: "ACTIONS", uid: "actions" },
 ];
 
-const statusOptions = [
-  { name: "Activo", uid: "activo" },
-  { name: "Completado", uid: "completado" },
-  { name: "Suspendido", uid: "suspendido" },
-];
-
 const INITIAL_VISIBLE_COLUMNS = [
   "nombre",
   "responsable",
@@ -33,12 +28,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "estado",
   "actions",
 ];
-
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  activo: "primary",
-  completado: "success",
-  suspendido: "danger",
-};
 
 const createObject = (data: Clubes): ReactElement => {
   return (
@@ -53,27 +42,4 @@ const createObject = (data: Clubes): ReactElement => {
   );
 };
 
-export const EventsStatusOptions = [
-  { name: "Activo", uid: "activo" },
-  { name: "Inactivo", uid: "inactivo" },
-  { name: "Suspendido", uid: "suspendido" },
-];
-
-export const optionsElements = EventsStatusOptions.map((option) => (
-  <AutocompleteItem
-    key={option.uid}
-    textValue={option.name}
-    color={statusColorMap[option.uid]}
-    className={`text-primary-800 `}
-  >
-    {option.name}
-  </AutocompleteItem>
-));
-
-export {
-  columnsTable,
-  statusOptions,
-  INITIAL_VISIBLE_COLUMNS,
-  statusColorMap,
-  createObject,
-};
+export { columnsTable, INITIAL_VISIBLE_COLUMNS, statusColorMap, createObject };

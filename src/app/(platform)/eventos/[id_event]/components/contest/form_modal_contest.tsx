@@ -11,17 +11,14 @@ import {
   Textarea,
   DateInput,
   TimeInput,
-  TimeInputValue,
 } from "@nextui-org/react";
 
 import { Toaster } from "react-hot-toast";
 
 import { currentUser } from "@/services/users.service";
 import InputSearch from "@/components/shared/input_search";
-import { optionsElements, statusColorMap } from "../../constants/constants";
-import { ClubInternos } from "@/interfaces/ClubInternos";
+import { optionsElements } from "../../constants/constants";
 import { PlusIcon } from "@/components/shared/icons";
-import FormikClubes from "@/app/(platform)/clubes/constants/formik";
 import MemberElementHook from "@/app/(platform)/clubes/hooks/members_hook";
 import { Contest } from "@/interfaces/Contest";
 import FormikContest from "../../constants/formik_contests";
@@ -29,6 +26,7 @@ import { actualDate } from "@/constants/date_constants";
 import { dateFinalHook, dateInicioHook } from "@/hooks/date_hook";
 import { timeFinalHook, timeInicioHook } from "@/hooks/time_hook";
 import { getUrl } from "@/utils/utils";
+import { statusColorMap } from "@/constants/constants";
 
 export default function FormModal({
   contest,
@@ -226,13 +224,13 @@ export default function FormModal({
                   >
                     <Input
                       id={`numero_participantes_${contest?.id || ""}`}
-                      label="N° de participantes"
+                      label="N° de participantes/equipos"
                       name="cant_participantes"
                       value={formik.values.cant_participantes.toString()}
                       onChange={formik.handleChange}
                       isInvalid={formik.errors.cant_participantes !== undefined}
                       errorMessage={formik.errors.cant_participantes}
-                      placeholder="Ingresa el numero de participantes"
+                      placeholder="Ingresa el numero de participantes/equipos"
                       variant="bordered"
                       type="text"
                     />

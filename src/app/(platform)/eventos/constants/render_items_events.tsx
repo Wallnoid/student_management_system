@@ -3,7 +3,6 @@ import { Member } from "@/interfaces/Member";
 import { renderCellType } from "@/types/types";
 import { cutString } from "@/utils/utils";
 import { Chip, Tooltip, User } from "@nextui-org/react";
-import { statusColorMap } from "./constants";
 import { deleteEventCrud } from "../actions/crud_events";
 import InfoEventos from "../components/info_eventos";
 import { FaPeopleGroup } from "react-icons/fa6";
@@ -12,6 +11,7 @@ import { Event } from "@/interfaces/Event";
 import { goToActivities } from "../actions/go_to_activities";
 import { MdChecklistRtl } from "react-icons/md";
 import { FiInfo } from "react-icons/fi";
+import { statusColorMap } from "@/constants/constants";
 
 export default function renderItems(
   event: Event,
