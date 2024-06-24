@@ -107,7 +107,7 @@ export async function addMemberToClub(miembro: AsignacionesClubes) {
     .select();
   if (error) {
     throw new Error(
-      "Error al intentar asignar un club al miembro. Intente más tarde."
+      "Error al intentar asignar un club al miembro. Intente más tarde. Error: " + error.message
     );
   }
   return true;

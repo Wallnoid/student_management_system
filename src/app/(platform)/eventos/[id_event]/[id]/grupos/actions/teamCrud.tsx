@@ -11,6 +11,8 @@ import {
 } from "@/services/teams.service";
 
 export const deleteTeamCrud = async (team: Team) => {
+  console.log(team);
+
   toast.custom(
     (t) => (
       <AlertDelete
@@ -26,7 +28,8 @@ export const deleteTeamCrud = async (team: Team) => {
               return <b>Equipo Eliminado!</b>;
             },
             error: (err) => {
-              return `${err.message.toString()}`;
+              console.log(err);
+              return `${err.message.toString()} ${team.id}`;
             },
           });
 
@@ -39,8 +42,13 @@ export const deleteTeamCrud = async (team: Team) => {
   );
 };
 
-export const updateTeamCrud = async (team: Team, formik: any) => {
-  toast.promise(updateTeam(team), {
+export const updateTeamCrud = async (
+  team: Team,
+  costo: number,
+  id_concurso: string,
+  formik: any
+) => {
+  toast.promise(updateTeam(team, costo, id_concurso), {
     loading: "Saving...",
     success: () => {
       formik.resetForm();

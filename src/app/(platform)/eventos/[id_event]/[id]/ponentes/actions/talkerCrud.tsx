@@ -3,7 +3,11 @@ import toast from "react-hot-toast";
 
 import { addTalk, deleteTalk, updateTalk } from "@/services/talks.service";
 import { Speaker } from "@/interfaces/Speaker";
-import { addSpeakerToTalk } from "@/services/speakers.service";
+import {
+  addSpeakerToTalk,
+  deleteSpeaker,
+  updateSpeaker,
+} from "@/services/speakers.service";
 
 export const deleteTalkerCrud = async (talker: Speaker) => {
   toast.custom(
@@ -13,7 +17,7 @@ export const deleteTalkerCrud = async (talker: Speaker) => {
           toast.dismiss(t.id);
         }}
         onSubmit={() => {
-          toast.promise(deleteTalk(talker, "eliminado"), {
+          toast.promise(deleteSpeaker(talker), {
             loading: "Saving...",
             success: () => {
               window.location.reload();
@@ -34,8 +38,13 @@ export const deleteTalkerCrud = async (talker: Speaker) => {
   );
 };
 
-export const updateTalkerCrud = async (talker: Speaker, formik: any) => {
-  toast.promise(updateTalk(talker), {
+export const updateTalkerCrud = async (
+  talker: Speaker,
+  charla_id: string,
+  costo: string,
+  formik: any
+) => {
+  toast.promise(updateSpeaker(talker, charla_id, costo), {
     loading: "Saving...",
     success: () => {
       formik.resetForm();
@@ -56,9 +65,10 @@ export const registerTalker = async (
   talker: Speaker,
   id_talk: string,
   costo: number,
-  formik: any
+  formik: any,
+  id_event: string
 ) => {
-  toast.promise(addSpeakerToTalk(talker, id_talk, "", costo), {
+  toast.promise(addSpeakerToTalk(talker, id_talk, "", costo, id_event), {
     loading: "Saving...",
     success: () => {
       // formik.resetForm();

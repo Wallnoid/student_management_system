@@ -16,15 +16,18 @@ import { FiEdit2 } from "react-icons/fi";
 import { PlusIcon } from "@/components/shared/icons";
 import FormikTalker from "../constants/formik_talker";
 import { Speaker } from "@/interfaces/Speaker";
+import { SpeakerAuxiliar } from "@/interfaces/SpeakerAuxiliar";
 
 export default function FormModal({
   talker,
   icon: button,
   id_talk,
+  id_event,
 }: {
-  talker?: Speaker;
+  talker?: SpeakerAuxiliar;
   icon?: JSX.Element;
   id_talk: string;
+  id_event: string;
 }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -34,6 +37,7 @@ export default function FormModal({
 
   const send = () => {
     formik.setFieldValue("id_talk", id_talk);
+    formik.setFieldValue("id_event", id_event);
   };
 
   const formik = FormikTalker(talker, currentUser);
@@ -69,7 +73,7 @@ export default function FormModal({
                   {talker ? (
                     <Input
                       isDisabled
-                      id={`correo_disable_${talker?.id || ""}`}
+                      id={`correo_disable_${talker?.speaker.id || ""}`}
                       label="Correo"
                       name="correo"
                       value={formik.values.correo}
@@ -80,7 +84,7 @@ export default function FormModal({
                   ) : null}
                   <Input
                     autoFocus
-                    id={`cedula_${talker?.id || ""}`}
+                    id={`cedula_${talker?.speaker.id || ""}`}
                     label="Cedula"
                     name="cedula"
                     value={formik.values.cedula}
@@ -98,7 +102,7 @@ export default function FormModal({
                     }  justify-between`}
                   >
                     <Input
-                      id={`nombre_${talker?.id || ""}`}
+                      id={`nombre_${talker?.speaker.id || ""}`}
                       label="Nombre"
                       name="nombre"
                       value={formik.values.nombre}
@@ -111,7 +115,7 @@ export default function FormModal({
                       type="text"
                     />
                     <Input
-                      id={`apellido_${talker?.id || ""}`}
+                      id={`apellido_${talker?.speaker.id || ""}`}
                       label="Apellido"
                       name="apellido"
                       value={formik.values.apellido}
@@ -126,7 +130,7 @@ export default function FormModal({
                   </div>
 
                   <Input
-                    id={`telefono_${talker?.id || ""}`}
+                    id={`telefono_${talker?.speaker.id || ""}`}
                     label="Telefono"
                     name="telefono"
                     value={formik.values.telefono}
@@ -146,7 +150,7 @@ export default function FormModal({
 
                   {!talker ? (
                     <Input
-                      id={`correo_${talker?.id || ""}`}
+                      id={`correo_${talker?.speaker.id || ""}`}
                       label="Correo"
                       name="correo"
                       value={formik.values.correo}
@@ -163,7 +167,7 @@ export default function FormModal({
                   ) : null}
 
                   <Input
-                    id={`titulo_${talker?.id || ""}`}
+                    id={`titulo_${talker?.speaker.id || ""}`}
                     label="Titulo Profesional"
                     name="titulo"
                     value={formik.values.titulo}
@@ -175,11 +179,11 @@ export default function FormModal({
                       formik.errors.correo !== undefined ? "py-0" : "py-3"
                     }
                     variant="bordered"
-                    type="email"
+                    type="text"
                   />
 
                   <Input
-                    id={`precio_${talker?.id || ""}`}
+                    id={`precio_${talker?.speaker.id || ""}`}
                     label="Costo participacion"
                     name="costo"
                     value={formik.values.costo.toString()}
@@ -191,7 +195,7 @@ export default function FormModal({
                       formik.errors.titulo !== undefined ? "py-0" : "py-3"
                     }
                     variant="bordered"
-                    type="email"
+                    type="text"
                   />
                 </ModalBody>
                 <ModalFooter>
@@ -207,6 +211,7 @@ export default function FormModal({
                     id="SubmitButton"
                     color="primary"
                     type="submit"
+                    onPress={() => send()}
                     isLoading={formik.isSubmitting}
                   >
                     {talker ? "Actualizar" : "Registrar"}
