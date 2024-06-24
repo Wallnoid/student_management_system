@@ -4,6 +4,9 @@ import { Team } from "@/interfaces/Team";
 import { createClient as supabase } from "@/supabase/client";
 import { getTeamsParticipationsByContest } from "./participations.service";
 import { Participation } from "@/interfaces/Participation";
+import { Participante } from "@/interfaces/participante";
+import { As } from "@nextui-org/react";
+import { Participant } from "@/interfaces/Participant";
 
 export async function addTeam(team: Team): Promise<boolean> {
     const {nombre, cant_integrantes, creado_por} = team;
@@ -61,6 +64,13 @@ export async function getTeamsByContest(concurso_id: string): Promise<Team[]> {
     });
 }
 
+export async function getMembersByTeam(team_id: string): Promise<Participante[]> {
+    let { data, error } = await supabase()
+        .rpc('get_members_by_team', { team_id });
+    if (error) throw new Error('Error al intentar obtener los miembros del equipo seleccionado. Intente de nuevo. Error: ' + error.message);
+    return data as Participante[];
+}
+
 export async function deleteTeam(team: Team, estado: string): Promise<boolean> {
     const actualizado_por = (team.actualizado_por as Member).id;
     const {id} = team;
@@ -97,11 +107,23 @@ export async function addMemberToTeam(asignacion: AsignacionesEquipos): Promise<
 
 // obtener la info de un equipo mediante el ID
 
-export async function getTeamInfoById(id_team: string) {
+export async function getAssignmentInfoByTeamId(id_team: string) {
     let { data, error } = await supabase()
         .rpc('get_team_info_by_id', { id_team })
     if (error) throw new Error('Error al intentar obtener la información del equipo seleccionado. Intente de nuevo. Error: ' + error.message);
-    return data as [];
+    return data as AsignacionesEquipos[];
+}
+
+export async function getParticipantByTeamId(id_team: string): Promise<Participant[]>{
+    return getAssignmentInfoByTeamId(id_team).then((asignaciones: AsignacionesEquipos[]) => {
+        let participantes: Participant[] = [];
+        for (let i = 0; i < asignaciones.length; i++) {
+            participantes.push(asignaciones[i].id_miembro as Participant);
+        }
+        return participantes;
+    }).catch((error) => {
+        throw new Error('Error al obtener los participantes del equipo. Error: ' + error.message);
+    })
 }
 
 // designar un capitan de equipo
