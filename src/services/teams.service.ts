@@ -187,18 +187,16 @@ export async function getAssignmentInfoByTeamId(id_team: string) {
       "Error al intentar obtener la información del equipo seleccionado. Intente de nuevo. Error: " +
         error.message
     );
-  return data as AsignacionesEquipos[];
+  return data as AsignacionesEquipos;
 }
 
 export async function getParticipantByTeamId(
   id_team: string
 ): Promise<Participant[]> {
   return getAssignmentInfoByTeamId(id_team)
-    .then((asignaciones: AsignacionesEquipos[]) => {
-      let participantes: Participant[] = [];
-      for (let i = 0; i < asignaciones.length; i++) {
-        participantes.push(asignaciones[i].id_miembro as Participant);
-      }
+    .then((asignaciones: AsignacionesEquipos) => {
+      let participantes = (asignaciones.participantes as Participant[])
+      console.log(participantes)
       return participantes;
     })
     .catch((error) => {
