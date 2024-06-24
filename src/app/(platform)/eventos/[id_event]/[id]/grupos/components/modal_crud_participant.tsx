@@ -18,7 +18,7 @@ export default function ModalCrudMember({ id_team }: { id_team: string }) {
 
   const { boolean, setBoolean } = BooleanHook();
 
-  const { teamMembers, setTeam } = MembersTeamHook(
+  const { teamMembers, setMembersTeam } = MembersTeamHook(
     boolean,
     id_team,
     setBoolean

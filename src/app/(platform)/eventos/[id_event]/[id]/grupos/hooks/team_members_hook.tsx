@@ -1,3 +1,4 @@
+import { Participant } from "@/interfaces/Participant";
 import { Team } from "@/interfaces/Team";
 import { getParticipants } from "@/services/participants.service";
 import { getParticipantByTeamId, getTeams } from "@/services/teams.service";
@@ -8,7 +9,7 @@ export default function MembersTeamHook(
   team_id: string,
   setBoolean: Function
 ) {
-  const [teamMembers, setMembersTeam] = useState<Team[]>([]);
+  const [teamMembers, setMembersTeam] = useState<Participant[]>([]);
 
   useEffect(() => {
     if (!loading) return;
@@ -27,5 +28,5 @@ export default function MembersTeamHook(
     };
   });
 
-  return { teamMembers, setTeam: setMembersTeam };
+  return { teamMembers,  setMembersTeam };
 }
