@@ -39,3 +39,5 @@ export const createObject = (data: PresidenteWithRole): ReactElement => {
     </AutocompleteItem>
   );
 };
+
+export { statusColorMap };

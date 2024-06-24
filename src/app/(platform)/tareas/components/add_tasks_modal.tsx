@@ -122,13 +122,14 @@ export default function AddTaskModal({
 
   const handleUserSelection = (user: Member) => {
     setSelectedUser(user);
-    console.log("Este ususario jeje:", user);
   };
 
+
   useEffect(() => {
-    getMembersClub("cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081")
+    let club = proyect?.responsable as ClubInternos | undefined;
+    if (club) {
+      getMembersClub(club.id)
       .then((members) => {
-        console.log("Miembros del club", members);
         setUsers(members.miembros.map(member => {
           const memberInfo = member.miembro_club;
           console.log("Miembro", member.id);
@@ -145,6 +146,9 @@ export default function AddTaskModal({
       .catch((error) => {
         console.error("Error al obtener los miembros del club:", error);
       });
+    } else {
+      console.log("No se encuentra el Club");
+    }
   }, [proyect]);
 
   const onChanges = (value: string) => {

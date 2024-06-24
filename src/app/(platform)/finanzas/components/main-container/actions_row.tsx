@@ -39,21 +39,21 @@ export default function ActionsRow() {
     <>
       <div className="flex text-center overflow-x-auto">
         <div className="grow p-2">
-          <div className="border-2 rounded-md p-2 flex flex-col items-center justify-center bg-primary hover:bg-secondary cursor-pointer"
+          <div id="card_concursos" className="border-2 rounded-md p-2 flex flex-col items-center justify-center bg-primary hover:bg-secondary cursor-pointer"
             onClick={() => handleClick('modal_contest_button')}>
             <GiPodiumWinner className="text-xl text-white" />
             <p className="text-xs font-bold mt-2 text-white">Concursos</p>
           </div>
         </div>
         <div className=" grow p-2">
-          <div className="border-2 rounded-md p-2 flex flex-col items-center justify-center bg-primary hover:bg-secondary cursor-pointer"
+          <div id="card_charlas" className="border-2 rounded-md p-2 flex flex-col items-center justify-center bg-primary hover:bg-secondary cursor-pointer"
             onClick={() => handleClick('modal_event_button')}>
             <GiPublicSpeaker className="text-xl text-white" />
             <p className="text-xs font-bold mt-2 text-white">Charlas</p>
           </div>
         </div>
         <div className=" grow p-2">
-          <div className="border-2 rounded-md p-2 flex flex-col items-center justify-center bg-primary hover:bg-secondary cursor-pointer"
+          <div id="card_otros" className="border-2 rounded-md p-2 flex flex-col items-center justify-center bg-primary hover:bg-secondary cursor-pointer"
             onClick={() => handleClick('modal_various_button')}>
             <FaQuestion className="text-xl text-white" />
             <p className="text-xs font-bold mt-2 text-white">Otros</p>
@@ -401,7 +401,7 @@ function VariousModalInfo({ payments }: { payments: Payments[] }) {
           {(onClose) => (
             <>
               <Tabs aria-label="Options" className='w-full pt-12 justify-center'>
-                <Tab key="transactions_list" title="Lista de Transacciones">
+                <Tab id="tab_lista_transacciones" key="transactions_list" title="Lista de Transacciones">
                   <div className="flex flex-col h-full">
                     <ModalBody className="flex-1 overflow-y-auto">
                       {
@@ -434,7 +434,7 @@ function VariousModalInfo({ payments }: { payments: Payments[] }) {
                     </ModalBody>
                   </div>
                 </Tab>
-                <Tab key="add_outcomes" title="Agregar Ingresos-Egresos">
+                <Tab key="add_outcomes" id="tab_agregar_pagos" title="Agregar Ingresos-Egresos">
                   <ModalBody>
                     <form onSubmit={formik.handleSubmit}>
                       <ModalBody>
@@ -460,8 +460,8 @@ function VariousModalInfo({ payments }: { payments: Payments[] }) {
                             orientation="horizontal"
                             size="sm"
                           >
-                            <Radio value="ingreso">Ingreso</Radio>
-                            <Radio value="egreso">Egreso</Radio>
+                            <Radio value="ingreso" id="radio_ingreso">Ingreso</Radio>
+                            <Radio value="egreso" id="radio_egreso" >Egreso</Radio>
                           </RadioGroup>
                         </div>
                       </ModalBody>
