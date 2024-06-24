@@ -51,10 +51,7 @@ export default function ModalCrudMember({ id_team }: { id_team: string }) {
                     <FormModal id_team={id_team}></FormModal>
                   </div>
 
-                  <div className="flex flex-col gap-5 justify-start items-start  h-72  my-3 rounded-lg overflow-auto p-5  border border-gray-300">
-                    <h4>Presidente</h4>
-                    president
-                    <div className="my-1"></div>
+                  <div className="flex flex-col gap-5 justify-start items-start  h-72  my-3 rounded-lg overflow-auto p-5 py-3  border border-gray-300">
                     <h4>Miembros</h4>
                     {teamMembers.participantes.map((participante) => (
                       <User

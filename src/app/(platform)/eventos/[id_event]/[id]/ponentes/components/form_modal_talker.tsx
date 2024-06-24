@@ -22,10 +22,12 @@ export default function FormModal({
   talker,
   icon: button,
   id_talk,
+  id_event,
 }: {
   talker?: SpeakerAuxiliar;
   icon?: JSX.Element;
   id_talk: string;
+  id_event: string;
 }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -35,6 +37,7 @@ export default function FormModal({
 
   const send = () => {
     formik.setFieldValue("id_talk", id_talk);
+    formik.setFieldValue("id_event", id_event);
   };
 
   const formik = FormikTalker(talker, currentUser);

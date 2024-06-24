@@ -90,7 +90,7 @@ export async function updateTeam(
     .eq("id", id)
     .select();
   let { error: error2 } = await supabase()
-    .from("asignaciones_miembros_equipos")
+    .from("participaciones")
     .update({ valor_participacion })
     .eq("id_equipo", id)
     .eq("id_concurso", id_concurso)
@@ -154,13 +154,14 @@ export async function getMembersByTeam(
 }
 
 export async function deleteTeam(team: Team, estado: string): Promise<boolean> {
-  const actualizado_por = (team.actualizado_por as Member).id;
+  console.log("team", team);
+  console.log("id", team.id);
   const { id } = team;
+
   let { error } = await supabase()
     .from("equipos")
     .update({
       estado: estado,
-      actualizado_por,
       fecha_hora_actualizacion: "NOW()",
     })
     .eq("id", id)

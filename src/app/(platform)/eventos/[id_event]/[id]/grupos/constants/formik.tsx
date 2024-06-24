@@ -28,8 +28,9 @@ export default function FormikTeam(
         estado: values.estado,
       };
       if (team) {
+        
         teamLocal.id = team.team.id;
-        updateTeamCrud(teamLocal, formik);
+        updateTeamCrud(teamLocal, values.costo, values.id_contest, formik);
         return;
       } else {
         teamLocal.actualizado_por = null;

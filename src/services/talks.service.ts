@@ -113,6 +113,7 @@ export async function updateTalk(talk: Talk): Promise<boolean> {
     })
     .eq("id", id)
     .select();
+
   if (error)
     throw new Error(
       "Error al intentar actualizar la charla seleccionada. Intente de nuevo. Error: " +
@@ -154,13 +155,11 @@ export async function getTalksByEventId(evento_id: string) {
 }
 
 export async function deleteTalk(talk: Talk, estado: string): Promise<boolean> {
-  const actualizado_por = (talk.actualizado_por as Member).id;
   const { id } = talk;
   let { error } = await supabase()
     .from("charlas")
     .update({
       estado,
-      actualizado_por,
       fecha_hora_actualizacion: "NOW()",
     })
     .eq("id", id)

@@ -20,6 +20,7 @@ export default function FormikTalker(
       estado: talker?.speaker.estado || "activo",
       id_talk: "",
       costo: talker?.costo || 0,
+      id_event: "",
     },
     validateOnChange: true,
     validateOnBlur: true,
@@ -43,7 +44,12 @@ export default function FormikTalker(
         talkerLocal.id = talker.speaker.id;
         console.log(talkerLocal.id);
 
-        updateTalkerCrud(talkerLocal, formik);
+        updateTalkerCrud(
+          talkerLocal,
+          values.id_talk,
+          values.costo.toString(),
+          formik
+        );
 
         return;
       } else {
@@ -53,8 +59,11 @@ export default function FormikTalker(
         registerTalker(
           talkerLocal,
           values.id_talk,
+
           Number(values.costo),
-          formik
+
+          formik,
+          values.id_event
         );
       }
     },

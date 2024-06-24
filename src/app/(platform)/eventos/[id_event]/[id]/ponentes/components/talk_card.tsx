@@ -17,9 +17,11 @@ import { SpeakerAuxiliar } from "@/interfaces/SpeakerAuxiliar";
 export default function TalkerCard({
   talker,
   id_talk,
+  id_event,
 }: {
   talker: SpeakerAuxiliar;
   id_talk: string;
+  id_event: string;
 }) {
   return (
     <Card className="md:w-96 w-80  hover:bg-gray-50 active:bg-gray-200 cursor-pointer">
@@ -55,11 +57,15 @@ export default function TalkerCard({
           </Chip>
 
           <div className="w-full flex justify-end items-center gap-2">
-            <FormModal talker={talker} id_talk={id_talk}></FormModal>
+            <FormModal
+              talker={talker}
+              id_talk={id_talk}
+              id_event={id_event}
+            ></FormModal>
             <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
               <MdDeleteOutline
                 className="w-5 h-5 text-danger "
-                onClick={() => deleteTalkerCrud(talker.speaker)}
+                onClick={() => deleteTalkerCrud(talker?.speaker)}
               ></MdDeleteOutline>
             </div>
           </div>
