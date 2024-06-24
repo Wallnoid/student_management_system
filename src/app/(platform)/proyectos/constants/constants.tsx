@@ -53,6 +53,23 @@ const createObject = (data: Clubes): ReactElement => {
   );
 };
 
+export const EventsStatusOptions = [
+  { name: "Activo", uid: "activo" },
+  { name: "Inactivo", uid: "inactivo" },
+  { name: "Suspendido", uid: "suspendido" },
+];
+
+export const optionsElements = EventsStatusOptions.map((option) => (
+  <AutocompleteItem
+    key={option.uid}
+    textValue={option.name}
+    color={statusColorMap[option.uid]}
+    className={`text-primary-800 `}
+  >
+    {option.name}
+  </AutocompleteItem>
+));
+
 export {
   columnsTable,
   statusOptions,

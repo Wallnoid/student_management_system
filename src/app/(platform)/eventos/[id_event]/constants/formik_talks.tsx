@@ -6,7 +6,7 @@ import { clubSchema } from "@/schemas/clubes_schema";
 import { Member } from "@/interfaces/Member";
 import { Event } from "@/interfaces/Event";
 import { Talk } from "@/interfaces/Talk";
-import { talksSchema } from "@/schemas/talksSchema";
+import { talksSchema } from "@/schemas/talks_schema";
 
 export default function FormikTalks(
   talk: Talk | null,

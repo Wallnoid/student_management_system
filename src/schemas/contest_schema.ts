@@ -1,5 +1,5 @@
+import { actualDate } from "@/constants/date_constants";
 import * as yup from "yup";
-import { actualDate } from "./project_schema";
 
 export const contestsSchema = () => {
   return yup.object().shape({

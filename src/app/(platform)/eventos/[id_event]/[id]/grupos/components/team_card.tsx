@@ -8,23 +8,24 @@ import {
   Link,
 } from "@nextui-org/react";
 import { Team } from "@/interfaces/Team";
-import { Member } from "@/interfaces/Member";
 import { MdOutlineGroups } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit2 } from "react-icons/fi";
 import { MdOutlineGroupAdd } from "react-icons/md";
+import { Participant } from "@/interfaces/Participant";
+import { cutString } from "@/utils/utils";
 export default function TeamCard({ team }: { team: Team }) {
   return (
-    <Card className="max-w-[600px] hover:bg-gray-50 active:bg-gray-200 cursor-pointer">
+    <Card className="md:w-96 w-80  hover:bg-gray-50 active:bg-gray-200 cursor-pointer">
       <CardHeader className="flex gap-3">
         <div className=" h-11 w-11 rounded-xl bg-gray-300 items-center justify-center flex">
           <MdOutlineGroups className=" h-9 w-9 text-gray-600 " />
         </div>
-        <div className="flex flex-col">
-          <p className="text-lg">{team.nombre}</p>
+        <div className="flex flex-col ">
+          <p className="text-lg">{cutString(team.nombre, 20)}</p>
           <p className="text-small text-default-500">{`${
-            (team.capitan as Member).nombre
-          } ${(team.capitan as Member).apellido}`}</p>
+            (team.capitan as Participant).nombre || "no asignado"
+          } ${(team.capitan as Participant).apellido || ""}`}</p>
         </div>
       </CardHeader>
       <CardBody>
