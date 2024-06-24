@@ -94,7 +94,7 @@ export default function InfoContest({ contest }: { contest: Contest }) {
                         {contest.descripcion}
                       </p>
 
-                      <Option value={contest.estado} label="Ubicacion"></Option>
+                      <Option value={contest.estado} label="Estado"></Option>
 
                       <Option
                         label={"F. de Creación"}

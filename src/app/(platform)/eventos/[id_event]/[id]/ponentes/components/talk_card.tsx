@@ -14,6 +14,7 @@ import { statusColorMap } from "@/constants/constants";
 import FormModal from "./form_modal_talker";
 import { deleteTalkerCrud } from "../actions/talkerCrud";
 import { SpeakerAuxiliar } from "@/interfaces/SpeakerAuxiliar";
+import InfoTalker from "./info_talks";
 export default function TalkerCard({
   talker,
   id_talk,
@@ -47,13 +48,8 @@ export default function TalkerCard({
       <Divider />
       <CardFooter>
         <div className="flex flex-row w-full">
-          <Chip
-            className="capitalize"
-            color={statusColorMap[talker.speaker.estado]}
-            size="sm"
-            variant="flat"
-          >
-            {talker.speaker.estado}
+          <Chip className="capitalize" size="sm" variant="flat">
+            <InfoTalker talker={talker.speaker}></InfoTalker>
           </Chip>
 
           <div className="w-full flex justify-end items-center gap-2">

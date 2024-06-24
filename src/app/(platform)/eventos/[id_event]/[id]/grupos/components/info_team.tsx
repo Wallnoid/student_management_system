@@ -1,6 +1,8 @@
-import { EyeIcon } from "@/components/shared/icons";
+import { EyeIcon, ProjectIcon } from "@/components/shared/icons";
+import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Member } from "@/interfaces/Member";
-import { formatDateTime } from "@/utils/utils";
+import { Proyecto } from "@/interfaces/Proyecto";
+import { formatDate, formatDateTime } from "@/utils/utils";
 import {
   Modal,
   ModalContent,
@@ -19,17 +21,18 @@ import {
 
 import { FaPeopleGroup } from "react-icons/fa6";
 import { statusColorMap } from "@/constants/constants";
-import { Event } from "@/interfaces/Event";
+import { Team } from "@/interfaces/Team";
+import { Participant } from "@/interfaces/Participant";
 
-export default function InfoEventos({ events }: { events: Event }) {
+export default function InfoGroup({ team }: { team: Team }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const fechaCreacion = events.fecha_hora_creacion;
+  const fechaCreacion = team.fecha_hora_creacion;
   const fechaCreacionFormateada = fechaCreacion
     ? formatDateTime(fechaCreacion!)
     : "----";
 
-  const fechaActualizacion = events.fecha_hora_actualizacion;
+  const fechaActualizacion = team.fecha_hora_actualizacion;
   const fechaActualizacionFormateada = fechaActualizacion
     ? formatDateTime(fechaActualizacion!)
     : "----";
@@ -55,11 +58,11 @@ export default function InfoEventos({ events }: { events: Event }) {
                 <Card className="py-4">
                   <Chip
                     className="capitalize mx-4"
-                    color={statusColorMap[events.estado]}
+                    color={statusColorMap[team.estado]}
                     size="sm"
                     variant="flat"
                   >
-                    {events.estado}
+                    {team.estado}
                   </Chip>
                   <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
                     <Avatar
@@ -73,29 +76,23 @@ export default function InfoEventos({ events }: { events: Event }) {
                   </CardHeader>
                   <CardBody className="overflow-visible py-2 items-center">
                     <h4 className="font-bold uppercase text-large text-slate-600 ">
-                      {events.nombre}
+                      {team.nombre}
                     </h4>
                     <small className="text-default-500">
-                      {(events.responsable! as Member).nombre +
-                        " " +
-                        (events.responsable! as Member).apellido}
+                      {(team.capitan! as Participant)?.nombre ||
+                        "no asignado" +
+                          " " +
+                          (team.capitan! as Participant)?.apellido ||
+                        ""}
                     </small>
 
                     <Divider className="mt-1" />
                     <div className="mt-5 w-full">
-                      <h2 className="text-tiny uppercase font-bold w-full text-slate-600 text-center">
-                        Descripcion:
-                      </h2>
-
-                      <p className="text-tiny mx-2 my-4 mt-2 text-center text-slate-600">
-                        {events.descripcion}
-                      </p>
-
-                      <Option value={events.estado} label="Estado"></Option>
+                      <Option value={team.estado} label="Estado"></Option>
 
                       <Option
-                        label={"F. de Creación"}
-                        value={fechaCreacionFormateada}
+                        value={team.cant_integrantes?.toString() || "0"}
+                        label="Cantidad integrantes"
                       ></Option>
 
                       <Option
