@@ -12,3 +12,4 @@ export interface ClubInternos {
     actualizado_por?: string;
     fecha_hora_actualizacion?: string;
 }
+

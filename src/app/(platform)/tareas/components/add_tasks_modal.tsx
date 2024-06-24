@@ -128,7 +128,7 @@ export default function AddTaskModal({
   useEffect(() => {
     let club = proyect?.responsable as ClubInternos | undefined;
     if (club) {
-      getMembersClub("bbe6593e-8cc5-46e8-8e24-6d34b6eb9095")
+      getMembersClub(club.id)
       .then((members) => {
         setUsers(members.miembros.map(member => {
           const memberInfo = member.miembro_club;

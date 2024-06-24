@@ -87,7 +87,7 @@ export default function AddTaskModal({
         fecha_inicio: values.fechaInicio,
         fecha_fin: values.fechaFinal,
         creado_por: currentUser!.user.id,
-        proyecto: project?.id || "",
+        id_proyecto: project?.id || "",
         responsables: ["d1ca1fbe-54c4-4992-9622-b3c44da3e5c3"],
       };
 
