@@ -9,9 +9,10 @@ export default function MembersTeamHook(
   team_id: string,
   setBoolean: Function
 ) {
-  const [teamMembers, setMembersTeam] = useState<Participant[]>([]);
-
+ const [teamMembers, setMembersTeam] = useState<Participant[]>([]);
+  
   useEffect(() => {
+    console.log(team_id);
     if (!loading) return;
 
     getParticipantByTeamId(team_id)
