@@ -24,13 +24,13 @@ import DefaultTable from "@/components/shared/table/table";
 import TalksHook from "../../hooks/talks_hook";
 import {
   columnsTableTalks,
-  EventsStatusOptions,
   INITIAL_VISIBLE_COLUMNS_TALKS,
 } from "../../constants/constants";
 import renderItems from "../../constants/render_items_talks";
 import BottomContent from "../../../components/bottom_content";
 import topContent from "./top_content_talks";
 import { useRouter } from "next/navigation";
+import { statusOptions } from "@/constants/constants";
 export default function TalksTable({ id }: { id: string }) {
   const router = useRouter();
 
@@ -60,7 +60,7 @@ export default function TalksTable({ id }: { id: string }) {
     filterValue,
     statusFilter,
     talks,
-    EventsStatusOptions
+    statusOptions
   );
 
   const filteredItemsLength = function () {
@@ -103,7 +103,7 @@ export default function TalksTable({ id }: { id: string }) {
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
       columnsTable={columnsTableTalks}
-      statusOptions={EventsStatusOptions}
+      statusOptions={statusOptions}
       entities={talks}
       onRowsPerPageChange={onRowsPerPageChange}
       page={page}

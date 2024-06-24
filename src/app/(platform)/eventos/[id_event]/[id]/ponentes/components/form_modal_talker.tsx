@@ -24,49 +24,41 @@ import {
 import { currentUser } from "@/services/users.service";
 import { Member } from "@/interfaces/Member";
 import InputSearch from "@/components/shared/input_search";
-import FormikMember from "../constants/formik";
 import { actualDate } from "@/constants/date_constants";
 import { optionsElements, statusColorMap } from "@/constants/constants";
 import { FiEdit2 } from "react-icons/fi";
-import FormikParticipant from "../constants/formik_participant_team";
 import { Participant } from "@/interfaces/Participant";
 import { PlusIcon } from "@/components/shared/icons";
 import { dateInicioHook } from "@/hooks/date_hook";
+import FormikTalker from "../constants/formik_talker";
+import { Speaker } from "@/interfaces/Speaker";
 
 export default function FormModal({
-  participant,
+  talker,
   icon: button,
 }: {
-  participant?: Participant;
+  talker?: Speaker;
   icon?: JSX.Element;
 }) {
-  const { fecha, setFecha } = dateInicioHook(participant?.fecha_nacimiento);
-
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const onChanges = (value: string) => {
     formik.setFieldValue("estado", value);
   };
 
-  const formik = FormikParticipant(participant, currentUser);
-
-  const asignFechaNacimiento = () => {
-    const fechaAsDate = new Date(fecha.year, fecha.month - 1, fecha.day);
-
-    formik.setFieldValue("fechaNacimiento", fechaAsDate);
-  };
+  const formik = FormikTalker(talker, currentUser);
 
   return (
     <>
       <Toaster />
-      {!participant ? (
+      {!talker ? (
         <Button
           color="primary"
           endContent={<PlusIcon />}
           onPress={onOpen}
-          id="AddParticipanteButton"
+          id="AddSpeakerButton"
         >
-          Agregar participante
+          Agregar Ponente
         </Button>
       ) : (
         <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
@@ -79,33 +71,15 @@ export default function FormModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {participant ? (
-                  <div className="flex flex-row items-center">
-                    <div className="w-1/2">{"Actualizar Participante"}</div>
-
-                    <div className="w-1/2 mx-5">
-                      <InputSearch
-                        label=""
-                        placeholder=""
-                        elements={optionsElements}
-                        name="estado"
-                        onChange={onChanges}
-                        value={formik.values.estado}
-                        color={statusColorMap[formik.values.estado]}
-                      ></InputSearch>
-                    </div>
-                  </div>
-                ) : (
-                  "Ingresar Participante"
-                )}
+                {talker ? "Actualizar Participante" : "Ingresar Participante"}
               </ModalHeader>
 
               <form onSubmit={formik.handleSubmit}>
                 <ModalBody>
-                  {participant ? (
+                  {talker ? (
                     <Input
                       isDisabled
-                      id={`correo_disable_${participant?.id || ""}`}
+                      id={`correo_disable_${talker?.id || ""}`}
                       label="Correo"
                       name="correo"
                       value={formik.values.correo}
@@ -116,7 +90,7 @@ export default function FormModal({
                   ) : null}
                   <Input
                     autoFocus
-                    id={`cedula_${participant?.id || ""}`}
+                    id={`cedula_${talker?.id || ""}`}
                     label="Cedula"
                     name="cedula"
                     value={formik.values.cedula}
@@ -134,7 +108,7 @@ export default function FormModal({
                     }  justify-between`}
                   >
                     <Input
-                      id={`nombre_${participant?.id || ""}`}
+                      id={`nombre_${talker?.id || ""}`}
                       label="Nombre"
                       name="nombre"
                       value={formik.values.nombre}
@@ -147,7 +121,7 @@ export default function FormModal({
                       type="text"
                     />
                     <Input
-                      id={`apellido_${participant?.id || ""}`}
+                      id={`apellido_${talker?.id || ""}`}
                       label="Apellido"
                       name="apellido"
                       value={formik.values.apellido}
@@ -162,7 +136,7 @@ export default function FormModal({
                   </div>
 
                   <Input
-                    id={`telefono_${participant?.id || ""}`}
+                    id={`telefono_${talker?.id || ""}`}
                     label="Telefono"
                     name="telefono"
                     value={formik.values.telefono}
@@ -180,9 +154,9 @@ export default function FormModal({
                     type="text"
                   />
 
-                  {!participant ? (
+                  {!talker ? (
                     <Input
-                      id={`correo_${participant?.id || ""}`}
+                      id={`correo_${talker?.id || ""}`}
                       label="Correo"
                       name="correo"
                       value={formik.values.correo}
@@ -198,15 +172,20 @@ export default function FormModal({
                     />
                   ) : null}
 
-                  <DatePicker
-                    id="fechaNacimiento"
-                    value={fecha}
-                    onChange={setFecha}
-                    isInvalid={formik.errors.fechaNacimiento !== undefined}
-                    errorMessage={formik.errors.fechaNacimiento}
-                    label="Fecha Nacimiento"
-                    showMonthAndYearPickers
-                    className="max-w-[284px]"
+                  <Input
+                    id={`titulo_${talker?.id || ""}`}
+                    label="Titulo Profesional"
+                    name="titulo"
+                    value={formik.values.titulo}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.errors.titulo !== undefined}
+                    errorMessage={formik.errors.titulo}
+                    placeholder="Ingresa el titulo del ponente"
+                    className={
+                      formik.errors.telefono !== undefined ? "py-0" : "py-3"
+                    }
+                    variant="bordered"
+                    type="email"
                   />
                 </ModalBody>
                 <ModalFooter>
@@ -222,10 +201,9 @@ export default function FormModal({
                     id="SubmitButton"
                     color="primary"
                     type="submit"
-                    onPress={asignFechaNacimiento}
                     isLoading={formik.isSubmitting}
                   >
-                    {participant ? "Actualizar" : "Registrar"}
+                    {talker ? "Actualizar" : "Registrar"}
                   </Button>
                 </ModalFooter>
               </form>

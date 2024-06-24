@@ -1,6 +1,7 @@
 import { ClubInternos } from "@/interfaces/ClubInternos";
 import { Member } from "@/interfaces/Member";
 import { Proyecto } from "@/interfaces/Proyecto";
+import { Team } from "@/interfaces/Team";
 import { SVGProps } from "react";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
@@ -16,6 +17,11 @@ export type Clubes = {
   id: string;
   nombre: string;
   presidente: Presidente;
+};
+
+export type TeamsContestResponse = {
+  team: Team;
+  costo: number;
 };
 
 export type PresidenteWithRole = {

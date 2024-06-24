@@ -17,16 +17,13 @@ import { Toaster } from "react-hot-toast";
 
 import { currentUser } from "@/services/users.service";
 import InputSearch from "@/components/shared/input_search";
-import { optionsElements, statusColorMap } from "../../constants/constants";
-import { ClubInternos } from "@/interfaces/ClubInternos";
 import { PlusIcon } from "@/components/shared/icons";
-import FormikClubes from "@/app/(platform)/clubes/constants/formik";
-import MemberElementHook from "@/app/(platform)/clubes/hooks/members_hook";
 import { Talk } from "@/interfaces/Talk";
 import FormikTalks from "../../constants/formik_talks";
 import { dateInicioHook } from "@/hooks/date_hook";
 import { timeFinalHook, timeInicioHook } from "@/hooks/time_hook";
 import { getUrl } from "@/utils/utils";
+import { optionsElements, statusColorMap } from "@/constants/constants";
 
 export default function FormModal({
   talk,
@@ -39,9 +36,9 @@ export default function FormModal({
 
   const { fecha, setFecha } = dateInicioHook(talk?.fecha || "");
 
-  const { time, setTime } = timeInicioHook("");
+  const { time, setTime } = timeInicioHook(talk?.hora_inicio || "");
 
-  const { timeFinal, setTimeFinal } = timeFinalHook("");
+  const { timeFinal, setTimeFinal } = timeFinalHook(talk?.hora_fin || "");
 
   const url = getUrl();
 

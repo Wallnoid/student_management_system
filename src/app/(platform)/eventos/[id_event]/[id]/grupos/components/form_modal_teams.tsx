@@ -27,12 +27,14 @@ export default function FormModal({
   cant_integrantes,
   num_equipos,
   max_equipos,
+  id_contest,
 }: {
   team?: Team;
   icon?: JSX.Element;
   cant_integrantes?: number;
   num_equipos?: number;
   max_equipos?: number;
+  id_contest: string;
 }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -42,6 +44,7 @@ export default function FormModal({
 
   const send = () => {
     formik.setFieldValue("cant_integrantes", cant_integrantes);
+    formik.setFieldValue("id_contest", id_contest);
   };
 
   const formik = FormikTeam(team, currentUser, onClose);

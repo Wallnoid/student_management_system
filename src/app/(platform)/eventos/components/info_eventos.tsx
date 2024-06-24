@@ -1,8 +1,6 @@
-import { EyeIcon, ProjectIcon } from "@/components/shared/icons";
-import { ClubInternos } from "@/interfaces/ClubInternos";
+import { EyeIcon } from "@/components/shared/icons";
 import { Member } from "@/interfaces/Member";
-import { Proyecto } from "@/interfaces/Proyecto";
-import { formatDate, formatDateTime } from "@/utils/utils";
+import { formatDateTime } from "@/utils/utils";
 import {
   Modal,
   ModalContent,
@@ -20,7 +18,7 @@ import {
 } from "@nextui-org/react";
 
 import { FaPeopleGroup } from "react-icons/fa6";
-import { statusColorMap } from "../constants/constants";
+import { statusColorMap } from "@/constants/constants";
 import { Event } from "@/interfaces/Event";
 
 export default function InfoEventos({ events }: { events: Event }) {
@@ -93,10 +91,7 @@ export default function InfoEventos({ events }: { events: Event }) {
                         {events.descripcion}
                       </p>
 
-                      <Option
-                        value={events.estado}
-                        label="Ubicacion"
-                      ></Option>
+                      <Option value={events.estado} label="Ubicacion"></Option>
 
                       <Option
                         label={"F. de Creación"}

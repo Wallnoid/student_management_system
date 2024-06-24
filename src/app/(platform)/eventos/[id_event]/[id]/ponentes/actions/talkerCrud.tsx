@@ -1,13 +1,10 @@
 import AlertDelete from "@/components/shared/alert_delete";
-import { addEvent, deleteEvent, updateEvent } from "@/services/events.service";
 import toast from "react-hot-toast";
-import { Event } from "@/interfaces/Event";
-import { Team } from "@/interfaces/Team";
-import { addTeam, deleteTeam, updateTeam } from "@/services/teams.service";
-import { Talk } from "@/interfaces/Talk";
-import { addTalk, deleteTalk, updateTalk } from "@/services/talks.service";
 
-export const deleteTeamCrud = async (talk: Talk) => {
+import { addTalk, deleteTalk, updateTalk } from "@/services/talks.service";
+import { Speaker } from "@/interfaces/Speaker";
+
+export const deleteTalkerCrud = async (talker: Speaker) => {
   toast.custom(
     (t) => (
       <AlertDelete
@@ -15,7 +12,7 @@ export const deleteTeamCrud = async (talk: Talk) => {
           toast.dismiss(t.id);
         }}
         onSubmit={() => {
-          toast.promise(deleteTalk(talk, "eliminado"), {
+          toast.promise(deleteTalk(talker, "eliminado"), {
             loading: "Saving...",
             success: () => {
               window.location.reload();
@@ -36,8 +33,8 @@ export const deleteTeamCrud = async (talk: Talk) => {
   );
 };
 
-export const updateTalkCrud = async (talk: Talk, formik: any) => {
-  toast.promise(updateTalk(talk), {
+export const updateTalkerCrud = async (talker: Speaker, formik: any) => {
+  toast.promise(updateTalk(talker), {
     loading: "Saving...",
     success: () => {
       formik.resetForm();
@@ -54,12 +51,12 @@ export const updateTalkCrud = async (talk: Talk, formik: any) => {
   });
 };
 
-export const registerTalk = async (talk: Talk, formik: any, onClose: any) => {
-  toast.promise(addTalk(talk), {
+export const registerTalker = async (talker: Speaker, formik: any) => {
+  toast.promise(addTalk(talker), {
     loading: "Saving...",
     success: () => {
-      formik.resetForm();
-      onClose();
+      // formik.resetForm();
+      // onClose();
       window.location.reload();
 
       return <b>Charla guardado!</b>;
