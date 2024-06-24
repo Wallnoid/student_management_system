@@ -3,7 +3,11 @@ import toast from "react-hot-toast";
 
 import { addTalk, deleteTalk, updateTalk } from "@/services/talks.service";
 import { Speaker } from "@/interfaces/Speaker";
-import { addSpeakerToTalk, updateSpeaker } from "@/services/speakers.service";
+import {
+  addSpeakerToTalk,
+  deleteSpeaker,
+  updateSpeaker,
+} from "@/services/speakers.service";
 
 export const deleteTalkerCrud = async (talker: Speaker) => {
   toast.custom(
@@ -13,7 +17,7 @@ export const deleteTalkerCrud = async (talker: Speaker) => {
           toast.dismiss(t.id);
         }}
         onSubmit={() => {
-          toast.promise(deleteTalk(talker, "eliminado"), {
+          toast.promise(deleteSpeaker(talker), {
             loading: "Saving...",
             success: () => {
               window.location.reload();

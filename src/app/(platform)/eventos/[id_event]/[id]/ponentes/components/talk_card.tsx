@@ -65,7 +65,7 @@ export default function TalkerCard({
             <div className=" p-1 rounded-full shadow-sm hover:bg-slate-100 active:bg-slate-200">
               <MdDeleteOutline
                 className="w-5 h-5 text-danger "
-                onClick={() => deleteTalkerCrud(talker?.speaker)}
+                onClick={() => deleteTalkerCrud(talker.speaker)}
               ></MdDeleteOutline>
             </div>
           </div>
