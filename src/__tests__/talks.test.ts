@@ -1,5 +1,5 @@
 import { Talk } from "@/interfaces/Talk";
-import { addSpeakersToTalk, addTalk, addTalkWithSpeakers, deleteTalk, getTalks, getTalksByEventId, updateTalk } from "@/services/talks.service";
+import { addTalk, addTalkWithSpeakers, deleteTalk, getTalks, getTalksByEventId, updateTalk } from "@/services/talks.service";
 
 describe('Pruebas del servicio de charlas', () => {
     beforeAll(() => {
@@ -83,7 +83,7 @@ describe('Pruebas del servicio de charlas', () => {
         const result = await addTalkWithSpeakers(talk);
         expect(result).toBe(true);
     });
-
+/*
     test('Prueba de asignaciones de ponentes a una charla ya existente', async () => {
         const ponentes: string[] = ['b732fd8f-8f46-4387-a216-71a75b76e6e7', 'e8500fb1-aa8b-4eb5-9e1c-b7656d6edde1'];
         const precios: number[] = [50, 50];
@@ -93,5 +93,5 @@ describe('Pruebas del servicio de charlas', () => {
 
         const result = await addSpeakersToTalk(ponentes, precios, creado_por, id_charla, observaciones);
         expect(result).toBe(true);
-    });
+    });*/
 });

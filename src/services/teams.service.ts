@@ -70,7 +70,11 @@ export async function addTeamParticipation(
   return true;
 }
 
-export async function updateTeam(team: Team): Promise<boolean> {
+export async function updateTeam(
+  team: Team,
+  valor_participacion: number,
+  id_concurso: string
+): Promise<boolean> {
   const { id, nombre, cant_integrantes, capitan, estado, actualizado_por } =
     team;
   let { error } = await supabase()
@@ -85,6 +89,17 @@ export async function updateTeam(team: Team): Promise<boolean> {
     })
     .eq("id", id)
     .select();
+  let { error: error2 } = await supabase()
+    .from("asignaciones_miembros_equipos")
+    .update({ valor_participacion })
+    .eq("id_equipo", id)
+    .eq("id_concurso", id_concurso)
+    .select();
+  if (error2)
+    throw new Error(
+      "Error al intentar actualizar la información el costo del equipo. Intente de nuevo. Error: " +
+        error.message
+    );
   if (error) {
     throw new Error(
       "Error al intentar actualizar la información el equipo. Intente de nuevo. Error: " +

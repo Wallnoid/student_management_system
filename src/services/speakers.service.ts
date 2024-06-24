@@ -34,7 +34,11 @@ export async function addSpeaker(speaker: Speaker): Promise<boolean> {
   return true;
 }
 
-export async function updateSpeaker(speaker: Speaker): Promise<boolean> {
+export async function updateSpeaker(
+  speaker: Speaker,
+  charla_id: String,
+  precio: number
+): Promise<boolean> {
   const {
     id,
     nombre,
@@ -61,6 +65,17 @@ export async function updateSpeaker(speaker: Speaker): Promise<boolean> {
     })
     .eq("id", id)
     .select();
+  let { error: error2 } = await supabase()
+    .from("asignaciones_charlas")
+    .update({ precio })
+    .eq("id_ponente", id)
+    .eq("id_charla", charla_id)
+    .select();
+  if (error2)
+    throw new Error(
+      "Error al intentar actualizar la información del ponente. Intente de nuevo. Error: " +
+        error.message
+    );
   if (error)
     throw new Error(
       "Error al intentar actualizar la información del ponente. Intente de nuevo. Error: " +
@@ -170,5 +185,22 @@ export async function addSpeakerToTalk(
       "Error al intentar asignar el miembro a la charla. Intente de nuevo. Error: " +
         error.message
     );
+export async function addSpeakerToTalk(speaker: Speaker, id_charla:string, observacion: string, precio: number, id_evento: string){
+  const {nombre, apellido, correo, nro_identificacion, telefono, titulo, creado_por} = speaker;
+  let { data, error } = await supabase()
+  .rpc('agregar_ponente_a_charla', {
+    apellido, 
+    correo, 
+    creado_por, 
+    id_charla, 
+    nombre, 
+    nro_identificacion, 
+    observacion, 
+    precio, 
+    telefono, 
+    titulo,
+    id_evento
+  })
+  if (error) throw new Error('Error al intentar asignar el miembro a la charla. Intente de nuevo. Error: ' + error.message);
   return true;
 }

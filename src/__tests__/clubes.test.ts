@@ -11,7 +11,7 @@ describe('Pruebas de servicio de clubes', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-/*
+
     test('prueba de inserción de club.', async () => {
         const club: ClubInternos = {
             nombre: 'Club de pruebas JEST',
@@ -62,8 +62,8 @@ describe('Pruebas de servicio de clubes', () => {
 
     test('prueba de asignación de un miembro a un club interno.', async () => {
         const asignacion: AsignacionesClubes = {
-            id_club_interno: 'cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081',
-            id_miembro: 'b60f644f-ab00-47cd-94ef-b55d22430c6c',
+            id_club_interno: '49903e7c-b03f-48ff-8993-573fc76720ec',
+            id_miembro: '5d0a07b8-9bc3-48d7-b73e-4a666c8f05ff',
             creado_por: '54acf6d9-8c8d-482f-8041-ae1cc7556c4d',
             fecha_hora_creacion: 'NOW()'
         };
@@ -104,7 +104,7 @@ describe('Pruebas de servicio de clubes', () => {
 
         expect(miembros.length).toBeGreaterThan(0);
     });
-*/
+
     test('Prueba de obtención de todos los proyectos asignados a un club.', async () => {
         const id_club: string = 'cb2c22b1-2e65-4dd7-bb69-2fd21c3ff081';
         const result = await getProjectsByClub(id_club);

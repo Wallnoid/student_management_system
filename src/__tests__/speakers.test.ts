@@ -12,10 +12,10 @@ describe('Pruebas del servicio de ponentes.', () => {
 
     test('Prueba de inserción de un ponente.', async () => {
         const speaker: Speaker = {
-            nombre: 'Marlon',
-            apellido: 'Masabanda',
-            nro_identificacion: '1801020304',
-            correo: 'marlon@gmail.com',
+            nombre: 'Jeff',
+            apellido: 'Bezos JR',
+            nro_identificacion: '0764587989',
+            correo: 'jeffb@gmail.com',
             telefono: '0983201121',
             titulo: 'ing. Sistemas',
             creado_por: '859e7158-4191-48ac-82b4-d00fe142003a'
@@ -58,8 +58,8 @@ describe('Pruebas del servicio de ponentes.', () => {
         const speaker: Speaker = {
             nombre: 'Carl',
             apellido: 'Patiño',
-            nro_identificacion: '1827296328',
-            correo: 'carl@hotmail.com',
+            nro_identificacion: '4697312802',
+            correo: 'carlxxx@hotmail.com',
             telefono: '0995888484',
             titulo: 'ing. Sistemas',
             creado_por: '54acf6d9-8c8d-482f-8041-ae1cc7556c4d'
@@ -67,7 +67,8 @@ describe('Pruebas del servicio de ponentes.', () => {
         const id_charla: string = '4fa3d904-0f73-4df2-b3f4-f22739415ece';
         const observacion: string = 'Asignacion sin observaciones';
         const precio: number = 80;
-        const result = await addSpeakerToTalk(speaker, id_charla, observacion, precio); 
+        const id_evento: string = '7367bcd1-9737-41b3-bb21-15baeb1c89e3';
+        const result = await addSpeakerToTalk(speaker, id_charla, observacion, precio, id_evento); 
         expect(result).toBe(true);
     });
 
